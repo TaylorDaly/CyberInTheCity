@@ -1,0 +1,22 @@
+{
+  "name": "cyberinthecity",
+  "version": "0.0.1",
+  "description": "MEAN application for a new Cyber Security portal for CU Denver.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TaylorDaly/CyberInTheCity"
+  },
+  "author": "Serin, Taylor, Chris",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.5",
+    "nodemon": "^1.18.4"
+  }
+}
