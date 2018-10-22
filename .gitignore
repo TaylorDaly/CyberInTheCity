@@ -34,6 +34,8 @@ angular-src/e2e/*.map
 Thumbs.db
 
 ### Node ###
+=======
+>>>>>>> 38c35018ea77e2d3be066204ad62b93b54487c94
 # Logs
 logs
 *.log
@@ -98,12 +100,3 @@ typings/
 
 # next.js build output
 .next
-
-# nuxt.js build output
-.nuxt
-
-# vuepress build output
-.vuepress/dist
-
-# Serverless directories
-.serverless
