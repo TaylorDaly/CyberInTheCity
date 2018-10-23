@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // We are telling express server angular-src folder is the place to look for the static files
-app.use(express.static(path.join(__dirname, 'angular-src')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('/', function (req, res) {
 

@@ -1,11 +1,11 @@
 ### Angular ###
 
 # compiled output
-angular-src/dist
-angular-src/tmp
+dist
+tmp
 
 # dependencies
-angular-src/node_modules
+node_modules
 node-api/node_modules
 
 # IDEs and editors
@@ -17,17 +17,17 @@ node-api/node_modules
 .settings/
 
 # misc
-angular-src/.sass-cache
-angular-src/connect.lock
-angular-src/coverage/*
-angular-src/libpeerconnection.log
+.sass-cache
+connect.lock
+coverage/*
+libpeerconnection.log
 npm-debug.log
 testem.log
 /typings
 
 # e2e
-angular-src/e2e/*.js
-angular-src/e2e/*.map
+e2e/*.js
+e2e/*.map
 
 #System Files
 .DS_Store
