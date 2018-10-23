@@ -9,6 +9,8 @@ const app = express();
 
 const port = 3000;
 
+mongoose.connect("");
+
 app.use(cors());
 
 app.use(bodyParser.urlencoded({extended: true}));
