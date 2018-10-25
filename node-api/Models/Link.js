@@ -5,10 +5,10 @@ const LinkSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    Description: {
+    description: {
         type: String,
         required: false
-    }
+    },
 });
 
-module.exports(mongoose.model('Link', LinkSchema));
+const Link = module.exports = mongoose.model('Link', LinkSchema);
