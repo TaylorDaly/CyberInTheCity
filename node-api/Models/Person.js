@@ -1,17 +1,24 @@
 const mongoose = require('mongoose');
 const link = require('./Link');
 const image = require('./Image');
+const regex = require('../Config/Regex.js');
 
 const PersonSchema = mongoose.Schema({
     name: {
         type: String,
         required: true
     },
+    sys_role: {
+        type: String,
+        required: true,
+        enum: ['Root Administrator', 'Graduate Student', 'Professor', 'None'],
+        default: 'None'
+    },
     role: {
         type: String,
         required: true,
-        enum: ['Teacher', 'Graduate Student', 'Undergraduate Student', 'Assistant Professor',
-            'Teacher\'s Assistant', 'Other']
+        enum: ['Graduate Student', 'Undergraduate Student', 'Assistant Professor',
+            'Teacher\'s Assistant', 'Professor']
     },
     photo: {
         type: mongoose.Schema.ObjectId,
@@ -20,7 +27,9 @@ const PersonSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        minlength: 3,
+        match: regex.email
     },
     phone_number: {
         type: String,
@@ -32,7 +41,7 @@ const PersonSchema = mongoose.Schema({
     },
     links: {
         type: [mongoose.Schema.ObjectId],
-        ref: 'Link'
+        ref: 'Link',
     },
     google_scholar_link: {
         type: mongoose.Schema.ObjectId,
@@ -41,15 +50,16 @@ const PersonSchema = mongoose.Schema({
     // Google_Scholar_link
     // LinkedIn link
     // Website
-
 });
 
-module.exports = mongoose.model('Person', PersonSchema);
+const person = module.exports = mongoose.model('Person', PersonSchema);
 
 module.exports.getAllPeople = (callback) => {
-    PersonSchema.find(callback);
+    person.find(callback);
 };
 
 module.exports.addPerson = (newPerson, callback) => {
     newPerson.save(callback);
 };
+
+// TODO: Get single person, delete, update

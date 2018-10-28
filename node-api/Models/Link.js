@@ -7,7 +7,6 @@ const LinkSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: false
     },
 });
 

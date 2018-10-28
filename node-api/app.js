@@ -25,9 +25,9 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, './dist')));
 
 //Routes
-app.use('/people', peopleController);
+app.use('/Person', peopleController);
 
-app.get('*', function (req, res) {
+app.get('/*', function (req, res) {
     res.status(404).send("404: Page Does not exist.");
 });
 

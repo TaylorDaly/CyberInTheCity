@@ -41,10 +41,13 @@ PeopleRouter.post('/', (req, res, next) => {
 
 });
 
-
+// TODO
 PeopleRouter.delete('/:id', (req, res, next) => {
     res.send("DELETE");
 
 });
+
+// TODO: Get single person
+// TODO: Update person
 
 module.exports = PeopleRouter;
