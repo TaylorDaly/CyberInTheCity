@@ -22,13 +22,13 @@ mongoose.connect(uri, {useNewUrlParser: true})
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, './dist')));
+app.use(express.static(path.join(__dirname, '../angular-src/dist')));
 
 //Routes
 app.use('/Person', peopleController);
 
 app.get('/*', function (req, res) {
-    res.status(404).send("404: Page Does not exist.");
+    res.status(404).json({success: false, message: "404: Page Does not exist."});
 });
 
 //Listen to port 3000

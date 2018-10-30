@@ -5,8 +5,9 @@ const LinkSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // If we want display text to be different from the actual link.
     description: {
-        type: String,
+        type: String
     },
 });
 

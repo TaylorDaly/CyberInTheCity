@@ -1,7 +1,9 @@
 # CyberInTheCity
 
-go into node-api and 'npm install'
+#####setup:
 
-go into angular-src and 'npm install'
+1. Go into node-api and 'npm install'
 
-go into angular-src and 'ng update @angular/cli'
+2. Go into angular-src and 'npm install'
+
+3. Go into angular-src and 'ng update @angular/cli'

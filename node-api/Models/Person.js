@@ -4,10 +4,13 @@ const image = require('./Image');
 const regex = require('../Config/Regex.js');
 
 const PersonSchema = mongoose.Schema({
+    // Person must have a name, not matching to any regex because we should support international names.
     name: {
         type: String,
-        required: true
+        required: true,
+        minlength: 2
     },
+    // TODO: consider security on this: who can change a sys_role and when
     sys_role: {
         type: String,
         required: true,
@@ -21,14 +24,14 @@ const PersonSchema = mongoose.Schema({
             'Teacher\'s Assistant', 'Professor']
     },
     photo: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.Object,
         ref: 'Image'
     },
     email: {
         type: String,
         required: true,
         unique: true,
-        minlength: 3,
+        minlength: 5,
         match: regex.email
     },
     phone_number: {
@@ -40,11 +43,11 @@ const PersonSchema = mongoose.Schema({
         required: false
     },
     links: {
-        type: [mongoose.Schema.ObjectId],
-        ref: 'Link',
+        type: [mongoose.Schema.Types.Object],
+        ref: 'Link'
     },
     google_scholar_link: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.Object,
         ref: 'Link'
     }
     // Google_Scholar_link
@@ -52,14 +55,27 @@ const PersonSchema = mongoose.Schema({
     // Website
 });
 
+
 const person = module.exports = mongoose.model('Person', PersonSchema);
 
 module.exports.getAllPeople = (callback) => {
-    person.find(callback);
+    person.find(callback)
 };
 
 module.exports.addPerson = (newPerson, callback) => {
     newPerson.save(callback);
 };
 
-// TODO: Get single person, delete, update
+module.exports.getPerson = (id, callback) => {
+    let query = {_id: id};
+    person.findOne(query, callback)
+};
+
+module.exports.deletePerson = (id, callback) => {
+    let query = {_id: id};
+    person.findOneAndDelete(query, callback)
+};
+
+module.exports.updatePerson = (id, update, callback) => {
+    person.findOneAndUpdate(id, update, callback)
+};
