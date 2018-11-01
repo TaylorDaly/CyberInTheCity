@@ -14,6 +14,7 @@ const port = 3000;
 const uri = require('./config/database').database;
 const peopleController = require('./Controllers/PersonController');
 const publicationController = require('./Controllers/PublicationController');
+const researchController = require('./Controllers/ResearchController');
 
 // Database Connection
 mongoose.connect(uri, {useNewUrlParser: true})
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, '../angular-src/dist')));
 //Routes
 app.use('/Person', peopleController);
 app.use('/Publication', publicationController);
+app.use('/Research', researchController);
 
 app.get('/*', function (req, res) {
     res.status(404).json({success: false, message: "404: Page Does not exist."});
