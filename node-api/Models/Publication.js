@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const link = require('./Link');
 
 const PublicationSchema = new mongoose.Schema({
     title: {
@@ -24,3 +23,30 @@ const PublicationSchema = new mongoose.Schema({
 });
 
 const publication = module.exports = mongoose.model('Publication', PublicationSchema);
+
+module.exports.getAllPublications = (callback) => {
+    publication.find(callback);
+};
+
+module.exports.getOwnerPublication = (ownerID, callback) => {
+    let query = {ownerID: ownerID};
+    publication.find(query, callback);
+};
+
+module.exports.getPublication = (id, callback) => {
+    let query = {_id: id};
+    publication.findOne(query, callback);
+};
+
+module.exports.addPublication = (newPublication, callback) => {
+    newPublication.save(callback);
+};
+
+module.exports.updatePublication = (id, update, callback) => {
+    publication.findOneAndUpdate(id, update, callback);
+};
+
+module.exports.deletePublication = (id, callback) => {
+    let query = {_id: id};
+    publication.findOneAndDelete(query, callback)
+};
