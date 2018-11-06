@@ -4,7 +4,6 @@ const image = require('./Image');
 const regex = require('../Config/Regex.js');
 
 const PersonSchema = mongoose.Schema({
-    // Person must have a name, not matching to any regex because we should support international names.
     name: {
         type: String,
         required: true,
@@ -15,7 +14,20 @@ const PersonSchema = mongoose.Schema({
         type: String,
         required: true,
         enum: ['Root Administrator', 'Graduate Student', 'Professor', 'None'],
-        default: 'None'
+        default: 'None',
+        select: false
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 8,
+        select: false
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        match: regex.email
     },
     role: {
         type: String,
@@ -24,15 +36,8 @@ const PersonSchema = mongoose.Schema({
             'Teacher\'s Assistant', 'Professor']
     },
     photo: {
-        type: mongoose.Schema.Types.Object,
+        type: mongoose.Schema.ObjectId,
         ref: 'Image'
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        minlength: 5,
-        match: regex.email
     },
     phone_number: {
         type: String,
@@ -58,8 +63,8 @@ const PersonSchema = mongoose.Schema({
 
 const person = module.exports = mongoose.model('Person', PersonSchema);
 
-module.exports.getAllPeople = (callback) => {
-    person.find(callback)
+module.exports.getPeople = (query, callback) => {
+    person.find(query, callback)
 };
 
 module.exports.addPerson = (newPerson, callback) => {
@@ -69,6 +74,7 @@ module.exports.addPerson = (newPerson, callback) => {
 module.exports.getPerson = (id, callback) => {
     let query = {_id: id};
     person.findOne(query, callback)
+        .populate('photo')
 };
 
 module.exports.deletePerson = (id, callback) => {

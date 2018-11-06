@@ -1,15 +1,29 @@
 const mongoose = require('mongoose');
 
-// TODO: Consider making this more generic, something like File.js so we can reuse for PDFs and Images.
 const ImageSchema = new mongoose.Schema({
-    data: Buffer,
-    contentType: String,
+    data: {
+        type: Buffer,
+        required: true
+    },
+    content_type: {
+        type: String,
+        required: true,
+        enum: ['image/jpg', 'image/png']
+    },
 });
 
-module.exports = mongoose.model('Image', ImageSchema);
+const Image = module.exports = mongoose.model('Image', ImageSchema);
 
 module.exports.saveImage = (newImage, callback) => {
     newImage.save(callback);
 };
 
-// TODO: Find proper save function, not sure if this is API or strictly UI but it would be nice to have a progress bar.
+module.exports.deleteImage = (id, callback) => {
+    let query = {_id: id};
+    Image.findOneAndDelete(query, callback)
+};
+
+module.exports.findImage = (id, callback) => {
+    let query = {_id: id};
+    Image.findById(query, callback);
+};
