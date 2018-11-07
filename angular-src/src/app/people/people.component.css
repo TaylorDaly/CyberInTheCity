@@ -1,0 +1,17 @@
+.scrolling-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+.card {
+  display: inline-block;
+}
+.card-img-top {
+  object-fit: none; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  width: 100%;
+  min-height: 300px;
+  max-height: 300px;
+  margin-bottom: 1rem;
+}
+

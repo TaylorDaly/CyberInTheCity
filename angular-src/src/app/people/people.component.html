@@ -1,0 +1,14 @@
+
+<!--<div class="scrolling-wrapper">-->
+<div class="container" style="border: 1px solid cyan; background-color: white;">
+  <div *ngFor="let person of personList" class="card" style="width: 18rem;">
+    <img class="card-img-top" src={{person.image}} alt="Card image cap">
+    <div class="card-body">
+      <h3>{{person.name}}</h3>
+      <p class="card-text">{{person.role}} <br/> {{person.email}}</p>
+    </div>
+  </div>
+</div>
+
+<!--</div>-->
+
