@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from "../../environments/environment";
 import {PersonService} from "./person.service";
-
 
 @Component({
   selector: 'app-person',
@@ -17,7 +15,11 @@ export class PersonComponent implements OnInit {
               private personService: PersonService) { }
 
   ngOnInit() {
-    this.personList = this.personService.getPerson();
+    this.personService.getPerson()
+      .subscribe(data => {
+        this.personList = data;
+        console.log(data);
+      });
   }
 
 }

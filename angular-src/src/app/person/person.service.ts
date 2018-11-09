@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from "../../environments/environment";
+import {Observable} from "rxjs";
+import {Person} from "./person";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonService {
 
-  url = environment.apiUrl;
+  private url = environment.apiUrl;
 
   constructor(private httpClient: HttpClient) { }
 
-  getPerson() {
-    return this.httpClient.get(this.url);
+  getPerson() : Observable<Person[]> {
+    return this.httpClient.get<Person[]>(this.url + '/person');
   }
 }
+
