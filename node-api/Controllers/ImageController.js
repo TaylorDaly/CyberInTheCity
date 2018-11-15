@@ -25,7 +25,6 @@ ImageRouter.get('/:id', (req, res) => {
 
 // TODO: implement progress percentage when saving image.
 ImageRouter.post('/', (req, res) => {
-    console.log(req.body);
     let data = fs.readFileSync(req.body.file);
     let newPic = new Image({
         data: data,
@@ -50,16 +49,32 @@ ImageRouter.post('/', (req, res) => {
 });
 
 ImageRouter.delete('/:id', (req, res) => {
-    Image.deleteImage(req.params.id, (err) => {
+    Image.findImage(req.params.id, (err, image) => {
         if (err) {
-            res.json({
+            res.send({
                 success: false,
-                message: `Delete image failed. Error: ${err}`
+                message: `Failed to find image. Error: ${err}`
             })
+        } else if (image) {
+            Image.deleteImage(image._id, (err) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: `Delete image failed. Error: ${err}`
+                    })
+                } else {
+                    res.json({success: true, message: `Image deleted successfully.`});
+                }
+            });
         } else {
-            res.json({success: true, message: `Image deleted successfully.`});
+            res.send({
+                success: false,
+                message: `Image does not exist.`
+            })
         }
     })
+
+
 });
 
 module.exports = ImageRouter;

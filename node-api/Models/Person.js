@@ -55,13 +55,25 @@ const PersonSchema = mongoose.Schema({
         type: mongoose.Schema.Types.Object,
         ref: 'Link'
     }
-    // Google_Scholar_link
     // LinkedIn link
     // Website
 });
 
+// Remove photo before deleting person
+PersonSchema.pre('remove', function(next) {
+    this.model('Image').remove({_id: this.photo._id}, (err) => {
+        if (err) {
+            next(err)
+        }
+    });
+    next();
+});
 
 const person = module.exports = mongoose.model('Person', PersonSchema);
+
+module.exports.deletePerson = (personToDelete, callback) => {
+    personToDelete.remove(callback);
+};
 
 module.exports.getPeople = (query, callback) => {
     person.find(query, callback)
@@ -77,11 +89,7 @@ module.exports.getPerson = (id, callback) => {
         .populate('photo')
 };
 
-module.exports.deletePerson = (id, callback) => {
-    let query = {_id: id};
-    person.findOneAndDelete(query, callback)
+module.exports.updatePerson = (id, update, callback) => {
+    person.findByIdAndUpdate(id, update, callback)
 };
 
-module.exports.updatePerson = (id, update, callback) => {
-    person.findOneAndUpdate(id, update, callback)
-};

@@ -11,7 +11,7 @@ PeopleRouter.get('/', (req, res) => {
                 success: false, message: `Failed to get people. Error: ${err}`
             })
         }
-        else if (people) {
+        else if (people.length > 0) {
             res.json(people)
         }
         else {
@@ -50,6 +50,7 @@ PeopleRouter.post('/', (req, res, next) => {
         role: req.body.role,
         photo: req.body.photo,
         email: req.body.email,
+        password: req.body.password,
         phone_number: req.body.phone_number,
         office_location: req.body.office_location,
         links: req.body.links,
@@ -77,27 +78,11 @@ PeopleRouter.delete('/:id', (req, res, next) => {
             })
         }
         else if (person) {
-            Person.deletePerson(person._id, (err) => {
+            Person.deletePerson(person, (err) => {
                 if (err) {
                     res.json({
                         success: false,
                         message: `Attempt to delete person failed. Error: ${err}`
-                    })
-                }
-                else if (person.photo) {
-                    Image.deleteImage(person.photo, (err) => {
-                        if (err) {
-                            res.json({
-                                success: false,
-                                message: `Failed to delete image attached to person. Error: ${err}`
-                            })
-                        }
-                        else {
-                            res.json({
-                                success: true,
-                                message: `Person deleted successfully.`
-                            })
-                        }
                     })
                 }
                 else {
@@ -118,7 +103,7 @@ PeopleRouter.delete('/:id', (req, res, next) => {
 });
 
 PeopleRouter.put('/', (req, res, next) => {
-    console.log(req);
+
     Person.getPerson(req.body._id, (err, person) => {
         if (err) {
             res.json({
@@ -131,6 +116,7 @@ PeopleRouter.put('/', (req, res, next) => {
             if (req.body.role) person.role = req.body.role;
             // TODO: consider sys_role security
             // if (req.body.sys_role) person.sys_role = req.body.sys_role;
+            if (req.body.password) person.password = req.body.password;
             if (req.body.photo) person.photo = req.body.photo;
             if (req.body.email) person.email = req.body.email;
             if (req.body.phone_number) person.phone_number = req.body.phone_number;

@@ -25,5 +25,5 @@ module.exports.deleteImage = (id, callback) => {
 
 module.exports.findImage = (id, callback) => {
     let query = {_id: id};
-    Image.findById(query, callback);
+    Image.findOne(query, callback);
 };
