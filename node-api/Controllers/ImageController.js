@@ -3,6 +3,7 @@ const express = require('express');
 const ImageRouter = express.Router();
 const Image = require('../models/Image');
 const fs = require('fs');
+const Buffer = require('buffer').Buffer;
 
 ImageRouter.get('/:id', (req, res) => {
     Image.findImage(req.params.id, (err, image) => {
@@ -12,8 +13,13 @@ ImageRouter.get('/:id', (req, res) => {
                 message: `Failed to find image. Error: ${err}`
             })
         } else if (image) {
-            res.contentType(image.content_type);
-            res.send(image.data)
+            // Convert back to base64 to render
+            let img = Buffer.from(image.buffer, 'base64');
+            res.writeHead(200, {
+                'Content-Type': `${image.content_type}`,
+                'Content-Length': img.length
+            });
+            res.end(img);
         } else {
             res.send({
                 success: false,
@@ -27,7 +33,7 @@ ImageRouter.get('/:id', (req, res) => {
 ImageRouter.post('/', (req, res) => {
     let data = fs.readFileSync(req.body.file);
     let newPic = new Image({
-        data: data,
+        buffer: (new Buffer(data)).toString("base64"),
         content_type: req.body.content_type
     });
 
