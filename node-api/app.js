@@ -12,6 +12,8 @@ const peopleController = require('./Controllers/PersonController');
 const publicationController = require('./Controllers/PublicationController');
 const researchController = require('./Controllers/ResearchController');
 const imageController = require('./Controllers/ImageController');
+const researchLabController = require('./Controllers/ResearchLabController');
+const educationController = require('./Controllers/EducationController');
 
 // Constants
 const app = express();
@@ -32,6 +34,8 @@ app.use('/Person', peopleController);
 app.use('/Publication', publicationController);
 app.use('/Research', researchController);
 app.use('/Image', imageController);
+app.use('/ResearchLab', researchLabController);
+app.use('/Education', educationController);
 
 app.use('/*', function (req, res) {
     res.status(404).send({success: false, message: "404: Page Does not exist."});

@@ -2,7 +2,7 @@ const express = require('express');
 const ResearchRouter = express.Router();
 const Research = require('../models/Research');
 
-// TODO: All research paths
+
 // Get all researches
 ResearchRouter.get('/', (req, res) => {
     Research.getAllResearches((err, research) => {
@@ -51,8 +51,10 @@ ResearchRouter.post('/', (req, res, next) => {
 
     Research.addResearch(newResearch, (err, callback) => {
         if (err) {
-            res.json({success: false, message: `Failed to add new research.\n
-            Error: ${err}`})
+            res.json({
+                success: false, message: `Failed to add new research.\n
+            Error: ${err}`
+            })
         }
         else {
             res.json({success: true, message: "Successfully added research."})
@@ -104,17 +106,33 @@ ResearchRouter.put('/', (req, res, next) => {
 
 // Delete
 ResearchRouter.delete('/:id', (req, res, next) => {
-    Research.deleteResearch(req.params.id, (err) => {
+    Research.getResearch(req.params.id, (err, research) => {
         if (err) {
             res.json({
                 success: false,
-                message: `Attempt to delete research failed. Error: ${err}`
+                message: `Attempt to find research failed. Error: ${err}`
             })
         }
+        else if (research) {
+            Research.deleteResearch(research, (err) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: `Attempt to delete research failed. Error: ${err}`
+                    })
+                }
+                else {
+                    res.json({
+                        success: true,
+                        message: `Research deleted successfully.`
+                    })
+                }
+            });
+        }
         else {
-            res.json({
-                success: true,
-                message: `Delete Successful.`
+            res.status(404).send({
+                success: false,
+                message: `404: Research does not exist.`
             })
         }
     })

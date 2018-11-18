@@ -2,7 +2,7 @@ const express = require('express');
 const PublicationRouter = express.Router();
 const Publication = require('../models/Publication');
 
-// TODO: All publications paths
+
 // Get all publications
 PublicationRouter.get('/', (req, res) => {
     Publication.getAllPublications((err, publication) => {
@@ -53,8 +53,10 @@ PublicationRouter.post('/', (req, res, next) => {
 
     Publication.addPublication(newPublication, (err, callback) => {
         if (err) {
-            res.json({success: false, message: `Failed to add new publication.\n
-            Error: ${err}`})
+            res.json({
+                success: false, message: `Failed to add new publication.\n
+            Error: ${err}`
+            })
         }
         else {
             res.json({success: true, message: "Successfully added publication."})
@@ -108,17 +110,33 @@ PublicationRouter.put('/', (req, res, next) => {
 
 // Delete
 PublicationRouter.delete('/:id', (req, res, next) => {
-    Publication.deletePublication(req.params.id, (err) => {
+    Publication.getPublication(req.params.id, (err, publication) => {
         if (err) {
             res.json({
                 success: false,
-                message: `Attempt to delete publication failed. Error: ${err}`
+                message: `Attempt to find publication failed. Error: ${err}`
             })
         }
+        else if (publication) {
+            Publication.deletePublication(publication, (err) => {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: `Attempt to delete publication failed. Error: ${err}`
+                    })
+                }
+                else {
+                    res.json({
+                        success: true,
+                        message: `publication deleted successfully.`
+                    })
+                }
+            });
+        }
         else {
-            res.json({
-                success: true,
-                message: `Delete Successful.`
+            res.status(404).send({
+                success: false,
+                message: `404: publication does not exist.`
             })
         }
     })
