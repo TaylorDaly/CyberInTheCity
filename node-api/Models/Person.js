@@ -77,6 +77,7 @@ module.exports.deletePerson = (personToDelete, callback) => {
 
 module.exports.getPeople = (query, callback) => {
     person.find(query, callback)
+        .populate('photo')
 };
 
 module.exports.addPerson = (newPerson, callback) => {

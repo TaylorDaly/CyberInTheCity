@@ -3,6 +3,7 @@ const express = require('express');
 const PeopleRouter = express.Router();
 const Person = require('../models/Person');
 
+
 PeopleRouter.get('/', (req, res) => {
     let query = req.query;
     Person.getPeople(query, (err, people) => {
@@ -150,5 +151,6 @@ PeopleRouter.put('/', (req, res, next) => {
 });
 
 // TODO: Add in secure paths that include sys_role and passwords
+// https://github.com/Automattic/mongoose/issues/1596
 // https://stackoverflow.com/questions/12096262/how-to-protect-the-password-field-in-mongoose-mongodb-so-it-wont-return-in-a-qu
 module.exports = PeopleRouter;

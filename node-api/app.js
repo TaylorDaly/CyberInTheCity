@@ -4,6 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 // Imports
@@ -29,7 +30,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '../angular-src/dist')));
 
-//Routes
+// TODO: JWT authentication
+// Routes
 app.use('/Person', peopleController);
 app.use('/Publication', publicationController);
 app.use('/Research', researchController);
@@ -37,11 +39,12 @@ app.use('/Image', imageController);
 app.use('/ResearchLab', researchLabController);
 app.use('/Education', educationController);
 
+// Non-existent API route error
 app.use('/*', function (req, res) {
     res.status(404).send({success: false, message: "404: Page Does not exist."});
 });
 
-//Listen to port 3000
+// Listen to port 3000
 app.listen(port, function () {
     console.log(`Starting the server at port ${port}`);
 });
