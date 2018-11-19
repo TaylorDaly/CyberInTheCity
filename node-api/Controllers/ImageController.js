@@ -13,13 +13,14 @@ ImageRouter.get('/:id', (req, res) => {
                 message: `Failed to find image. Error: ${err}`
             })
         } else if (image) {
-            // Convert back to base64 to render
+            // Convert back to buffer to render
             let img = Buffer.from(image.buffer, 'base64');
             res.writeHead(200, {
                 'Content-Type': `${image.content_type}`,
                 'Content-Length': img.length
             });
             res.end(img);
+            //res.json(image.buffer);
         } else {
             res.send({
                 success: false,
@@ -33,7 +34,7 @@ ImageRouter.get('/:id', (req, res) => {
 ImageRouter.post('/', (req, res) => {
     let data = fs.readFileSync(req.body.file);
     let newPic = new Image({
-        buffer: (new Buffer(data)).toString("base64"),
+        buffer: data.toString('base64'),
         content_type: req.body.content_type
     });
 

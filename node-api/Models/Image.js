@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 
 const ImageSchema = new mongoose.Schema({
     buffer: {
-        type: Buffer,
+        type: String,
         required: true
     },
     content_type: {
         type: String,
         required: true,
-        enum: ['image/jpg', 'image/png']
+        enum: ['image/jpeg', 'image/png']
     },
 });
 

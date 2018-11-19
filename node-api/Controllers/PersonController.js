@@ -55,6 +55,7 @@ PeopleRouter.post('/', (req, res, next) => {
         phone_number: req.body.phone_number,
         office_location: req.body.office_location,
         links: req.body.links,
+        my_website_link: req.body.my_website_link,
         google_scholar_link: req.body.google_scholar_link
     });
 
@@ -124,6 +125,7 @@ PeopleRouter.put('/', (req, res, next) => {
             if (req.body.office_location) person.office_location = req.body.office_location;
             if (req.body.links) person.links = req.body.links;
             if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
+            if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
 
             Person.updatePerson(req.body._id, person, (err) => {
                 if (err) {

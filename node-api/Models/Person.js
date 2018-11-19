@@ -4,6 +4,7 @@ const image = require('./Image');
 const regex = require('../Config/Regex.js');
 
 const PersonSchema = mongoose.Schema({
+    // TODO: consider if _id is ok to expose or not like in the URL
     name: {
         type: String,
         required: true,
@@ -17,6 +18,7 @@ const PersonSchema = mongoose.Schema({
         default: 'None',
         select: false
     },
+    // TODO: hash these bad boys
     password: {
         type: String,
         required: true,
@@ -54,8 +56,11 @@ const PersonSchema = mongoose.Schema({
     google_scholar_link: {
         type: mongoose.Schema.Types.Object,
         ref: 'Link'
+    },
+    my_website_link: {
+        type: mongoose.Schema.Types.Object,
+        ref: 'Link'
     }
-    // LinkedIn link
     // Website
 });
 
