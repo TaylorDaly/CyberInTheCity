@@ -10,12 +10,11 @@ import { NavmenuComponent } from './navmenu/navmenu.component';
 
 import {PersonService} from "./person/person.service";
 
-
 @NgModule({
   declarations: [
     AppComponent,
     NavmenuComponent,
-    routingComponents
+    routingComponents,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
 <nav class="navbar sticky-top navbar-expand-lg">
-  <a class="navbar-brand" href="/home">
+  <a class="navbar-brand" routerLink="/home">
     <img width="300" height="80" src="https://www1.ucdenver.edu/images/default-source/offices-ucomm-images/brand/brandlogo_colors_den_rv.png?sfvrsn=ffa1b2b8_3"/>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,13 +12,13 @@
         <!--<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>-->
       <!--</li>-->
       <li class="nav-item">
-        <a class="nav-link" href="#education">Education</a>
+        <a class="nav-link" routerLink="/education">Education</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/person" routerLinkActive="active">People</a>
+        <a class="nav-link" routerLink="/person">People</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#Research" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" routerLink="/research" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Research
         </a>
         <div class="dropdown-menu">
@@ -49,4 +49,4 @@
     </form>
   </div>
 </nav>
-<p class="cu-gold">Cyber In The City</p>
+<!--<p class="cu-gold">Cyber In The City</p>-->

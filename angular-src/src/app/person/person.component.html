@@ -1,15 +1,17 @@
 <!--<div class="scrolling-wrapper">-->
-<div class="container" style="border: 1px solid cyan; background-color: white;">
+<div class="container" style="border: 1px solid cyan;">
   <div *ngFor="let person of personList" class="card" style="width: 18rem;">
-    <img class="card-img-top" src={{person.photo}} alt="Card image cap">
+    <img class="card-img-top" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}" alt="Card image cap">
     <div class="card-body">
       <h3>{{person.name}}</h3>
       <p class="card-text">
         {{person.role}}
-        {{person.email}}
+        <br/>{{person.email}}
+        <br/><a href="{{person.my_website_link}}">My Website</a>
       </p>
-      <div *ngFor="let link of person.links">
-        <p>{{link.Description}}: {{link.URL}}</p>
+      <div *ngFor="let link of person.links" style="display: inline;">
+        <a class="fa fa-{{link.description}}" href="{{link.URL}}"></a>
+        <!--<a href="{{link.URL}}">{{link.description}}</a>-->
       </div>
     </div>
   </div>
