@@ -6,13 +6,15 @@ const ResearchSchema = new mongoose.Schema({
         required: true
     },
     ownerID: {
-        type: String,
+        type: [String],
         required: true
     },
     startDate: Date,
     endDate: Date,
     description: String,
-
+    // TODO: Photo
+    // Internal collaborators (personIds)
+    // External collaborators (list of names with link)
 });
 
 const research = module.exports = mongoose.model('Research', ResearchSchema);
