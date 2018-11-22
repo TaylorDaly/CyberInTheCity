@@ -13,8 +13,8 @@ const EducationSchema = new mongoose.Schema({
     category: String,
     department: String,
     termYear: String,
-    Content: String,
-    Syllabus: String,
+    content: String,
+    syllabus: String,
 });
 
 const education = module.exports = mongoose.model('Education', EducationSchema);

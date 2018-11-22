@@ -27,8 +27,8 @@ EducationRouter.post('/', (req, res, next) => {
         category: req.body.category,
         department: req.body.department,
         termYear: req.body.termYear,
-        Content: req.body.Content,
-        Syllabus: req.body.Syllabus
+        content: req.body.content,
+        syllabus: req.body.syllabus
     });
 
     Education.addEducation(newEducation, (err, callback) => {
@@ -61,8 +61,8 @@ EducationRouter.put('/', (req, res, next) => {
             if (req.body.category) education.category = req.body.category;
             if (req.body.department) education.department = req.body.department;
             if (req.body.termYear) education.termYear = req.body.termYear;
-            if (req.body.Content) education.Content = req.body.Content;
-            if (req.body.Syllabus) education.Syllabus = req.body.Syllabus;
+            if (req.body.content) education.content = req.body.content;
+            if (req.body.syllabus) education.syllabus = req.body.syllabus;
 
             Education.updateEducation(req.body._id, education, (err) => {
                 if (err) {

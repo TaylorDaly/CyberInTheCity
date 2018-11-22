@@ -15,6 +15,7 @@ const researchController = require('./Controllers/ResearchController');
 const imageController = require('./Controllers/ImageController');
 const researchLabController = require('./Controllers/ResearchLabController');
 const educationController = require('./Controllers/EducationController');
+const programController = require('./Controllers/ProgramController');
 
 // Constants
 const app = express();
@@ -38,6 +39,7 @@ app.use('/Research', researchController);
 app.use('/Image', imageController);
 app.use('/ResearchLab', researchLabController);
 app.use('/Education', educationController);
+app.use('/Program', programController);
 
 // Non-existent API route error
 app.use('/*', function (req, res) {
