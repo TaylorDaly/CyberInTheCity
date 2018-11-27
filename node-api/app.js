@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const helmet = require('helmet');
 require('dotenv').config();
 
 // Imports
@@ -25,12 +26,15 @@ const port = dbConfig.nodePort || 3000;
 mongoose.connect(dbConfig.uri, {useNewUrlParser: true})
     .then(res => console.log(`_readyState: ${res.connections[0]._readyState}`));
 
+// TODO: add TLS for security
 // app setup
+app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '../angular-src/dist')));
 
+// TODO: Fix mongoose deprecation warning as soon as mongoose updates.
 // TODO: JWT authentication
 // Routes
 app.use('/Person', peopleController);
