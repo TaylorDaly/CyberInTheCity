@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
-const link = require('./Link');
-const image = require('./Image');
 const regex = require('../Config/Regex.js');
 
 const PersonSchema = mongoose.Schema({
-    // TODO: consider if _id is ok to expose or not like in the URL
     name: {
         type: String,
         required: true,

@@ -37,20 +37,19 @@ app.use(express.static(path.join(__dirname, '../angular-src/dist')));
 // TODO: Fix mongoose deprecation warning as soon as mongoose updates.
 // TODO: JWT authentication
 // Routes
-app.use('/Person', peopleController);
-app.use('/Publication', publicationController);
-app.use('/Research', researchController);
-app.use('/Image', imageController);
-app.use('/ResearchLab', researchLabController);
-app.use('/Education', educationController);
-app.use('/Program', programController);
+app.use('/api/Person', peopleController);
+app.use('/api/Publication', publicationController);
+app.use('/api/Research', researchController);
+app.use('/api/Image', imageController);
+app.use('/api/ResearchLab', researchLabController);
+app.use('/api/Education', educationController);
+app.use('/api/Program', programController);
 
-// Non-existent API route error
-app.use('/*', function (req, res) {
-    res.status(404).send({success: false, message: "404: Page Does not exist."});
+// re-route bad requests back to home page.
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../angular-src/dist/index.html'));
 });
 
-// Listen to port 3000
 app.listen(port, function () {
     console.log(`Starting the server at port ${port}`);
 });
