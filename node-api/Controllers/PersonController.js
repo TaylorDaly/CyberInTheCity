@@ -2,6 +2,7 @@
 const express = require('express');
 const PeopleRouter = express.Router();
 const Person = require('../models/Person');
+const regex = require('../Config/Regex.js');
 
 
 PeopleRouter.get('/', (req, res) => {
@@ -59,16 +60,27 @@ PeopleRouter.post('/', (req, res, next) => {
         google_scholar_link: req.body.google_scholar_link
     });
 
-    Person.addPerson(newPerson, (err, callback) => {
-        if (err) {
-            res.json({
-                success: false, message: `Failed to add new person. Error: ${err}`
-            })
-        }
-        else {
-            res.json({success: true, message: "Successfully added person."})
-        }
-    })
+    if (regex.password.exec(req.body.password) && !regex.disallowedCharacters.exec(req.body.password)) {
+        Person.addPerson(newPerson, (err, callback) => {
+            if (err) {
+                res.json({
+                    success: false, message: `Failed to add new person. Error: ${err}`
+                })
+            } else {
+                res.json({success: true, message: "Successfully added person."})
+            }
+        })
+    } else {
+        res.json({
+            success: false,
+            message: 'Password must contain at least one upper case letter, ' +
+                'one lower case letter, ' +
+                'one number, ' +
+                'one special character (#?!@$%^&*-), ' +
+                'and be eight characters in length. ' +
+                'Other characters are not allowed.'
+        });
+    }
 });
 
 PeopleRouter.delete('/:id', (req, res, next) => {

@@ -63,11 +63,13 @@ const PersonSchema = mongoose.Schema({
 
 // Remove photo before deleting person
 PersonSchema.pre('remove', function(next) {
-    this.model('Image').remove({_id: this.photo._id}, (err) => {
-        if (err) {
-            next(err)
-        }
-    });
+    if (this.photo) {
+        this.model('Image').remove({_id: this.photo._id}, (err) => {
+            if (err) {
+                next(err)
+            }
+        });
+    }
     next();
 });
 
