@@ -9,12 +9,10 @@ import {Person} from "./person";
 })
 export class PersonService {
 
-  private url = environment.apiUrl;
-
   constructor(private httpClient: HttpClient) { }
 
   getPerson() : Observable<Person[]> {
-    return this.httpClient.get<Person[]>(this.url + '/person');
+    return this.httpClient.get<Person[]>(environment.apiUrl + '/person');
   }
 }
 

@@ -4,12 +4,14 @@ import {HomeComponent} from "./home/home.component";
 import {PersonComponent} from "./person/person.component";
 import {EducationComponent} from "./education/education.component";
 import {ResearchComponent} from "./research/research.component";
+import {SignupComponent} from "./signup/signup.component";
 
 const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'person', component: PersonComponent},
   {path: 'education', component: EducationComponent},
   {path: 'research', component: ResearchComponent},
+  {path: 'signup', component: SignupComponent},
 ];
 
 @NgModule({
@@ -24,4 +26,5 @@ export const routingComponents =
     PersonComponent,
     EducationComponent,
     ResearchComponent,
+    SignupComponent
   ];

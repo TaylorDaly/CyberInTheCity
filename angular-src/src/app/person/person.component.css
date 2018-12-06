@@ -20,6 +20,9 @@
   /*margin-left: 10%;*/
   /*margin-top: 5%;*/
 }
+.card-img-top:hover{
+  opacity: 0.5;
+}
 .fa {
   padding: 10px;
   font-size: 15px;
