@@ -3,7 +3,7 @@ const express = require('express');
 const PeopleRouter = express.Router();
 const Person = require('../models/Person');
 const regex = require('../Config/Regex.js');
-
+const bcrypt = require('bcryptjs');
 
 PeopleRouter.get('/', (req, res) => {
     let query = req.query;
@@ -12,11 +12,9 @@ PeopleRouter.get('/', (req, res) => {
             res.json({
                 success: false, message: `Failed to get people. Error: ${err}`
             })
-        }
-        else if (people.length > 0) {
+        } else if (people.length > 0) {
             res.json(people)
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Could not find people with given parameters.`
@@ -26,17 +24,15 @@ PeopleRouter.get('/', (req, res) => {
 });
 
 PeopleRouter.get('/:id', (req, res) => {
-    Person.getPerson(req.params.id, (err, person) => {
+    Person.getPerson({_id: req.params.id}, (err, person) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to get person failed. Error: ${err}`
             })
-        }
-        else if (person) {
+        } else if (person) {
             res.json(person)
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Person does not exist.`
@@ -45,14 +41,15 @@ PeopleRouter.get('/:id', (req, res) => {
     })
 });
 
-PeopleRouter.post('/', (req, res, next) => {
+//TODO: move to User Controller Sign-up path
+PeopleRouter.post('/', (req, res) => {
 
     let newPerson = new Person({
         name: req.body.name,
         role: req.body.role,
         photo: req.body.photo,
         email: req.body.email,
-        password: req.body.password,
+        //password: req.body.password,
         phone_number: req.body.phone_number,
         office_location: req.body.office_location,
         links: req.body.links,
@@ -60,16 +57,27 @@ PeopleRouter.post('/', (req, res, next) => {
         google_scholar_link: req.body.google_scholar_link
     });
 
+    // Verify password requirements and does not contain other characters
     if (regex.password.exec(req.body.password) && !regex.disallowedCharacters.exec(req.body.password)) {
-        Person.addPerson(newPerson, (err, callback) => {
+
+        bcrypt.hash(req.body.password, 12, (err, hash) => {
             if (err) {
-                res.json({
-                    success: false, message: `Failed to add new person. Error: ${err}`
-                })
+                return res.status(500).json({
+                    error: err
+                });
             } else {
-                res.json({success: true, message: "Successfully added person."})
+                newPerson.password = hash;
+                Person.addPerson(newPerson, (err, callback) => {
+                    if (err) {
+                        res.json({
+                            success: false, message: `Failed to add new person. Error: ${err}`
+                        })
+                    } else {
+                        res.json({success: true, message: "Successfully added person."})
+                    }
+                })
             }
-        })
+        });
     } else {
         res.json({
             success: false,
@@ -83,31 +91,28 @@ PeopleRouter.post('/', (req, res, next) => {
     }
 });
 
-PeopleRouter.delete('/:id', (req, res, next) => {
-    Person.getPerson(req.params.id, (err, person) => {
+PeopleRouter.delete('/:id', (req, res) => {
+    Person.getPerson({_id: req.params.id}, (err, person) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to find person failed. Error: ${err}`
             })
-        }
-        else if (person) {
+        } else if (person) {
             Person.deletePerson(person, (err) => {
                 if (err) {
                     res.json({
                         success: false,
                         message: `Attempt to delete person failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `Person deleted successfully.`
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Person does not exist.`
@@ -116,16 +121,15 @@ PeopleRouter.delete('/:id', (req, res, next) => {
     })
 });
 
-PeopleRouter.put('/', (req, res, next) => {
+PeopleRouter.put('/', (req, res) => {
 
-    Person.getPerson(req.body._id, (err, person) => {
+    Person.getPerson({_id: req.body._id}, (err, person) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to get person failed. Error: ${err}`
             })
-        }
-        else if (person) {
+        } else if (person) {
             if (req.body.name) person.name = req.body.name;
             if (req.body.role) person.role = req.body.role;
             // TODO: consider sys_role security
@@ -145,8 +149,7 @@ PeopleRouter.put('/', (req, res, next) => {
                         success: false,
                         message: `Attempt to update person failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `Update Successful.`,
@@ -154,8 +157,7 @@ PeopleRouter.put('/', (req, res, next) => {
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Person does not exist.`

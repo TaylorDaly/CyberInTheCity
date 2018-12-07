@@ -88,8 +88,7 @@ module.exports.addPerson = (newPerson, callback) => {
     newPerson.save(callback);
 };
 
-module.exports.getPerson = (id, callback) => {
-    let query = {_id: id};
+module.exports.getPerson = (query, callback) => {
     person.findOne(query, callback)
         .populate('photo')
 };

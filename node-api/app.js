@@ -10,13 +10,6 @@ require('dotenv').config();
 
 // Imports
 const dbConfig = require('./config/database');
-const peopleController = require('./Controllers/PersonController');
-const publicationController = require('./Controllers/PublicationController');
-const researchController = require('./Controllers/ResearchController');
-const imageController = require('./Controllers/ImageController');
-const researchLabController = require('./Controllers/ResearchLabController');
-const educationController = require('./Controllers/EducationController');
-const programController = require('./Controllers/ProgramController');
 
 // Constants
 const app = express();
@@ -37,13 +30,14 @@ app.use(express.static(path.join(__dirname, '../angular-src/dist')));
 // TODO: Fix mongoose deprecation warning as soon as mongoose updates.
 // TODO: JWT authentication
 // Routes
-app.use('/api/Person', peopleController);
-app.use('/api/Publication', publicationController);
-app.use('/api/Research', researchController);
-app.use('/api/Image', imageController);
-app.use('/api/ResearchLab', researchLabController);
-app.use('/api/Education', educationController);
-app.use('/api/Program', programController);
+app.use('/api/Person', require('./Controllers/PersonController'));
+app.use('/api/Publication', require('./Controllers/PublicationController'));
+app.use('/api/Research', require('./Controllers/ResearchController'));
+app.use('/api/Image', require('./Controllers/ImageController'));
+app.use('/api/ResearchLab', require('./Controllers/ResearchLabController'));
+app.use('/api/Education', require('./Controllers/EducationController'));
+app.use('/api/Program', require('./Controllers/ProgramController'));
+app.use('/api/User', require('./Controllers/UserController'));
 
 // re-route bad requests back to home page.
 app.get('*', function (req, res) {
