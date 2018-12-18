@@ -2,8 +2,6 @@
 const express = require('express');
 const PeopleRouter = express.Router();
 const Person = require('../models/Person');
-const regex = require('../Config/Regex.js');
-const bcrypt = require('bcryptjs');
 
 PeopleRouter.get('/', (req, res) => {
     let query = req.query;
@@ -39,56 +37,6 @@ PeopleRouter.get('/:id', (req, res) => {
             })
         }
     })
-});
-
-//TODO: move to User Controller Sign-up path
-PeopleRouter.post('/', (req, res) => {
-
-    let newPerson = new Person({
-        name: req.body.name,
-        role: req.body.role,
-        photo: req.body.photo,
-        email: req.body.email,
-        //password: req.body.password,
-        phone_number: req.body.phone_number,
-        office_location: req.body.office_location,
-        links: req.body.links,
-        my_website_link: req.body.my_website_link,
-        google_scholar_link: req.body.google_scholar_link
-    });
-
-    // Verify password requirements and does not contain other characters
-    if (regex.password.exec(req.body.password) && !regex.disallowedCharacters.exec(req.body.password)) {
-
-        bcrypt.hash(req.body.password, 12, (err, hash) => {
-            if (err) {
-                return res.status(500).json({
-                    error: err
-                });
-            } else {
-                newPerson.password = hash;
-                Person.addPerson(newPerson, (err, callback) => {
-                    if (err) {
-                        res.json({
-                            success: false, message: `Failed to add new person. Error: ${err}`
-                        })
-                    } else {
-                        res.json({success: true, message: "Successfully added person."})
-                    }
-                })
-            }
-        });
-    } else {
-        res.json({
-            success: false,
-            message: 'Password must contain at least one upper case letter, ' +
-                'one lower case letter, ' +
-                'one number, ' +
-                'one special character (#?!@$%^&*-), ' +
-                'and be eight characters in length. ' +
-                'Other characters are not allowed.'
-        });
-    }
 });
 
 PeopleRouter.delete('/:id', (req, res) => {
