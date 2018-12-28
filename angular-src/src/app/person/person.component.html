@@ -2,7 +2,11 @@
 <div class="container" style="padding: 3%">
   <div *ngFor="let person of personList" class="card shadow" style="width: 18rem;">
     <a class="" href="#">
-      <img class="card-img-top" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}" alt="Card image cap">
+      <!--<img class="card-img-top" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}" alt="No image available">-->
+      <!--<object class="card-img-top" data="{{person.photo.buffer}}" type="{{person.photo.content_type}}">-->
+        <!--<img class="card-img-top" src="/angular-src/src/images/personPhotoDefault.jpg" alt="No image available" />-->
+      <!--</object>-->
+      <img class="card-img-top" src="../../images/personPhotoDefault.jpg" alt="No image available"/>
     </a>
     <div class="card-body">
       <h3>{{person.name}}</h3>

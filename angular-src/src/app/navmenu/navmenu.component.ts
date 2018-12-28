@@ -12,7 +12,7 @@ export class NavmenuComponent implements OnInit {
   staticNavItems = [];
   navItems = [
     {
-      name: 'Education',
+      name: 'About Us',
       child: []
     },
     {
@@ -24,7 +24,23 @@ export class NavmenuComponent implements OnInit {
       child: []
     },
     {
-      name: 'General',
+      name: 'Education',
+      child: []
+    },
+    {
+      name: 'Careers',
+      child: []
+    },
+    {
+      name: 'Events',
+      child: []
+    },
+    {
+      name: 'News',
+      child: []
+    },
+    {
+      name: 'Contact Us',
       child: []
     },
   ];
@@ -44,8 +60,8 @@ export class NavmenuComponent implements OnInit {
 
     for(let i = 0; i < this.staticNavItems.length; ++i) {
       switch(this.staticNavItems[i].parent){
-        case "Education":
-          this.navItems.find(x => x.name == "Education").child.push(this.staticNavItems[i]);
+        case "About Us":
+          this.navItems.find(x => x.name == "About Us").child.push(this.staticNavItems[i]);
           break;
         case "People":
           this.navItems.find(x => x.name == "People").child.push(this.staticNavItems[i]);
@@ -53,8 +69,20 @@ export class NavmenuComponent implements OnInit {
         case "Research":
           this.navItems.find(x => x.name == "Research").child.push(this.staticNavItems[i]);
           break;
+        case "Education":
+          this.navItems.find(x => x.name == "Education").child.push(this.staticNavItems[i]);
+          break;
+        case "Careers":
+          this.navItems.find(x => x.name == "Careers").child.push(this.staticNavItems[i]);
+          break;
+        case "Events":
+          this.navItems.find(x => x.name == "Events").child.push(this.staticNavItems[i]);
+          break;
+        case "News":
+          this.navItems.find(x => x.name == "News").child.push(this.staticNavItems[i]);
+          break;
         default:
-          this.navItems.find(x => x.name == "General").child.push(this.staticNavItems[i]);
+          this.navItems.find(x => x.name == "Contact Us").child.push(this.staticNavItems[i]);
           break;
       }
     }
