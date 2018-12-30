@@ -89,13 +89,13 @@ UserRouter.post('/signup', (req, res) => {
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'CyberInTheCity@gmail.com',
+                user: process.env.gmailName,
                 pass: process.env.gmailSecret
             }
         });
 
         var mailOptions = {
-            from: '"DoNotReplyCyberInTheCity" <CyberInTheCity@gmail.com>', // sender address
+            from: '"DoNotReplyCyberInTheCity" <DoNotReplyCyberInTheCity@gmail.com>', // sender address
             to: email,
             subject: 'Sending Email using Node.js',
             text: 'That was easy!'
