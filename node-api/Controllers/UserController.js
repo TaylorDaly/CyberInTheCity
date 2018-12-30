@@ -90,7 +90,7 @@ UserRouter.post('/signup', (req, res) => {
             service: 'gmail',
             auth: {
                 user: 'CyberInTheCity@gmail.com',
-                pass: 'GradClass2019!!'
+                pass: process.env.gmailSecret
             }
         });
 
