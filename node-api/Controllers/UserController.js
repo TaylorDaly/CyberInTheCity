@@ -79,4 +79,46 @@ UserRouter.post('/login', (req, res) => {
     })
 });
 
+UserRouter.post('/signup', (req, res) => {
+    let email = req.body.email;
+    // Verify email
+    if (regex.email.exec(email)) {
+
+        var nodemailer = require('nodemailer');
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'CyberInTheCity@gmail.com',
+                pass: 'GradClass2019!!'
+            }
+        });
+
+        var mailOptions = {
+            from: '"DoNotReplyCyberInTheCity" <CyberInTheCity@gmail.com>', // sender address
+            to: email,
+            subject: 'Sending Email using Node.js',
+            text: 'That was easy!'
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+        res.json({
+            success: true,
+            message: 'Email is good'
+        });
+    } else {
+        res.json({
+            success: false,
+            message: 'Email is not a school one'
+        });
+    }
+});
+
 module.exports = UserRouter;
