@@ -5,14 +5,13 @@ const Person = require('../models/Person');
 const bcrypt = require('bcryptjs');
 const regex = require('../Config/Regex.js');
 
-UserRouter.post('/signup', (req, res) => {
+UserRouter.post('/signup/:token', (req, res) => {
 
     let newPerson = new Person({
         name: req.body.name,
         role: req.body.role,
         photo: req.body.photo,
         email: req.body.email,
-        //password: req.body.password,
         phone_number: req.body.phone_number,
         office_location: req.body.office_location,
         links: req.body.links,

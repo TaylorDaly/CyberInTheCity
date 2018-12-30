@@ -14,7 +14,7 @@ const PublicationSchema = new mongoose.Schema({
         required: true
     },
     google_scholar_link: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.Object,
         ref: 'Link'
     },
     // TODO: figure out how file upload works for pdf, may have to create separate schema with functions. I would

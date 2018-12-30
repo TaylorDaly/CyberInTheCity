@@ -11,11 +11,10 @@ const PersonSchema = mongoose.Schema({
     sys_role: {
         type: String,
         required: true,
-        enum: ['Root Administrator', 'Graduate Student', 'Professor', 'None'],
+        enum: ['Admin', 'User', 'None'],
         default: 'None',
         select: false
     },
-    // TODO: hash these bad boys
     password: {
         type: String,
         required: true,
@@ -57,6 +56,11 @@ const PersonSchema = mongoose.Schema({
     my_website_link: {
         type: mongoose.Schema.Types.Object,
         ref: 'Link'
+    },
+    verified: {
+        type: Boolean,
+        required: true,
+        default: false
     }
     // Website
 });
