@@ -23,9 +23,23 @@
 .navbar .navbar-nav .nav-item.show .nav-link:hover,
 .navbar .navbar-nav .nav-item.show .nav-link:focus {
   color: #ffffff;
-  background-color: #7C7E7F;
+  /*background-color: #7C7E7F;*/
 }
 .right-nav {
   margin-right: .7em;
+}
+.btn-dark {
+  background-color: #000000;
+  border: none;
+  color: #cfb87c;
+}
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0%;
+}
+.dropdown:hover .nav-link,
+.nav-item:hover {
+  background-color: #565A5C;
+  border-radius: 5px;
 }
 
