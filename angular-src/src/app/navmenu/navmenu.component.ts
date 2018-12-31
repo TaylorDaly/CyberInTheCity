@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NavmenuService} from "./navmenu.service";
 import {HttpClient} from "@angular/common/http";
-import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-navmenu',
@@ -11,7 +10,6 @@ import {map} from "rxjs/operators";
 export class NavmenuComponent implements OnInit {
 
   error = '';
-  staticNavItems = [];
   navItems = [
     {
       name: 'About Us',
@@ -59,49 +57,22 @@ export class NavmenuComponent implements OnInit {
               private navmenuService: NavmenuService) { }
 
   ngOnInit() {
-    this.sortNavItems();
-    console.log(this.navItems);
-    console.log(this.staticNavItems);
+    this.getStaticPages();
   }
 
-  sortNavItems() {
+  getStaticPages() {
     this.navmenuService.getNavItems()
       .subscribe(
         response => {
-          this.staticNavItems = response;
+          this.sortNavItems(response)
         },
         error => this.error = error
       );
+  }
 
-    console.log(this.staticNavItems);
-
-    for(let i = 0; i < this.staticNavItems.length; ++i) {
-      switch(this.staticNavItems[i].parent){
-        case "About Us":
-          this.navItems.find(x => x.name == "About Us").child.push(this.staticNavItems[i]);
-          break;
-        case "People":
-          this.navItems.find(x => x.name == "People").child.push(this.staticNavItems[i]);
-          break;
-        case "Research":
-          this.navItems.find(x => x.name == "Research").child.push(this.staticNavItems[i]);
-          break;
-        case "Education":
-          this.navItems.find(x => x.name == "Education").child.push(this.staticNavItems[i]);
-          break;
-        case "Careers":
-          this.navItems.find(x => x.name == "Careers").child.push(this.staticNavItems[i]);
-          break;
-        case "Events":
-          this.navItems.find(x => x.name == "Events").child.push(this.staticNavItems[i]);
-          break;
-        case "News":
-          this.navItems.find(x => x.name == "News").child.push(this.staticNavItems[i]);
-          break;
-        default:
-          this.navItems.find(x => x.name == "Contact Us").child.push(this.staticNavItems[i]);
-          break;
-      }
+  sortNavItems(staticNavItems) {
+    for(let i = 0; i < staticNavItems.length; ++i) {
+      this.navItems.find(x => x.name == staticNavItems[i].parent).child.push(staticNavItems[i]);
     }
   }
 

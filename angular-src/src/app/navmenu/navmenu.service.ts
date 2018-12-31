@@ -14,4 +14,8 @@ export class NavmenuService {
   getNavItems() : Observable<StaticPage[]> {
     return this.httpClient.get<StaticPage[]>(environment.apiUrl + '/page');
   }
+
+  getOneNavItem(title:string) : Observable<StaticPage>{
+    return this.httpClient.get<StaticPage>(environment.apiUrl + '/page/' + title);
+    }
 }

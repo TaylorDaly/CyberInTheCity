@@ -6,6 +6,8 @@ import {EducationComponent} from "./education/education.component";
 import {ResearchComponent} from "./research/research.component";
 import {SignupComponent} from "./signup/signup.component";
 import {GeneralComponent} from "./general/general.component";
+import { EventsComponent } from './events/events.component';
+import { NewsComponent } from './news/news.component';
 
 import {NavmenuService} from "./navmenu/navmenu.service";
 import {PersonService} from "./person/person.service";
@@ -16,6 +18,8 @@ const AppRoutes: Routes = [
   {path: 'education', component: EducationComponent},
   {path: 'research', component: ResearchComponent},
   {path: 'sign-up', component: SignupComponent},
+  {path: 'events', component: EventsComponent},
+  {path: 'news', component: NewsComponent},
   {path: 'general/:title', component: GeneralComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'}
 ];
@@ -33,6 +37,8 @@ export const RoutingComponents =
     EducationComponent,
     ResearchComponent,
     SignupComponent,
+    EventsComponent,
+    NewsComponent,
     GeneralComponent
   ];
 export const RoutingServices =
