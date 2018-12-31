@@ -9,7 +9,7 @@ PageRouter.get('/', (req, res) => {
                 success: false, message: `Failed to get all pages. Error: ${err}`
             })
         } else {
-            res.json({success: true, pages: pages})
+            res.json(pages)
         }
     })
 });
@@ -41,7 +41,7 @@ PageRouter.post('/', (req, res) => {
 
     Page.addPage(newPage, (err) => {
         if (err) {
-            res.json({success: false, message: `Failed to save page. Error: ${err}`})
+            res.status(500).json({success: false, message: `Failed to save page. Error: ${err}`})
         } else {
             res.json({success: true, message: `Page successfully created`})
         }
@@ -104,6 +104,5 @@ PageRouter.delete('/', (req, res) => {
         }
     });
 });
-
 
 module.exports = PageRouter;
