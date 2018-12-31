@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NavmenuService} from "./navmenu.service";
-import {NavItem, StaticNavItem} from "./navItem";
+import {HttpClient} from "@angular/common/http";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-navmenu',
@@ -9,54 +10,70 @@ import {NavItem, StaticNavItem} from "./navItem";
 })
 export class NavmenuComponent implements OnInit {
 
+  error = '';
   staticNavItems = [];
   navItems = [
     {
       name: 'About Us',
+      route: '/about-us',
       child: []
     },
     {
       name: 'People',
+      route: '/person',
       child: []
     },
     {
       name: 'Research',
+      route: '/research',
       child: []
     },
     {
       name: 'Education',
+      route: '/education',
       child: []
     },
     {
       name: 'Careers',
+      route: '/careers',
       child: []
     },
     {
       name: 'Events',
+      route: '/events',
       child: []
     },
     {
       name: 'News',
+      route: '/news',
       child: []
     },
     {
       name: 'Contact Us',
+      route: '/contact-us',
       child: []
     },
   ];
 
-  constructor(private navmenuService: NavmenuService) { }
+  constructor(private http: HttpClient,
+              private navmenuService: NavmenuService) { }
 
   ngOnInit() {
     this.sortNavItems();
+    console.log(this.navItems);
+    console.log(this.staticNavItems);
   }
 
   sortNavItems() {
     this.navmenuService.getNavItems()
-      .subscribe(data => {
-        this.staticNavItems = data;
-        console.log(data);
-      });
+      .subscribe(
+        response => {
+          this.staticNavItems = response;
+        },
+        error => this.error = error
+      );
+
+    console.log(this.staticNavItems);
 
     for(let i = 0; i < this.staticNavItems.length; ++i) {
       switch(this.staticNavItems[i].parent){

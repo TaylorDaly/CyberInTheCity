@@ -10,16 +10,20 @@ import {PersonService} from "./person.service";
 export class PersonComponent implements OnInit {
 
   personList = [];
+  error = '';
 
   constructor(private http: HttpClient,
               private personService: PersonService) { }
 
   ngOnInit() {
-    this.personService.getPerson()
-      .subscribe(data => {
-        this.personList = data;
-        console.log(data);
-      });
+    this.getAllPeople();
   }
 
+  getAllPeople() {
+    this.personService.getPerson()
+      .subscribe(
+        response => this.personList = response,
+        error => this.error = error
+      );
+  }
 }

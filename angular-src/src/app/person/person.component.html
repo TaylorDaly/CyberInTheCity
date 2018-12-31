@@ -1,22 +1,24 @@
 <!--<div class="scrolling-wrapper">-->
-<div class="container" style="padding: 3%">
-  <div *ngFor="let person of personList" class="card shadow" style="width: 18rem;">
+<div class="container">
+  <!--{{error}}-->
+  <div *ngFor="let person of personList" class="card shadow">
     <a class="" href="#">
-      <!--<img class="card-img-top" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}" alt="No image available">-->
-      <!--<object class="card-img-top" data="{{person.photo.buffer}}" type="{{person.photo.content_type}}">-->
-        <!--<img class="card-img-top" src="/angular-src/src/images/personPhotoDefault.jpg" alt="No image available" />-->
-      <!--</object>-->
-      <img class="card-img-top" src="../../images/personPhotoDefault.jpg" alt="No image available"/>
+      <ng-template [ngIf]="person.photo != null" [ngIfElse]="defaultImage">
+        <img class="card-img-top" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}">
+      </ng-template>
+      <ng-template #defaultImage>
+        <img class="card-img-top" src="assets/images/defaultPhoto.png" alt="No image available">
+      </ng-template>
     </a>
     <div class="card-body">
-      <h3>{{person.name}}</h3>
+      <p class="card-text name"><strong>{{person.name}}</strong></p>
       <p class="card-text">
         {{person.role}}
         <br/>{{person.email}}
-        <br/><a href="{{person.my_website_link}}">My Website</a>
+        <br/><a *ngIf="person.my_website_link != null" href="http://{{person.my_website_link}}">My Website</a>
       </p>
       <div *ngFor="let link of person.links" style="display: inline;">
-        <a class="fa fa-{{link.description}}" href="{{link.URL}}"></a>
+        <a class="fa fa-{{link.description}}" href="http://{{link.URL}}"></a>
         <!--<a href="{{link.URL}}">{{link.description}}</a>-->
       </div>
     </div>

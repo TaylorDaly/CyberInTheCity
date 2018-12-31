@@ -6,7 +6,7 @@
 .card {
   display: inline-block;
   border: none;
-  max-width: 250px;
+  max-width: 200px;
   min-height: 465px;
   max-height: 465px;
   margin-right: 1%;
@@ -15,14 +15,17 @@
 .card-img-top {
   object-fit: none; /* Do not scale the image */
   object-position: center; /* Center the image within the element */
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   /*border-radius: 50%;*/
   /*margin-left: 10%;*/
   /*margin-top: 5%;*/
 }
 .card-img-top:hover{
   opacity: 0.5;
+}
+.name{
+  font-size: 20px;
 }
 .fa {
   padding: 10px;
