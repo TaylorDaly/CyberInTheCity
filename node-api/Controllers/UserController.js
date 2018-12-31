@@ -96,59 +96,73 @@ UserRouter.post('/login', (req, res) => {
 
 UserRouter.post('/signup', (req, res) => {
     let email = req.body.email;
-    // Verify email
-    if (regex.email.exec(email)) {
+    Person.findOne({email: email}, (err, person) => {
+        if (err) {
+                res.json({
+                    success: false,
+                    message: `Attempt to get email failed. Error: ${err}`
+                });
+        } else if (person) {
+            res.json({
+                success: false,
+                message: 'Email exist please use a different email.'
+            });
+        } else {
+            // Verify email
+            if (regex.email.exec(email)) {
 
-        let nodemailer = require('nodemailer');
+                let nodemailer = require('nodemailer');
 
-        let transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.gmailName,
-                pass: process.env.gmailSecret
-            }
-        });
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: process.env.gmailName,
+                        pass: process.env.gmailSecret
+                    }
+                });
 
-        let token = jwt.sign({email: req.body.email}, dbConfig.secret, {
-            expiresIn: 7200 // expires in 2 hours
-        });
+                let token = jwt.sign({email: req.body.email}, dbConfig.secret, {
+                    expiresIn: 7200 // expires in 2 hours
+                });
 
-        let signupUrl = req.protocol + '://' + req.get('host') + '/User/signup/' + token.toString();
-        let mailOptions = {
-            from: '"DoNotReplyCyberInTheCity" <DoNotReplyCyberInTheCity@gmail.com>', // sender address
-            to: email,
-            subject: 'Cyber In the City Sign up',
-            //text: 'That was easy!',
-            html: '<a>Thank you for signing up with Cyber In the City. Please click the button below' +
-                ' to finish signing up.<br/></a><br/><div><!--[if mso]>\n' +
-                '  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" ' +
-                'href="http://localhost:3000/api/signup/:token" style="height:40px;v-text-anchor:middle;width:250px;" ' +
-                'arcsize="45%" strokecolor="#e6e6e8" fillcolor="#fafafb">\n    <w:anchorlock/>\n' +
-                '    <center style="color:#000000;font-family:sans-serif;font-size:13px;font-weight:bold;">Finish Sign Up</center>\n' +
-                `  </v:roundrect>\n<![endif]--><a href="${signupUrl}"\n` +
-                'style="background-color:#fafafb;border:1px solid #b1b1b9;border-radius:18px;color:#000000;display:' +
-                'inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;' +
-                'text-decoration:none;width:250px;-webkit-text-size-adjust:none;mso-hide:all;">Finish Sign Up</a></div>',
-        };
+                let signupUrl = req.protocol + '://' + req.get('host') + '/User/signup/' + token.toString();
+                let mailOptions = {
+                    from: '"DoNotReplyCyberInTheCity" <DoNotReplyCyberInTheCity@gmail.com>', // sender address
+                    to: email,
+                    subject: 'Cyber In the City Sign up',
+                    //text: 'That was easy!',
+                    html: '<a>Thank you for signing up with Cyber In the City. Please click the button below' +
+                        ' to finish signing up.<br/></a><br/><div><!--[if mso]>\n' +
+                        '  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" ' +
+                        'href="http://localhost:3000/api/signup/:token" style="height:40px;v-text-anchor:middle;width:250px;" ' +
+                        'arcsize="45%" strokecolor="#e6e6e8" fillcolor="#fafafb">\n    <w:anchorlock/>\n' +
+                        '    <center style="color:#000000;font-family:sans-serif;font-size:13px;font-weight:bold;">Finish Sign Up</center>\n' +
+                        `  </v:roundrect>\n<![endif]--><a href="${signupUrl}"\n` +
+                        'style="background-color:#fafafb;border:1px solid #b1b1b9;border-radius:18px;color:#000000;display:' +
+                        'inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;' +
+                        'text-decoration:none;width:250px;-webkit-text-size-adjust:none;mso-hide:all;">Finish Sign Up</a></div>',
+                };
 
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+
+                res.json({
+                    success: true,
+                    message: 'Email sent. Please check your email to finish signing up.'
+                });
             } else {
-                console.log('Email sent: ' + info.response);
+                res.json({
+                    success: false,
+                    message: 'Email must be a CU Denver school email.'
+                });
             }
-        });
-
-        res.json({
-            success: true,
-            message: 'Email sent. Please check your email to finish signing up.'
-        });
-    } else {
-        res.json({
-            success: false,
-            message: 'Email must be a CU Denver school email.'
-        });
-    }
+        }
+    })
 });
 
 module.exports = UserRouter;
