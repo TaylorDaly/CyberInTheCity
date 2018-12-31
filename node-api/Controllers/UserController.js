@@ -4,52 +4,64 @@ const UserRouter = express.Router();
 const Person = require('../models/Person');
 const bcrypt = require('bcryptjs');
 const regex = require('../Config/Regex.js');
+const jwt = require('jsonwebtoken');
+const dbConfig = require('../config/database');
 
 UserRouter.post('/signup/:token', (req, res) => {
+    let token = req.params.token;
+    if (!token) return res.status(401).json({auth: false, message: 'No token provided.'});
 
-    let newPerson = new Person({
-        name: req.body.name,
-        role: req.body.role,
-        photo: req.body.photo,
-        email: req.body.email,
-        phone_number: req.body.phone_number,
-        office_location: req.body.office_location,
-        links: req.body.links,
-        my_website_link: req.body.my_website_link,
-        google_scholar_link: req.body.google_scholar_link
-    });
+    jwt.verify(token, dbConfig.secret, function (err, decoded) {
+        if (err) {
+            return res.status(500).json({auth: false, message: 'Failed to authenticate token.'})
+        } else {
+            let newPerson = new Person({
+                name: req.body.name,
+                role: req.body.role,
+                photo: req.body.photo,
+                email: decoded.email,//req.body.email,
+                phone_number: req.body.phone_number,
+                office_location: req.body.office_location,
+                links: req.body.links,
+                my_website_link: req.body.my_website_link,
+                google_scholar_link: req.body.google_scholar_link
+            });
 
-    // Verify password requirements and does not contain other characters
-    if (regex.password.exec(req.body.password) && !regex.disallowedCharacters.exec(req.body.password)) {
-        bcrypt.hash(req.body.password, 12, (err, hash) => {
-            if (err) {
-                return res.status(500).json({
-                    error: err
+            // Verify password requirements and does not contain other characters
+            if (regex.password.exec(req.body.password) && !regex.disallowedCharacters.exec(req.body.password)) {
+                bcrypt.hash(req.body.password, 12, (err, hash) => {
+                    if (err) {
+                        return res.status(500).json({
+                            error: err
+                        });
+                    } else {
+                        newPerson.password = hash;
+                        Person.addPerson(newPerson, (err, callback) => {
+                            if (err) {
+                                res.status(500).json({
+                                    success: false, message: `Failed to add new person. Error: ${err}`
+                                })
+                            } else {
+                                res.json({success: true, message: "Successfully added person."})
+                            }
+                        })
+                    }
                 });
             } else {
-                newPerson.password = hash;
-                Person.addPerson(newPerson, (err, callback) => {
-                    if (err) {
-                        res.json({
-                            success: false, message: `Failed to add new person. Error: ${err}`
-                        })
-                    } else {
-                        res.json({success: true, message: "Successfully added person."})
-                    }
-                })
+                res.json({
+                    success: false,
+                    message: 'Password must contain at least one upper case letter, ' +
+                        'one lower case letter, ' +
+                        'one number, ' +
+                        'one special character (#?!@$%^&*-), ' +
+                        'and be eight characters in length. ' +
+                        'Other characters are not allowed.'
+                });
             }
-        });
-    } else {
-        res.json({
-            success: false,
-            message: 'Password must contain at least one upper case letter, ' +
-                'one lower case letter, ' +
-                'one number, ' +
-                'one special character (#?!@$%^&*-), ' +
-                'and be eight characters in length. ' +
-                'Other characters are not allowed.'
-        });
-    }
+        }
+        //res.status(200).send(decoded);
+    });
+
 });
 
 UserRouter.post('/login', (req, res) => {
@@ -64,7 +76,10 @@ UserRouter.post('/login', (req, res) => {
             // TODO: Return JWT on success
             bcrypt.compare(password, person.password, (err, result) => {
                 if (err)
-                    return res.status(500).json({success: false, message: `Something broke when attempting to login. Error: ${err}`});
+                    return res.status(500).json({
+                        success: false,
+                        message: `Something broke when attempting to login. Error: ${err}`
+                    });
                 else if (result)
                     return res.status(200).json({success: true, message: "Login successful."});
                 else
@@ -84,9 +99,9 @@ UserRouter.post('/signup', (req, res) => {
     // Verify email
     if (regex.email.exec(email)) {
 
-        var nodemailer = require('nodemailer');
+        let nodemailer = require('nodemailer');
 
-        var transporter = nodemailer.createTransport({
+        let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: process.env.gmailName,
@@ -94,14 +109,29 @@ UserRouter.post('/signup', (req, res) => {
             }
         });
 
-        var mailOptions = {
+        let token = jwt.sign({email: req.body.email}, dbConfig.secret, {
+            expiresIn: 7200 // expires in 2 hours
+        });
+
+        let signupUrl = req.protocol + '://' + req.get('host') + '/User/signup/' + token.toString();
+        let mailOptions = {
             from: '"DoNotReplyCyberInTheCity" <DoNotReplyCyberInTheCity@gmail.com>', // sender address
             to: email,
-            subject: 'Sending Email using Node.js',
-            text: 'That was easy!'
+            subject: 'Cyber In the City Sign up',
+            //text: 'That was easy!',
+            html: '<a>Thank you for signing up with Cyber In the City. Please click the button below' +
+                ' to finish signing up.<br/></a><br/><div><!--[if mso]>\n' +
+                '  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" ' +
+                'href="http://localhost:3000/api/signup/:token" style="height:40px;v-text-anchor:middle;width:250px;" ' +
+                'arcsize="45%" strokecolor="#e6e6e8" fillcolor="#fafafb">\n    <w:anchorlock/>\n' +
+                '    <center style="color:#000000;font-family:sans-serif;font-size:13px;font-weight:bold;">Finish Sign Up</center>\n' +
+                `  </v:roundrect>\n<![endif]--><a href="${signupUrl}"\n` +
+                'style="background-color:#fafafb;border:1px solid #b1b1b9;border-radius:18px;color:#000000;display:' +
+                'inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;' +
+                'text-decoration:none;width:250px;-webkit-text-size-adjust:none;mso-hide:all;">Finish Sign Up</a></div>',
         };
 
-        transporter.sendMail(mailOptions, function(error, info){
+        transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.log(error);
             } else {
@@ -111,12 +141,12 @@ UserRouter.post('/signup', (req, res) => {
 
         res.json({
             success: true,
-            message: 'Email is good'
+            message: 'Email sent. Please check your email to finish signing up.'
         });
     } else {
         res.json({
             success: false,
-            message: 'Email is not a school one'
+            message: 'Email must be a CU Denver school email.'
         });
     }
 });
