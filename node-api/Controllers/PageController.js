@@ -49,7 +49,7 @@ PageRouter.post('/', (req, res) => {
 });
 
 PageRouter.put('/', (req, res) => {
-    Page.getOne({_id: req.body._id}, (err, page) => {
+    Page.getOne({title: req.body.title}, (err, page) => {
         if (err) {
             res.status(500).json({
                 success: false,
@@ -63,13 +63,13 @@ PageRouter.put('/', (req, res) => {
                 if (err) {
                     res.status(500).json({success: false, message: `Failed to save page. Error: ${err}`})
                 } else {
-                    res.status(200).json({success: true, message: `Update successful.`, page: page});
+                    res.json({success: true, message: `Update successful.`, page: page});
                 }
             });
         } else {
             res.status(404).json({
                 success: false,
-                message: `Page "${req.params.title}" does not exist.`
+                message: `Page "${req.body.title}" does not exist.`
             })
         }
     });
