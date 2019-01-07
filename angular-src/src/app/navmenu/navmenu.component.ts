@@ -61,7 +61,7 @@ export class NavmenuComponent implements OnInit {
   }
 
   getStaticPages() {
-    this.navmenuService.getNavItems()
+    this.navmenuService.getAllStaticPages()
       .subscribe(
         response => {
           this.sortNavItems(response)
