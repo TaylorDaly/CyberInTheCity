@@ -7,6 +7,32 @@ const regex = require('../Config/Regex.js');
 const jwt = require('jsonwebtoken');
 const dbConfig = require('../config/database');
 
+UserRouter.post('/verify', (req, res) => {
+    let token = req.body.token;
+    if (!token) return res.status(400).json({auth: false, message: 'No token provided.'});
+
+    jwt.verify(token, dbConfig.secret, function (err, decoded) {
+        if (err) {
+            return res.status(400).json({auth: false, message: 'Failed to authenticate token.'})
+        } else {
+            Person.findOne({email: decoded.email}, 'email', (err, person) => {
+                if (err) {
+                    return res.status(500).json({
+                        success: false, message: `Something broke when attempting to find user. Error: ${err}`
+                    })
+                } else if (person) {
+                    return res.status(409).json({success: false, message: `Email already exists.`})
+                } else {
+                    return res.json({
+                        success: true,
+                        message: `Token authenticated.`
+                    });
+                }
+            })
+        }
+    });
+});
+
 UserRouter.post('/signup/:token', (req, res) => {
     let token = req.params.token;
     if (!token) return res.status(401).json({auth: false, message: 'No token provided.'});
@@ -19,7 +45,7 @@ UserRouter.post('/signup/:token', (req, res) => {
                 name: req.body.name,
                 role: req.body.role,
                 photo: req.body.photo,
-                email: decoded.email,//req.body.email,
+                email: decoded.email, //req.body.email,
                 phone_number: req.body.phone_number,
                 office_location: req.body.office_location,
                 links: req.body.links,
@@ -59,9 +85,7 @@ UserRouter.post('/signup/:token', (req, res) => {
                 });
             }
         }
-        //res.status(200).send(decoded);
     });
-
 });
 
 UserRouter.post('/login', (req, res) => {
@@ -96,16 +120,16 @@ UserRouter.post('/login', (req, res) => {
 
 UserRouter.post('/signup', (req, res) => {
     let email = req.body.email;
-    Person.findOne({email: email}, (err, person) => {
+    Person.findOne({email: email}, 'email', (err, person) => {
         if (err) {
-                res.json({
-                    success: false,
-                    message: `Attempt to get email failed. Error: ${err}`
-                });
-        } else if (person) {
-            res.json({
+            res.status(500).json({
                 success: false,
-                message: 'Email exist please use a different email.'
+                message: `Attempt to get email failed. Error: ${err}`
+            });
+        } else if (person) {
+            res.status(409).json({
+                success: false,
+                message: 'Email already registered. Please use a different email.'
             });
         } else {
             // Verify email

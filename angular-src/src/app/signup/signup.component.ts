@@ -8,6 +8,8 @@ import {SignupService} from "./signup.service";
 })
 export class SignupComponent implements OnInit {
 
+  isVerified = false;
+
   constructor(private signupService: SignupService) { }
 
   ngOnInit() {

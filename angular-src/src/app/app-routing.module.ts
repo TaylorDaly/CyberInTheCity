@@ -9,9 +9,6 @@ import {GeneralComponent} from "./general/general.component";
 import { EventsComponent } from './events/events.component';
 import { NewsComponent } from './news/news.component';
 
-import {NavmenuService} from "./navmenu/navmenu.service";
-import {PersonService} from "./person/person.service";
-
 const AppRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'person', component: PersonComponent},
@@ -21,7 +18,8 @@ const AppRoutes: Routes = [
   {path: 'events', component: EventsComponent},
   {path: 'news', component: NewsComponent},
   {path: 'general/:title', component: GeneralComponent},
-  {path: '', redirectTo: '/home', pathMatch: 'full'}
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({
@@ -41,8 +39,4 @@ export const RoutingComponents =
     NewsComponent,
     GeneralComponent
   ];
-export const RoutingServices =
-  [
-    NavmenuService,
-    PersonService,
-  ];
+
