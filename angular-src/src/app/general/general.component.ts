@@ -11,7 +11,6 @@ import {NavmenuService} from "../navmenu/navmenu.service";
 export class GeneralComponent implements OnInit {
 
   content = "";
-  error = "";
 
   constructor(private activeRoute: ActivatedRoute,
               private navmenuService: NavmenuService,
@@ -28,7 +27,7 @@ export class GeneralComponent implements OnInit {
     this.navmenuService.getStaticPage(title)
       .subscribe(
         response => this.content = response['content'],
-        error => this.error = error
+        error => this.content = error
       );
   }
 }

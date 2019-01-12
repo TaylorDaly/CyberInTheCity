@@ -8,6 +8,7 @@ import {AppRoutingModule, RoutingComponents} from "./app-routing.module";
 import { AppComponent } from './app.component';
 import { NavmenuComponent } from './navmenu/navmenu.component';
 import {HttpErrorInterceptor} from "./http-error.interceptor";
+import {SignupGuard} from "./Authentication/auth.guard";
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import {HttpErrorInterceptor} from "./http-error.interceptor";
       useClass: HttpErrorInterceptor,
       multi: true
     },
-    ],
+  SignupGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

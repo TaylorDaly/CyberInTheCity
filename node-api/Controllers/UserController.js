@@ -18,13 +18,13 @@ UserRouter.post('/verify', (req, res) => {
             Person.findOne({email: decoded.email}, 'email', (err, person) => {
                 if (err) {
                     return res.status(500).json({
-                        success: false, message: `Something broke when attempting to find user. Error: ${err}`
+                        auth: false, message: `Something broke when attempting to find user. Error: ${err}`
                     })
                 } else if (person) {
-                    return res.status(409).json({success: false, message: `Email already exists.`})
+                    return res.status(409).json({auth: false, message: `Email already exists.`})
                 } else {
                     return res.json({
-                        success: true,
+                        auth: true,
                         message: `Token authenticated.`
                     });
                 }
@@ -149,7 +149,7 @@ UserRouter.post('/signup', (req, res) => {
                     expiresIn: 7200 // expires in 2 hours
                 });
 
-                let signupUrl = req.protocol + '://' + req.get('host') + '/User/signup/' + token.toString();
+                let signupUrl = req.protocol + '://' + req.get('host') + '/signup/' + token.toString();
                 let mailOptions = {
                     from: '"DoNotReplyCyberInTheCity" <DoNotReplyCyberInTheCity@gmail.com>', // sender address
                     to: email,
