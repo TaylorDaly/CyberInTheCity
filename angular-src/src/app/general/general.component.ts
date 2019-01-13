@@ -11,22 +11,23 @@ import {NavmenuService} from "../navmenu/navmenu.service";
 export class GeneralComponent implements OnInit {
 
   content = "";
-  error = "";
 
-  constructor(private route: ActivatedRoute,
+  constructor(private activeRoute: ActivatedRoute,
               private navmenuService: NavmenuService,
               private location: Location) { }
 
   ngOnInit() {
-    this.getPageTitle();
+    this.activeRoute.params.subscribe(
+      routeParams => {
+        this.getPageTitle(routeParams.title);
+      });
   }
 
-  getPageTitle() {
-    const title = this.route.snapshot.paramMap.get('title');
-    this.navmenuService.getOneNavItem(title)
+  getPageTitle(title: string) {
+    this.navmenuService.getStaticPage(title)
       .subscribe(
         response => this.content = response['content'],
-        error => this.error = error
+        error => this.content = error
       );
   }
 }

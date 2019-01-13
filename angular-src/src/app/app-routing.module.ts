@@ -8,24 +8,28 @@ import {SignupComponent} from "./signup/signup.component";
 import {GeneralComponent} from "./general/general.component";
 import { EventsComponent } from './events/events.component';
 import { NewsComponent } from './news/news.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
-import {NavmenuService} from "./navmenu/navmenu.service";
-import {PersonService} from "./person/person.service";
+import {SignupGuard} from "./Authentication/auth.guard";
 
 const AppRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'person', component: PersonComponent},
   {path: 'education', component: EducationComponent},
   {path: 'research', component: ResearchComponent},
-  {path: 'sign-up', component: SignupComponent},
+  {path: 'signup/:token', component: SignupComponent, canActivate: [SignupGuard]},
   {path: 'events', component: EventsComponent},
   {path: 'news', component: NewsComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'general/:title', component: GeneralComponent},
-  {path: '', redirectTo: '/home', pathMatch: 'full'}
+  {path: 'register', component: RegisterComponent},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: '**', redirectTo: '/home', pathMatch: 'full'},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(AppRoutes, {onSameUrlNavigation: "reload"})],
+  imports: [RouterModule.forRoot(AppRoutes)],
   exports: [RouterModule]
 })
 
@@ -39,10 +43,8 @@ export const RoutingComponents =
     SignupComponent,
     EventsComponent,
     NewsComponent,
+    LoginComponent,
+    RegisterComponent,
     GeneralComponent
   ];
-export const RoutingServices =
-  [
-    NavmenuService,
-    PersonService,
-  ];
+

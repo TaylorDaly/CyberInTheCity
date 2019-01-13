@@ -12,6 +12,7 @@
   },
   "private": true,
   "dependencies": {
+    "@auth0/angular-jwt": "^2.1.0",
     "@angular/common": "^7.1.4",
     "@angular/compiler": "^7.1.4",
     "@angular/core": "^7.1.4",
@@ -43,6 +44,7 @@
     "karma-remap-istanbul": "^0.6.0",
     "protractor": "^5.4.2",
     "ts-node": "7.0.1",
+    "webpack-dev-server": "^3.1.14",
     "tslint": "^5.12.0",
     "typescript": "^3.1.6"
   }
