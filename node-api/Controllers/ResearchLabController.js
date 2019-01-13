@@ -1,8 +1,7 @@
 const express = require('express');
 const ResearchLabRouter = express.Router();
 const ResearchLab = require('../models/ResearchLab');
-
-
+const Auth = require('../Config/Auth');
 
 // Get all researchLabs
 ResearchLabRouter.get('/', (req, res) => {
@@ -12,8 +11,7 @@ ResearchLabRouter.get('/', (req, res) => {
                 success: false, message: `Failed to get all researchLabs.\n
             Error: ${err}`
             })
-        }
-        else {
+        } else {
             res.json({success: true, research: researchLab})
         }
     })
@@ -27,11 +25,9 @@ ResearchLabRouter.get('/:ownerID', (req, res) => {
                 success: false,
                 message: `Attempt to get a person's researchLab failed. Error: ${err}`
             })
-        }
-        else if (researchLab) {
+        } else if (researchLab) {
             res.json(researchLab)
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Person's researchLab does not exist.`
@@ -41,7 +37,7 @@ ResearchLabRouter.get('/:ownerID', (req, res) => {
 });
 
 // Add
-ResearchLabRouter.post('/', (req, res, next) => {
+ResearchLabRouter.post('/', Auth.Verify, (req, res, next) => {
     let newResearchLab = new ResearchLab({
         labName: req.body.labName,
         labTitle: req.body.labTitle,
@@ -57,8 +53,7 @@ ResearchLabRouter.post('/', (req, res, next) => {
                 success: false, message: `Failed to add new researchLab.\n
             Error: ${err}`
             })
-        }
-        else {
+        } else {
             res.json({success: true, message: "Successfully added researchLab."})
         }
     })
@@ -66,15 +61,14 @@ ResearchLabRouter.post('/', (req, res, next) => {
 });
 
 // Update
-ResearchLabRouter.put('/', (req, res, next) => {
+ResearchLabRouter.put('/', Auth.Verify, (req, res, next) => {
     ResearchLab.getResearchLab(req.body._id, (err, researchLab) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to get researchLab failed. Error: ${err}`
             })
-        }
-        else if (researchLab) {
+        } else if (researchLab) {
             if (req.body.labName) researchLab.labName = req.body.labName;
             if (req.body.labTitle) researchLab.labTitle = req.body.labTitle;
             if (req.body.image) researchLab.image = req.body.image;
@@ -88,8 +82,7 @@ ResearchLabRouter.put('/', (req, res, next) => {
                         success: false,
                         message: `Attempt to update researchLab failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `Update Successful.`,
@@ -97,8 +90,7 @@ ResearchLabRouter.put('/', (req, res, next) => {
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: ResearchLab does not exist.`
@@ -106,31 +98,28 @@ ResearchLabRouter.put('/', (req, res, next) => {
         }
     });
 });
-ResearchLabRouter.delete('/:id', (req, res, next) => {
+ResearchLabRouter.delete('/:id', Auth.Verify, (req, res, next) => {
     ResearchLab.getResearchLab(req.params.id, (err, researchLab) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to find researchLab failed. Error: ${err}`
             })
-        }
-        else if (researchLab) {
+        } else if (researchLab) {
             ResearchLab.deleteResearchLab(researchLab, (err) => {
                 if (err) {
                     res.json({
                         success: false,
                         message: `Attempt to delete researchLab failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `ResearchLab deleted successfully.`
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: ResearchLab does not exist.`

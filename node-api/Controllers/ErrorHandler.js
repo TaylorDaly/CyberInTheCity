@@ -14,7 +14,7 @@ handleAssertionError = (error, req, res, next) => {
 
 handleURIError = (error, req, res, next) => {
     if (error instanceof URIError){
-        return res.sendFile(path.join(__dirname, '../angular-src/dist/index.html'));
+        res.redirect('/')
     }
 
     next(error)
@@ -45,5 +45,6 @@ module.exports =
 [
     handleAssertionError,
     handleDatabaseError,
-    handleOtherError
+    handleURIError,
+    handleOtherError,
 ];

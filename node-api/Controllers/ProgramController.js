@@ -11,8 +11,7 @@ ProgramRouter.get('/', (req, res) => {
                 success: false, message: `Failed to get all program.\n
             Error: ${err}`
             })
-        }
-        else {
+        } else {
             res.json({success: true, program: program})
         }
     })
@@ -20,7 +19,7 @@ ProgramRouter.get('/', (req, res) => {
 
 
 // Add
-ProgramRouter.post('/', (req, res, next) => {
+ProgramRouter.post('/', Auth.Verify, (req, res, next) => {
     let newProgram = new Program({
         link: req.body.link,
         level: req.body.level,
@@ -39,8 +38,7 @@ ProgramRouter.post('/', (req, res, next) => {
                 success: false, message: `Failed to add new program.\n
             Error: ${err}`
             })
-        }
-        else {
+        } else {
             res.json({success: true, message: "Successfully added program."})
         }
     })
@@ -48,15 +46,14 @@ ProgramRouter.post('/', (req, res, next) => {
 });
 
 // Update
-ProgramRouter.put('/', Auth.Verify,(req, res, next) => {
+ProgramRouter.put('/', Auth.Verify, (req, res, next) => {
     Program.getProgram(req.body._id, (err, program) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to get program failed. Error: ${err}`
             })
-        }
-        else if (program) {
+        } else if (program) {
             if (req.body.link) program.link = req.body.link;
             if (req.body.level) program.level = req.body.level;
             if (req.body.department) program.department = req.body.department;
@@ -73,8 +70,7 @@ ProgramRouter.put('/', Auth.Verify,(req, res, next) => {
                         success: false,
                         message: `Attempt to update program failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `Update Successful.`,
@@ -82,8 +78,7 @@ ProgramRouter.put('/', Auth.Verify,(req, res, next) => {
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: program does not exist.`
@@ -92,31 +87,28 @@ ProgramRouter.put('/', Auth.Verify,(req, res, next) => {
     });
 });
 
-ProgramRouter.delete('/:id', (req, res, next) => {
+ProgramRouter.delete('/:id', Auth.Verify, (req, res, next) => {
     Program.getProgram(req.params.id, (err, program) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to find program failed. Error: ${err}`
             })
-        }
-        else if (program) {
+        } else if (program) {
             Program.deleteProgram(program, (err) => {
                 if (err) {
                     res.json({
                         success: false,
                         message: `Attempt to delete program failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `Program deleted successfully.`
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Program does not exist.`

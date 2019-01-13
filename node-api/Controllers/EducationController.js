@@ -1,6 +1,7 @@
 const express = require('express');
 const EducationRouter = express.Router();
 const Education = require('../models/Education');
+const Auth = require('../Config/Auth');
 
 // Get all education
 EducationRouter.get('/', (req, res) => {
@@ -19,7 +20,7 @@ EducationRouter.get('/', (req, res) => {
 
 
 // Add
-EducationRouter.post('/', (req, res, next) => {
+EducationRouter.post('/', Auth.Verify, (req, res, next) => {
     let newEducation = new Education({
         courseNumber: req.body.courseNumber,
         courseName: req.body.courseName,
@@ -46,7 +47,7 @@ EducationRouter.post('/', (req, res, next) => {
 });
 
 // Update
-EducationRouter.put('/', (req, res, next) => {
+EducationRouter.put('/', Auth.Verify, (req, res, next) => {
     Education.getEducation(req.body._id, (err, education) => {
         if (err) {
             res.json({
@@ -88,7 +89,7 @@ EducationRouter.put('/', (req, res, next) => {
         }
     });
 });
-EducationRouter.delete('/:id', (req, res, next) => {
+EducationRouter.delete('/:id', Auth.Verify, (req, res, next) => {
     Education.getEducation(req.params.id, (err, education) => {
         if (err) {
             res.json({
