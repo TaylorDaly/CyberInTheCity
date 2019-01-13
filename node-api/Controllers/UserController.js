@@ -9,11 +9,11 @@ const dbConfig = require('../config/database');
 
 UserRouter.post('/verify', (req, res) => {
     let token = req.body.token;
-    if (!token) return res.status(400).json({auth: false, message: 'No token provided.'});
+    if (!token) return res.status(403).json({auth: false, message: 'No token provided.'});
 
     jwt.verify(token, dbConfig.secret, function (err, decoded) {
         if (err) {
-            return res.status(400).json({auth: false, message: 'Failed to authenticate token.'})
+            return res.status(403).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
             Person.findOne({email: decoded.email}, 'email', (err, person) => {
                 if (err) {
@@ -25,7 +25,8 @@ UserRouter.post('/verify', (req, res) => {
                 } else {
                     return res.json({
                         success: true,
-                        message: `Token authenticated.`
+                        message: `Token authenticated.`,
+                        email: decoded.email
                     });
                 }
             })
@@ -35,7 +36,7 @@ UserRouter.post('/verify', (req, res) => {
 
 UserRouter.post('/signup/:token', (req, res) => {
     let token = req.params.token;
-    if (!token) return res.status(401).json({auth: false, message: 'No token provided.'});
+    if (!token) return res.status(400).json({auth: false, message: 'No token provided.'});
 
     jwt.verify(token, dbConfig.secret, function (err, decoded) {
         if (err) {
@@ -91,21 +92,33 @@ UserRouter.post('/signup/:token', (req, res) => {
 UserRouter.post('/login', (req, res) => {
     let password = req.body.password;
     let email = req.body.email;
-    Person.findOne({email: email}, 'email password', (err, person) => {
+    Person.findOne({email: email}, 'email password _id', (err, person) => {
         if (err) {
             return res.status(500).json({
                 success: false, message: `Something broke when attempting to find user. Error: ${err}`
             })
         } else if (person) {
-            // TODO: Return JWT on success
             bcrypt.compare(password, person.password, (err, result) => {
                 if (err)
                     return res.status(500).json({
                         success: false,
                         message: `Something broke when attempting to login. Error: ${err}`
                     });
-                else if (result)
-                    return res.status(200).json({success: true, message: "Login successful."});
+                else if (result) {
+                    const jwtToken = jwt.sign({
+                            email: person.email,
+                            _id: person._id
+                        },
+                        dbConfig.secret,
+                        {
+                            expiresIn: '24h'
+                        });
+                    return res.status(200).json({
+                        success: true,
+                        message: "Login successful.",
+                        token: jwtToken
+                    });
+                }
                 else
                     return res.status(401).json({success: false, message: "Password incorrect."})
             });

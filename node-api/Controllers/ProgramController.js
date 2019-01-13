@@ -1,6 +1,7 @@
 const express = require('express');
 const ProgramRouter = express.Router();
 const Program = require('../models/Program');
+const Auth = require('../Config/Auth');
 
 // Get all programs
 ProgramRouter.get('/', (req, res) => {
@@ -47,7 +48,7 @@ ProgramRouter.post('/', (req, res, next) => {
 });
 
 // Update
-ProgramRouter.put('/', (req, res, next) => {
+ProgramRouter.put('/', Auth.Verify,(req, res, next) => {
     Program.getProgram(req.body._id, (err, program) => {
         if (err) {
             res.json({

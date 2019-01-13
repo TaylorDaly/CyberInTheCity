@@ -4,6 +4,7 @@ const ImageRouter = express.Router();
 const Image = require('../models/Image');
 const fs = require('fs');
 const Buffer = require('buffer').Buffer;
+const Auth = require("../Config/Auth");
 
 ImageRouter.get('/:id', (req, res) => {
     Image.findImage(req.params.id, (err, image) => {
@@ -31,7 +32,7 @@ ImageRouter.get('/:id', (req, res) => {
 });
 
 // TODO: implement progress percentage when saving image.
-ImageRouter.post('/', (req, res) => {
+ImageRouter.post('/', Auth.Verify, (req, res) => {
     let data = fs.readFileSync(req.body.file);
     let newPic = new Image({
         // TODO: remove base64 conversion if we decide to do it in HTML later
@@ -56,7 +57,7 @@ ImageRouter.post('/', (req, res) => {
     });
 });
 
-ImageRouter.delete('/:id', (req, res) => {
+ImageRouter.delete('/:id', Auth.Verify, (req, res) => {
     Image.findImage(req.params.id, (err, image) => {
         if (err) {
             res.send({

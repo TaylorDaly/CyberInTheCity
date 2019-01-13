@@ -1,4 +1,5 @@
 // Dependencies
+const Auth = require("../Config/Auth");
 const express = require('express');
 const PeopleRouter = express.Router();
 const Person = require('../models/Person');
@@ -39,7 +40,7 @@ PeopleRouter.get('/:id', (req, res) => {
     })
 });
 
-PeopleRouter.delete('/:id', (req, res) => {
+PeopleRouter.delete('/:id', Auth.Verify, (req, res) => {
     Person.getPerson({_id: req.params.id}, (err, person) => {
         if (err) {
             res.json({
@@ -69,7 +70,7 @@ PeopleRouter.delete('/:id', (req, res) => {
     })
 });
 
-PeopleRouter.put('/', (req, res) => {
+PeopleRouter.put('/', Auth.Verify, (req, res) => {
 
     Person.getPerson({_id: req.body._id}, (err, person) => {
         if (err) {
