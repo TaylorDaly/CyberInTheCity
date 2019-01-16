@@ -1,6 +1,7 @@
 const express = require('express');
 const PageRouter = express.Router();
 const Page = require('../models/Page');
+const Auth = require("../Config/Auth");
 
 PageRouter.get('/', (req, res) => {
     Page.getAllPages((err, pages) => {
@@ -32,7 +33,7 @@ PageRouter.get('/:title', (req, res) => {
     })
 });
 
-PageRouter.post('/', (req, res) => {
+PageRouter.post('/', Auth.Verify, (req, res, next) => {
     let newPage = new Page({
         title: req.body.title,
         content: req.body.content,
@@ -41,14 +42,17 @@ PageRouter.post('/', (req, res) => {
 
     Page.addPage(newPage, (err) => {
         if (err) {
-            res.status(500).json({success: false, message: `Failed to save page. Error: ${err}`})
+            if (err.code === 11000 && err.name === 'MongoError') {
+                err.message = `There is already a page with the title '${newPage.title}'`;
+            }
+            next(err);
         } else {
             res.json({success: true, message: `Page successfully created`})
         }
     });
 });
 
-PageRouter.put('/', (req, res) => {
+PageRouter.put('/', Auth.Verify, (req, res, next) => {
     Page.getOne({title: req.body.title}, (err, page) => {
         if (err) {
             res.status(500).json({
@@ -61,7 +65,7 @@ PageRouter.put('/', (req, res) => {
             page.parent = req.body.parent;
             Page.updatePage(page._id, page, (err) => {
                 if (err) {
-                    res.status(500).json({success: false, message: `Failed to save page. Error: ${err}`})
+                    res.status(500).json({success: false, message: `Failed to update page. Error: ${err}`})
                 } else {
                     res.json({success: true, message: `Update successful.`, page: page});
                 }
@@ -75,7 +79,7 @@ PageRouter.put('/', (req, res) => {
     });
 });
 
-PageRouter.delete('/', (req, res) => {
+PageRouter.delete('/', Auth.Verify, (req, res) => {
     Page.getOne({_id: req.body._id}, (err, page) => {
         if (err) {
             res.status(500).json({

@@ -1,7 +1,7 @@
 const express = require('express');
 const PublicationRouter = express.Router();
 const Publication = require('../models/Publication');
-
+const Auth = require('../Config/Auth');
 
 // Get all publications
 PublicationRouter.get('/', (req, res) => {
@@ -11,8 +11,7 @@ PublicationRouter.get('/', (req, res) => {
                 success: false, message: `Failed to get all publications.\n
             Error: ${err}`
             })
-        }
-        else {
+        } else {
             res.json({success: true, publication: publication})
         }
     })
@@ -26,11 +25,9 @@ PublicationRouter.get('/:ownerID', (req, res) => {
                 success: false,
                 message: `Attempt to get person's publication failed. Error: ${err}`
             })
-        }
-        else if (publication) {
+        } else if (publication) {
             res.json(publication)
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Person's publication does not exist.`
@@ -40,7 +37,7 @@ PublicationRouter.get('/:ownerID', (req, res) => {
 });
 
 // Add
-PublicationRouter.post('/', (req, res, next) => {
+PublicationRouter.post('/', Auth.Verify, (req, res, next) => {
     let newPublication = new Publication({
         title: req.body.title,
         conference: req.body.conference,
@@ -57,8 +54,7 @@ PublicationRouter.post('/', (req, res, next) => {
                 success: false, message: `Failed to add new publication.\n
             Error: ${err}`
             })
-        }
-        else {
+        } else {
             res.json({success: true, message: "Successfully added publication."})
         }
     })
@@ -66,15 +62,14 @@ PublicationRouter.post('/', (req, res, next) => {
 });
 
 // Update
-PublicationRouter.put('/', (req, res, next) => {
+PublicationRouter.put('/', Auth.Verify, (req, res, next) => {
     Publication.getPublication(req.body._id, (err, publication) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to get publication failed. Error: ${err}`
             })
-        }
-        else if (publication) {
+        } else if (publication) {
             if (req.body.title) publication.title = req.body.title;
             if (req.body.conference) publication.conference = req.body.conference;
             if (req.body.journal) publication.journal = req.body.journal;
@@ -89,8 +84,7 @@ PublicationRouter.put('/', (req, res, next) => {
                         success: false,
                         message: `Attempt to update publication failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `Update Successful.`,
@@ -98,8 +92,7 @@ PublicationRouter.put('/', (req, res, next) => {
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Publication does not exist.`
@@ -109,31 +102,28 @@ PublicationRouter.put('/', (req, res, next) => {
 });
 
 // Delete
-PublicationRouter.delete('/:id', (req, res, next) => {
+PublicationRouter.delete('/:id', Auth.Verify, (req, res, next) => {
     Publication.getPublication(req.params.id, (err, publication) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to find publication failed. Error: ${err}`
             })
-        }
-        else if (publication) {
+        } else if (publication) {
             Publication.deletePublication(publication, (err) => {
                 if (err) {
                     res.json({
                         success: false,
                         message: `Attempt to delete publication failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `publication deleted successfully.`
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: publication does not exist.`

@@ -41,9 +41,12 @@ app.use('/api/User', require('./Controllers/UserController'));
 app.use('/api/Page', require('./Controllers/PageController'));
 
 // re-route bad requests back to home page.
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../angular-src/dist/index.html'));
 });
+
+// Custom Error handler
+app.use('/', require('./Controllers/ErrorHandler'));
 
 app.listen(port, function () {
     console.log(`Starting the server at port ${port}`);

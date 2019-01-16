@@ -1,7 +1,7 @@
 const express = require('express');
 const ResearchRouter = express.Router();
 const Research = require('../models/Research');
-
+const Auth = require('../Config/Auth');
 
 // Get all researches
 ResearchRouter.get('/', (req, res) => {
@@ -11,8 +11,7 @@ ResearchRouter.get('/', (req, res) => {
                 success: false, message: `Failed to get all researches.\n
             Error: ${err}`
             })
-        }
-        else {
+        } else {
             res.json({success: true, research: research})
         }
     })
@@ -26,11 +25,9 @@ ResearchRouter.get('/:ownerID', (req, res) => {
                 success: false,
                 message: `Attempt to get a person's research failed. Error: ${err}`
             })
-        }
-        else if (research) {
+        } else if (research) {
             res.json(research)
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Person's research does not exist.`
@@ -40,7 +37,7 @@ ResearchRouter.get('/:ownerID', (req, res) => {
 });
 
 // Add
-ResearchRouter.post('/', (req, res, next) => {
+ResearchRouter.post('/', Auth.Verify, (req, res, next) => {
     let newResearch = new Research({
         title: req.body.title,
         ownerID: req.body.ownerID,
@@ -55,8 +52,7 @@ ResearchRouter.post('/', (req, res, next) => {
                 success: false, message: `Failed to add new research.\n
             Error: ${err}`
             })
-        }
-        else {
+        } else {
             res.json({success: true, message: "Successfully added research."})
         }
     })
@@ -64,15 +60,14 @@ ResearchRouter.post('/', (req, res, next) => {
 });
 
 // Update
-ResearchRouter.put('/', (req, res, next) => {
+ResearchRouter.put('/', Auth.Verify, (req, res, next) => {
     Research.getResearch(req.body._id, (err, research) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to get research failed. Error: ${err}`
             })
-        }
-        else if (research) {
+        } else if (research) {
             if (req.body.title) research.title = req.body.title;
             if (req.body.ownerID) research.ownerID = req.body.ownerID;
             if (req.body.startDate) research.startDate = req.body.startDate;
@@ -85,8 +80,7 @@ ResearchRouter.put('/', (req, res, next) => {
                         success: false,
                         message: `Attempt to update research failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `Update Successful.`,
@@ -94,8 +88,7 @@ ResearchRouter.put('/', (req, res, next) => {
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Research does not exist.`
@@ -105,31 +98,28 @@ ResearchRouter.put('/', (req, res, next) => {
 });
 
 // Delete
-ResearchRouter.delete('/:id', (req, res, next) => {
+ResearchRouter.delete('/:id', Auth.Verify, (req, res, next) => {
     Research.getResearch(req.params.id, (err, research) => {
         if (err) {
             res.json({
                 success: false,
                 message: `Attempt to find research failed. Error: ${err}`
             })
-        }
-        else if (research) {
+        } else if (research) {
             Research.deleteResearch(research, (err) => {
                 if (err) {
                     res.json({
                         success: false,
                         message: `Attempt to delete research failed. Error: ${err}`
                     })
-                }
-                else {
+                } else {
                     res.json({
                         success: true,
                         message: `Research deleted successfully.`
                     })
                 }
             });
-        }
-        else {
+        } else {
             res.status(404).send({
                 success: false,
                 message: `404: Research does not exist.`
