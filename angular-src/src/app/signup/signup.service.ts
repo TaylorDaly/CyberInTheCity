@@ -9,8 +9,6 @@ import {Observable} from "rxjs";
 })
 export class SignupService {
 
-  blah = false;
-
   constructor(private httpClient: HttpClient,) { }
 
   canSignUp(signupToken: string): Observable<any> {

@@ -9,12 +9,14 @@ import { AppComponent } from './app.component';
 import { NavmenuComponent } from './navmenu/navmenu.component';
 import {HttpErrorInterceptor} from "./http-error.interceptor";
 import {SignupGuard} from "./Authentication/auth.guard";
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavmenuComponent,
     RoutingComponents,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

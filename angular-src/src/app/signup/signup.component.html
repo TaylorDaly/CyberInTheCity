@@ -1,3 +1,58 @@
-<div class="container">
-  <h2>Sign Up Verified!</h2>
+<div class="container" style="background-color: gainsboro;">
+  <form #signupForm="ngForm">
+    {{signupForm.value | json}}
+    <div class="form-group">
+      <label>Email address</label>
+      <input type="email" class="form-control" aria-describedby="emailHelp"
+             placeholder="{{signupItems.email}}" readonly/>
+      <small id="emailHelp" class="form-text text-muted">School email cannot be changed.</small>
+    </div>
+    <div class="form-group">
+      <label>Name</label>
+      <div class="form-row">
+        <div class="col">
+          <input type="text" class="form-control" ngModel name="firstName" placeholder="First name" required>
+        </div>
+        <div class="col">
+          <input type="text" class="form-control" ngModel name="lastName" placeholder="Last name" required>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <div class="form-row">
+        <div class="col">
+          <input type="password" class="form-control" ngModel name="password" placeholder="Enter password" required/>
+        </div>
+        <div class="col">
+          <input type="password" class="form-control" ngModel name="confirmPassword" placeholder="Confirm password" required/>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>My Website (Optional)</label>
+      <input type="url" class="form-control" ngModel name="website" placeholder="Enter your website"/>
+    </div>
+    <div class="form-group">
+      <label>Social Media (Optional)</label>
+      <div class="form-row">
+        <div class="col-md-3">
+          <select class="form-control" [ngModel]="links[0]" name="linkDesc">
+            <option *ngFor="let link of links">
+              {{link}}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-9">
+          <input type="text" class="form-control" ngModel name="linkUrl" placeholder="Link URL"/>
+        </div>
+      </div>
+      <button type="button" class="btn btn-default btn-md">
+        <span class="fa fa-plus"></span> Add
+      </button>
+    </div>
+    <button class="btn btn-color" type="submit">Submit</button>
+  </form>
+
+  <app-error></app-error>
 </div>
