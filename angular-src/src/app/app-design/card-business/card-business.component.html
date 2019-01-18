@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="card-horiz shadow">
+    <a class="" href="#">
+      <ng-template [ngIf]="image != null" [ngIfElse]="defaultImage">
+        <img class="card-horiz-img" src="data:{{image.content_type}};base64,{{image.buffer}}">
+      </ng-template>
+      <ng-template #defaultImage>
+        <img class="card-horiz-img" src="assets/images/defaultPhoto.png" alt="No image available">
+      </ng-template>
+    </a>
+    <div class="card-horiz-body">
+      <p class="card-text name"><strong>{{name}}</strong></p>
+      <p class="card-text">
+        {{role}}
+        <br/>{{email}}
+        <br/><a *ngIf="myWebsite != null" href="http://{{myWebsite}}">My Website</a>
+      </p>
+      <div *ngFor="let link of socialLinks" style="display: inline;">
+        <a class="fa fa-{{link.description}}" href="http://{{link.URL}}"></a>
+      </div>
+    </div>
+  </div>
+</div>

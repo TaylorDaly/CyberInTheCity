@@ -13,7 +13,8 @@ EducationRouter.get('/', (req, res) => {
             })
         }
         else {
-            res.json({success: true, education: education})
+            //res.json({success: true, education: education})
+            res.json(education)
         }
     })
 });

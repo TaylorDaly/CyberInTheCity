@@ -12,7 +12,8 @@ ResearchRouter.get('/', (req, res) => {
             Error: ${err}`
             })
         } else {
-            res.json({success: true, research: research})
+            //res.json({success: true, research: research})
+            res.json(research)
         }
     })
 });

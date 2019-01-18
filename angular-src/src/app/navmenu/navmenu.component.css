@@ -42,4 +42,7 @@
   background-color: #565A5C;
   border-radius: 5px;
 }
+.navbar-toggler {
+  border-color: transparent;
+}
 

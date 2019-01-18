@@ -1,29 +1,22 @@
-<!--<div class="scrolling-wrapper">-->
-<div class="container">
-  <!--{{error}}-->
-  <div *ngFor="let person of personList" class="card shadow">
-    <a class="" href="#">
-      <ng-template [ngIf]="person.photo != null" [ngIfElse]="defaultImage">
-        <img class="card-img-top" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}">
-      </ng-template>
-      <ng-template #defaultImage>
-        <img class="card-img-top" src="assets/images/defaultPhoto.png" alt="No image available">
-      </ng-template>
-    </a>
-    <div class="card-body">
-      <p class="card-text name"><strong>{{person.name}}</strong></p>
-      <p class="card-text">
-        {{person.role}}
-        <br/>{{person.email}}
-        <br/><a *ngIf="person.my_website_link != null" href="http://{{person.my_website_link}}">My Website</a>
-      </p>
-      <div *ngFor="let link of person.links" style="display: inline;">
-        <a class="fa fa-{{link.description}}" href="http://{{link.URL}}"></a>
-        <!--<a href="{{link.URL}}">{{link.description}}</a>-->
+
+<div class="container" style="padding: 0;">
+  <p>{{error}}</p>
+
+  <div >
+    <div class="row">
+      <div class="col" *ngFor="let person of personList">
+        <app-card-business [image]="person.photo"
+                           [name]="person.name"
+                           [role]="person.role"
+                           [email]="person.email"
+                           [myWebsite]="person.my_website_link"
+                           [socialLinks]="person.links">
+
+        </app-card-business>
       </div>
     </div>
   </div>
 </div>
 
-<!--</div>-->
+
 

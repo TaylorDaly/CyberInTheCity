@@ -1,3 +1,9 @@
-<p>
-  education works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let c of courses">
+      <app-card-info [header]="'CSCI ' + c.courseNumber + ': ' + c.courseName"
+                     [body]="c.description"
+                     [footer]="'Term year: ' + c.termYear + ' | Department: ' + c.department"></app-card-info>
+    </div>
+  </div>
+</div>
