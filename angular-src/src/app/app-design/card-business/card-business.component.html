@@ -12,7 +12,7 @@
       <p class="card-text name"><strong>{{name}}</strong></p>
       <p class="card-text">
         {{role}}
-        <br/>{{email}}
+        <br/><a href="mailto: {{email}}">Email</a>
         <br/><a *ngIf="myWebsite != null" href="http://{{myWebsite}}">My Website</a>
       </p>
       <div *ngFor="let link of socialLinks" style="display: inline;">

@@ -10,6 +10,7 @@ import {AppDesignModule} from "./app-design/app-design.module";
 import { AppComponent } from './app.component';
 import { NavmenuComponent } from './navmenu/navmenu.component';
 import { ErrorComponent } from './error/error.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ErrorComponent } from './error/error.component';
     NavmenuComponent,
     RoutingComponents,
     ErrorComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +34,6 @@ import { ErrorComponent } from './error/error.component';
       multi: true
     },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
