@@ -12,7 +12,7 @@ export class NavmenuComponent implements OnInit {
   navItems = [
     {
       name: 'About Us',
-      route: '/about-us',
+      route: '/about',
       child: []
     },
     {
@@ -52,7 +52,7 @@ export class NavmenuComponent implements OnInit {
     },
     {
       name: 'Contact Us',
-      route: '/contact-us',
+      route: '/contact',
       child: []
     },
   ];

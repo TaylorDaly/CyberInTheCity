@@ -10,17 +10,23 @@ import { EventsComponent } from './events/events.component';
 import { NewsComponent } from './news/news.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { CareersComponent } from './careers/careers.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 import {SignupGuard} from "./Authentication/auth.guard";
 
 const AppRoutes: Routes = [
   {path: 'home', component: HomeComponent},
+  {path: 'about', component: AboutUsComponent},
   {path: 'person', component: PersonComponent},
   {path: 'education', component: EducationComponent},
   {path: 'research', component: ResearchComponent},
   {path: 'signup/:token', component: SignupComponent, canActivate: [SignupGuard]},
   {path: 'events', component: EventsComponent},
   {path: 'news', component: NewsComponent},
+  {path: 'careers', component: CareersComponent},
+  {path: 'contact', component: ContactUsComponent},
   {path: 'login', component: LoginComponent},
   {path: 'general/:title', component: GeneralComponent},
   {path: 'register', component: RegisterComponent},
@@ -45,6 +51,9 @@ export const RoutingComponents =
     NewsComponent,
     LoginComponent,
     RegisterComponent,
-    GeneralComponent
+    GeneralComponent,
+    AboutUsComponent,
+    CareersComponent,
+    ContactUsComponent,
   ];
 
