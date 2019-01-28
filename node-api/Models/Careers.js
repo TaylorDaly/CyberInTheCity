@@ -13,6 +13,7 @@ const CareersSchema = new mongoose.Schema({
         type: String,
         enum: ['Part-Time', 'Full-Time', 'Internship']
     },
+    link: String,
     location: String,
     deadlineDate: Date,
     description: String,

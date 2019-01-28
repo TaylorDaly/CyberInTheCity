@@ -1,3 +1,14 @@
-<p>
-  careers works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6" *ngFor="let career of careers">
+      <app-card-careers
+                        [title]="career.title"
+                        [link]="career.link"
+                        [hours]="career.hours"
+                        [location]="career.location"
+                        [deadlineDate]="(career.deadlineDate | date)"
+                        [description]="career.description">
+      </app-card-careers>
+    </div>
+  </div>
+</div>

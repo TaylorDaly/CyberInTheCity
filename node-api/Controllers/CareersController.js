@@ -43,6 +43,7 @@ CareersRouter.post('/', Auth.Verify, (req, res, next) => {
         title: req.body.title,
         ownerID: req.body.ownerID,
         hours: req.body.hours,
+        link: req.body.link,
         location: req.body.location,
         deadlineDate: req.body.deadlineDate,
         description: req.body.description
@@ -67,12 +68,13 @@ CareersRouter.put('/', Auth.Verify, (req, res, next) => {
         if (err) {
             res.json({
                 success: false,
-                message: `Attempt to get careers failed. Error: ${err}`
+                message: `Attempt to get career failed. Error: ${err}`
             })
         } else if (careers) {
             if (req.body.title) careers.title = req.body.title;
             if (req.body.ownerID) careers.ownerID = req.body.ownerID;
             if (req.body.hours) careers.hours = req.body.hours;
+            if (req.body.link) careers.link = req.body.link;
             if (req.body.location) careers.location = req.body.location;
             if (req.body.deadlineDate) careers.deadlineDate = req.body.deadlineDate;
             if (req.body.description) careers.description = req.body.description;
