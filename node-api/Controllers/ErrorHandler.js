@@ -14,7 +14,7 @@ handleAssertionError = (error, req, res, next) => {
 
 handleURIError = (error, req, res, next) => {
     if (error instanceof URIError){
-        res.redirect('/')
+        return res.redirect('/')
     }
 
     next(error)
@@ -37,7 +37,7 @@ handleDatabaseError = (error, req, res, next) => {
 
 handleOtherError = (error, req, res, next) => {
     return res.status(500).json({
-        message: `Error: ${error}. Please try again.`
+        message: `Error: ${error.message}. Please try again.`
     });
 };
 

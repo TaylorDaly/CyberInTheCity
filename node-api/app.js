@@ -17,7 +17,7 @@ const port = dbConfig.nodePort || 3000;
 
 // Database Connection
 mongoose.connect(dbConfig.uri, {useNewUrlParser: true})
-    .then(res => console.log(`_readyState: ${res.connections[0]._readyState}`));
+    .then(res => console.log(`MongoDB connection _readyState: ${res.connections[0]._readyState}`));
 
 // TODO: add TLS for security
 // app setup
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '../angular-src/dist')));
 
 // TODO: Fix mongoose deprecation warning as soon as mongoose updates.
-// TODO: JWT authentication
+// TODO: JWT authentication on all routes
 // Routes
 app.use('/api/Person', require('./Controllers/PersonController'));
 app.use('/api/Publication', require('./Controllers/PublicationController'));
@@ -39,6 +39,7 @@ app.use('/api/Education', require('./Controllers/EducationController'));
 app.use('/api/Program', require('./Controllers/ProgramController'));
 app.use('/api/User', require('./Controllers/UserController'));
 app.use('/api/Page', require('./Controllers/PageController'));
+app.use('/api/News', require('./Controllers/NewsController'));
 
 // re-route bad requests back to home page.
 app.get('*', (req, res) => {
