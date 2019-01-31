@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { CardInfoComponent } from './card-info/card-info.component';
 import { CardBusinessComponent } from './card-business/card-business.component';
+import { CardCareersComponent } from './card-careers/card-careers.component';
 import { EditorComponent } from './editor/editor.component';
 
 import {CKEditorModule} from "ng2-ckeditor";
@@ -12,6 +13,7 @@ import {CKEditorModule} from "ng2-ckeditor";
   declarations: [
     CardInfoComponent,
     CardBusinessComponent,
+    CardCareersComponent,
     EditorComponent
   ],
   imports: [
@@ -23,6 +25,7 @@ import {CKEditorModule} from "ng2-ckeditor";
     CKEditorModule,
     CardInfoComponent,
     CardBusinessComponent,
+    CardCareersComponent,
     EditorComponent,
   ]
 })
