@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {CareersService} from "./careers.service";
+import {CareersItem} from "./careers";
 
 @Component({
   selector: 'app-careers',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CareersComponent implements OnInit {
 
-  constructor() { }
+  careers: CareersItem[];
+  error = "";
+
+  constructor(private careersService: CareersService) { }
 
   ngOnInit() {
+    this.getAllCareers();
   }
 
+  private getAllCareers() {
+    this.careersService.getAllCareers()
+      .subscribe(
+        res => {
+          this.careers = res;
+        },
+        err => {
+          this.error = err["error"].message;
+        }
+      )
+  }
 }
