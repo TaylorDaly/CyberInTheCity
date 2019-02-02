@@ -1,13 +1,12 @@
 <div class="container">
-  <div class="card-horiz shadow">
-    <div class="card-horiz-body">
-      <p class="card-text">
-        <br/><a href="{{link}}">{{title}}</a><br/>
-        <br/>{{description}}<br/>
-        <br/>{{hours}}
-        <br/>{{location}}
-        <br/>{{deadlineDate}}
-      </p>
+  <div class="card shadow">
+    <div class="card-body">
+      <h5 class="card-title"><a href="{{link}}">{{title}}</a></h5>
+      <p class="card-text">{{description}}</p>
     </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">{{hours}}&nbsp;&nbsp;|&nbsp;&nbsp;{{location}}
+        &nbsp;&nbsp;|&nbsp;&nbsp;{{deadlineDate}}</li>
+    </ul>
   </div>
 </div>
