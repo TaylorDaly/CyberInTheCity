@@ -29,7 +29,7 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.11.4",
+    "@angular-devkit/build-angular": "^0.12.2",
     "@angular/cli": "^7.1.4",
     "@angular/compiler-cli": "^7.1.4",
     "@types/jasmine": "2.8.9",
@@ -44,8 +44,8 @@
     "karma-remap-istanbul": "^0.6.0",
     "protractor": "^5.4.2",
     "ts-node": "7.0.1",
-    "webpack-dev-server": "^3.1.14",
     "tslint": "^5.12.0",
-    "typescript": "^3.1.6"
+    "typescript": "^3.1.6",
+    "webpack-dev-server": "^3.1.14"
   }
 }
