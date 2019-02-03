@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, SecurityContext} from '@angular/core';
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-editor',
@@ -7,11 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditorComponent implements OnInit {
 
-  htmlContent = "<p>Enter text here...</p>";
+  htmlContent = "<p style='color: blue'>Enter text here...</p>";
+  html: SafeHtml;
 
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) {
+  }
 
   ngOnInit() {
+  }
+
+  getDirtyHTML() {
+    this.html = this.sanitizer.bypassSecurityTrustHtml(this.htmlContent);
   }
 
 }
