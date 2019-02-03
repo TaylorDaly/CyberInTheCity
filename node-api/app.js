@@ -39,6 +39,8 @@ app.use('/api/Education', require('./Controllers/EducationController'));
 app.use('/api/Program', require('./Controllers/ProgramController'));
 app.use('/api/User', require('./Controllers/UserController'));
 app.use('/api/Page', require('./Controllers/PageController'));
+app.use('/api/Careers', require('./Controllers/CareersController'));
+
 
 // re-route bad requests back to home page.
 app.get('*', (req, res) => {

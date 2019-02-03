@@ -1,4 +1,6 @@
 export interface StaticPage {
   title: string,
-  content: string
+  content: string,
+  route: string,
+  parent: string,
 }

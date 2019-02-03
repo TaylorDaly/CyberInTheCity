@@ -16,7 +16,7 @@
             </a>
             <div class="dropdown-menu">
               <div *ngFor="let child of navItem.child">
-                <a class="dropdown-item" routerLink="/general/{{child.title}}">{{child.title}}</a>
+                <a class="dropdown-item" routerLink="{{child.route}}">{{child.title}}</a>
               </div>
             </div>
           </li>
@@ -42,4 +42,6 @@
     </form>
   </div>
 </nav>
+
+
 

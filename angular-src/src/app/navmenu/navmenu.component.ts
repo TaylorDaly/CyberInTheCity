@@ -9,11 +9,10 @@ import {HttpClient} from "@angular/common/http";
 })
 export class NavmenuComponent implements OnInit {
 
-  error = '';
   navItems = [
     {
       name: 'About Us',
-      route: '/about-us',
+      route: '/about',
       child: []
     },
     {
@@ -24,7 +23,12 @@ export class NavmenuComponent implements OnInit {
     {
       name: 'Research',
       route: '/research',
-      child: []
+      child: [
+        {
+          route: '/research/labs',
+          title: 'Research Labs'
+        }
+      ]
     },
     {
       name: 'Education',
@@ -48,7 +52,7 @@ export class NavmenuComponent implements OnInit {
     },
     {
       name: 'Contact Us',
-      route: '/contact-us',
+      route: '/contact',
       child: []
     },
   ];
@@ -66,12 +70,12 @@ export class NavmenuComponent implements OnInit {
         response => {
           this.sortNavItems(response)
         },
-        error => this.error = error
       );
   }
 
   sortNavItems(staticNavItems) {
     for(let i = 0; i < staticNavItems.length; ++i) {
+      staticNavItems[i].route = '/general/' + staticNavItems[i].title;
       this.navItems.find(x => x.name == staticNavItems[i].parent).child.push(staticNavItems[i]);
     }
   }

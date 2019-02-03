@@ -1,0 +1,7 @@
+<!--<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true"></app-ngx-editor>-->
+<ckeditor
+  [(ngModel)]="htmlContent"
+  [readonly]="false"
+  debounce="500">
+</ckeditor>
+{{htmlContent}}

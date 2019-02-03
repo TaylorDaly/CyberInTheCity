@@ -1,11 +1,29 @@
 
-.card {
-  border: none;
-  max-width: 200px;
-  min-width: 200px;
+.card-horiz {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  min-width: 500px;
+  max-width: 500px;
+  flex-shrink: 0;
+  margin: 10px 0 10px 0;
 }
-.card-img-top:hover{
+.card-horiz-img {
+  object-fit: none; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  max-width: 200px;
+  max-height: 200px;
+  min-width: 200px;
+  min-height: 200px;
+  flex: 1 1 auto;
+}
+.card-horiz-img:hover{
   opacity: 0.5;
+}
+.card-horiz-body {
+  flex: 12 1 auto;
+  padding-top: 10px;
+  padding-left: 5%;
+  word-wrap: break-spaces;
 }
 .name{
   font-size: 20px;
@@ -43,28 +61,3 @@
   color: white;
 }
 
-.card-horiz {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  min-width: 440px;
-  max-width: 440px;
-  flex-shrink: 0;
-  margin: 10px 0 10px 0;
-}
-
-.card-horiz-img {
-  object-fit: none; /* Do not scale the image */
-  object-position: center; /* Center the image within the element */
-  max-width: 200px;
-  max-height: 200px;
-  min-width: 200px;
-  min-height: 200px;
-  flex: 1 1 auto;
-}
-
-.card-horiz-body {
-  flex: 12 1 auto;
-  padding-top: 10px;
-  padding-left: 5%;
-  word-wrap: break-spaces;
-}
