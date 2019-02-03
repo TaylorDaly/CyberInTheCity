@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import {NavmenuService} from "../navmenu/navmenu.service";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-general',
@@ -14,7 +15,8 @@ export class GeneralComponent implements OnInit {
 
   constructor(private activeRoute: ActivatedRoute,
               private navmenuService: NavmenuService,
-              private location: Location) { }
+              private location: Location,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(

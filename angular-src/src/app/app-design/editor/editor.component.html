@@ -1,7 +1,13 @@
 <!--<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true"></app-ngx-editor>-->
 <ckeditor
   [(ngModel)]="htmlContent"
+  [config]="{removeButtons: 'Source,Form,Checkbox,Radio,TextField,Textarea,Select,' +
+  'Button,ImageButton,HiddenField,Flash,Iframe,ShowBlocks,Anchor,Cut,Copy,Paste,' +
+  'PasteText,PasteFromWord,Templates,CopyFormatting,RemoveFormat,CreateDiv'}"
   [readonly]="false"
-  debounce="500">
+  debounce="500"
+  (change)="getDirtyHTML()">
 </ckeditor>
+<div [innerHTML]="html">
+</div>
 {{htmlContent}}
