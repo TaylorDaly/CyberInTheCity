@@ -1,13 +1,23 @@
 <!--<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true"></app-ngx-editor>-->
-<ckeditor
-  [(ngModel)]="htmlContent"
-  [config]="{removeButtons: 'Source,Form,Checkbox,Radio,TextField,Textarea,Select,' +
+<div class="container">
+  <ckeditor
+    [(ngModel)]="htmlContent"
+    [config]="{removeButtons: 'Source,Form,Checkbox,Radio,TextField,Textarea,Select,' +
   'Button,ImageButton,HiddenField,Flash,Iframe,ShowBlocks,Anchor,Cut,Copy,Paste,' +
-  'PasteText,PasteFromWord,Templates,CopyFormatting,RemoveFormat,CreateDiv'}"
-  [readonly]="false"
-  debounce="500"
-  (change)="getDirtyHTML()">
-</ckeditor>
-<div [innerHTML]="html">
+  'PasteText,PasteFromWord,Templates,CopyFormatting,RemoveFormat,CreateDiv',
+  extraAllowedContent: '*(*)'}"
+    [readonly]="false"
+    debounce="500"
+    (change)="getDirtyHTML()">
+  </ckeditor>
+  <button type="button" class="btn btn-color mt-3 float-right" (click)="passHtmlString()">Save</button>
+
+
+  <div class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
+  </div>
+
+  {{htmlContent}}
 </div>
-{{htmlContent}}
+
+<div [innerHTML]="html" class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
+</div>

@@ -1,4 +1,4 @@
-import {Component, OnInit, SecurityContext} from '@angular/core';
+import {Component, OnInit, SecurityContext, Input, Output, EventEmitter} from '@angular/core';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
@@ -8,7 +8,9 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 })
 export class EditorComponent implements OnInit {
 
-  htmlContent = "<p style='color: blue'>Enter text here...</p>";
+  @Output() htmlString = new EventEmitter<string>();
+
+  htmlContent = "<p>Enter text here...</p>";
   html: SafeHtml;
 
   constructor(private sanitizer: DomSanitizer) {
@@ -19,6 +21,10 @@ export class EditorComponent implements OnInit {
 
   getDirtyHTML() {
     this.html = this.sanitizer.bypassSecurityTrustHtml(this.htmlContent);
+  }
+
+  passHtmlString() {
+    this.htmlString.emit(this.htmlContent);
   }
 
 }

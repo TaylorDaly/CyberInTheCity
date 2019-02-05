@@ -16,7 +16,20 @@
 .btn {
   margin: 0 0 5px 0;
 }
-
+.btn-color {
+  background-color: #CFB87C;
+}
+.btn-no-color {
+  background-color: transparent;
+}
+blockquote
+{
+  font-style: italic;
+  font-family: Georgia, Times, "Times New Roman", serif;
+  border: 0 solid #ccc;
+  padding: 2px 8px 2px 20px;
+  border-left-width: 5px;
+}
 
 
 
