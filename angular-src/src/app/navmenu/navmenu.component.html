@@ -8,7 +8,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav">
-      <div *ngFor="let navItem of navItems">
+      <div *ngFor="let navItem of parents">
         <ng-template [ngIf]="navItem.child.length > 0" [ngIfElse]="NoDropdown">
           <li class="nav-item dropdown">
             <a class="nav-link" routerLink="{{navItem.route}}" role="button" aria-haspopup="true" aria-expanded="false">
