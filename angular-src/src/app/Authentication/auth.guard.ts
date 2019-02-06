@@ -25,7 +25,7 @@ export class SignupGuard implements CanActivate {
     //         localStorage.setItem("signupEmail", res['email']); // Place in session Later //
     //         return res['auth'];
     //       } else {
-    //         this.router.navigateByUrl('/register');
+    //         //this.router.navigateByUrl('/register');
     //         return false;
     //       }}),
     //   );

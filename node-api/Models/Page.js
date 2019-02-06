@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const PageSchema = new mongoose.Schema({
     title: {type: String, required: true, unique: true},
     content: {type: String, required: true, select: false},
-    parent: {type: String, required: true, enum: ['People', 'Education', 'Research', 'News', 'Events']}
+    parent: {type: String, required: true, enum: [
+        'About Us', 'People', 'Education', 'Research', 'News', 'Events',
+            'Careers', 'Contact Us'
+        ]}
 });
 
 const page = module.exports = mongoose.model('Page', PageSchema);

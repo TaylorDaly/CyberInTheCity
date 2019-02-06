@@ -8,16 +8,14 @@
   extraAllowedContent: '*(*)'}"
     [readonly]="false"
     debounce="500"
-    (change)="getDirtyHTML()">
+    (change)="getDirtyHTML()" required>
   </ckeditor>
-  <button type="button" class="btn btn-color mt-3 float-right" (click)="passHtmlString()">Save</button>
+  <button [disabled]="disabled" type="button" class="btn btn-color mt-3 float-right" (click)="passHtmlString()">Save</button>
 
-
-  <div class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
+  <div [innerHTML]="html" class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
   </div>
 
   {{htmlContent}}
 </div>
 
-<div [innerHTML]="html" class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
-</div>
+
