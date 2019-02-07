@@ -17,56 +17,58 @@ NewsRouter.get('/', (req, res, next) => {
 // Path to find news and add it to our own database
 // TODO: figure out how to set a schedule on this path. Should not be able to call this path, it should get news at
 //  some sort of interval i.e. daily. Maybe it shouldn't even be a path.
-NewsRouter.post('/', (req, res) => {
+NewsRouter.post('/', (req, res, next) => {
     // 1. Hit News API
     // https://newsapi.org/docs/client-libraries/node-js
-    let today = new Date();
-    let todayString = today.getFullYear() + '-' + today.getMonth() + 1 + '-' + today.getDate();
-    // console.log(todayString); // Format: YYYY-MM-DD
+
+    // Today and 24 hours ago in ISO 8601 format.
+    let today = new Date().toISOString();
+    let yesterday = new Date(new Date().setDate(new Date().getDate()-1)).toISOString();
 
     NewsAPI.v2.everything({
         q: 'cybersecurity',
-        //sources: 'bbc-news,the-verge',
-        //domains: 'bbc.co.uk, techcrunch.com',
-        from: todayString,
-        to: todayString,
+        from: yesterday,
+        to: today,
         language: 'en',
-        sortBy: 'relevancy',
-        page: 1
+        page: 1,
+        pageSize: 30
     }).then(response => {
+        // 2. Find Relevant News
+        if (response.articles.length > 0) {
+            //   a. Send to machine learning script
+            runPy(JSON.stringify(response)).then((learnedNews) => {
+                //    b. get response
+                res.json(JSON.parse(learnedNews));
+                // TODO 3. Save News
+            }, (err) => {
+                next(err)
+            }).catch(err => {
+                next(err)
+            });
+        } else {
+            res.json({success: false, message: 'NewsAPI returned 0 articles.'})
+        }
+    }).catch(err => {
+        next(err)
+    });
+});
 
-        runPy.then(function(fromRunpy) {
-            console.log(fromRunpy.toString());
-            res.end(fromRunpy);
+
+const runPy = (news) => {
+    return new Promise((success, error) => {
+
+        const {spawn} = require('child_process');
+        const pyprog = spawn('python', ['./Python/LearnNewsScript.py', news]);
+
+        pyprog.stdout.on('data', (data) => {
+            success(data.toString('utf-8'));
         });
-        //res.send(response);
-        /*
-          {
-            status: "ok",
-            articles: [...]
-          }
-        */
+
+        pyprog.stderr.on('data', (data) => {
+            console.log('[' + new Date() + ']' + ` : News Learn script broke. Error: ${data.toString()}`);
+            error(new Error(data.toString('utf-8')));
+        });
     });
-    // 2. Find Relevant News
-    //      a. Send to machine learning script
-    //      b. get response
-    // 3. Save News
-});
-
-let runPy = new Promise(function(success, error) {
-
-    const { spawn } = require('child_process');
-    const pyprog = spawn('python', ['../Python/NewsLearn/LearnNewsScript.py']/*, params*/);
-
-    pyprog.stdout.on('data', function(data) {
-
-        success(data);
-    });
-
-    pyprog.stderr.on('data', (data) => {
-        //TODO: error handling
-        error(data);
-    });
-});
+};
 
 module.exports = NewsRouter;

@@ -12,6 +12,7 @@ handleAssertionError = (error, req, res, next) => {
     next(error);
 };
 
+// If the URL gets messed with simply redirect to homepage.
 handleURIError = (error, req, res, next) => {
     if (error instanceof URIError){
         return res.redirect('/')
@@ -24,7 +25,7 @@ handleDatabaseError = (error, req, res, next) => {
     if (error instanceof MongoError) {
         if (error.code === 11000) {
             return res.status(409).json({
-                message: `Error: ${error.message}`
+                message: `${error.message}`
             })
         }
         return res.status(500).json({
@@ -37,7 +38,7 @@ handleDatabaseError = (error, req, res, next) => {
 
 handleOtherError = (error, req, res, next) => {
     return res.status(500).json({
-        message: `Error: ${error.message}. Please try again.`
+        message: `${error.message}. Please try again.`
     });
 };
 
