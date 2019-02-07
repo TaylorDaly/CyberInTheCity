@@ -28,7 +28,7 @@ news = json.loads(newsString)
 	
 ### Pre-processing ###
 for article in news['articles']:
-    article['learn_content'] = article['title'] + ' ' + article['content'].split('… [+')[0].rsplit(' ',1)[0]
+    article['learn_content'] = article['title'] + ' ' + str(article['content']).split(' [+')[0].rsplit(' ',1)[0]
 	
 stemmer = nltk.stem.porter.PorterStemmer()
 remove_punctuation_map = dict((ord(char), None) for char in string.punctuation)

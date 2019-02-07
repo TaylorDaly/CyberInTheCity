@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const regex = require('../Config/Regex.js');
 
 // TODO: add NewsAPI Attribution link on front page
 //  powered by NewsAPI.org
@@ -15,7 +14,9 @@ const NewsSchema = mongoose.Schema({
     },
     imageLink: {
         type: String,
-        match: regex.link
+    },
+    URL: {
+        type: String,
     },
     createdOn: {
         type: Date,

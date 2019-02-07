@@ -38,7 +38,7 @@ handleDatabaseError = (error, req, res, next) => {
 
 handleOtherError = (error, req, res, next) => {
     return res.status(500).json({
-        message: `${error.message}. Please try again.`
+        message: `${error.message}`
     });
 };
 

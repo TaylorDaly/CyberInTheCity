@@ -23,7 +23,7 @@ NewsRouter.post('/', (req, res, next) => {
 
     // Today and 24 hours ago in ISO 8601 format.
     let today = new Date().toISOString();
-    let yesterday = new Date(new Date().setDate(new Date().getDate()-1)).toISOString();
+    let yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
 
     NewsAPI.v2.everything({
         q: 'cybersecurity',
@@ -35,13 +35,22 @@ NewsRouter.post('/', (req, res, next) => {
     }).then(response => {
         // 2. Find Relevant News
         if (response.articles.length > 0) {
+            // Remove articles with missing content.
+            for (let i = 0; i < response.articles.length; i++) {
+                if (!response.articles[i].content || !(response.articles[i].content.length > 0)) {
+                    response.articles.splice(i, 1);
+                }
+            }
             //   a. Send to machine learning script
-            runPy(JSON.stringify(response)).then((learnedNews) => {
-                //    b. get response
-                res.json(JSON.parse(learnedNews));
-                // TODO 3. Save News
-            }, (err) => {
-                next(err)
+            runPy(JSON.stringify(response)).then(async (learnedNews) => {
+                //    b. get
+                try {
+                    await addArticleArray(JSON.parse(learnedNews), next);
+                    res.json(JSON.parse(learnedNews));
+
+                } catch (err) {
+                    next(err)
+                }
             }).catch(err => {
                 next(err)
             });
@@ -53,6 +62,32 @@ NewsRouter.post('/', (req, res, next) => {
     });
 });
 
+const addArticleArray = async (learnedNews, next) => {
+    //await Promise.all(learnedNews.articles.map(async (article) => {
+    for (const article of learnedNews.articles) {
+        let newNews = new News({
+            title: article.title,
+            URL: article.url,
+            content: article.content,
+            imageLink: article.urlToImage,
+            createdBy: 'NewsAPI'
+        });
+        // 3. Save News
+        try {
+            await newNews.save((err) => {
+                if (err) {
+                    if (err.code === 11000 && err.name === 'MongoError') {
+                        // Do nothing if news already exists.
+                    } else {
+                        throw new Error(err)
+                    }
+                }
+            });
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    }
+};
 
 const runPy = (news) => {
     return new Promise((success, error) => {
