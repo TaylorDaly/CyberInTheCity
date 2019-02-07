@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder} from "@angular/forms";
+import {FormBuilder, Validators} from "@angular/forms";
 import {navItems} from "../navmenu/navItems";
 import {UserMenuService} from "./user-menu.service";
 
@@ -13,10 +13,17 @@ export class UserMenuComponent implements OnInit {
   parents = new navItems().getParents();
 
   createPage = this.fb.group({
-    htmlString: [''],
-    title: [''],
-    parent: ['']
+    content: [''],
+    title: ['', Validators.required],
+    parent: ['', Validators.required]
   });
+
+  get title() {
+    return this.createPage.get('title');
+  }
+  get parent() {
+    return this.createPage.get('parent');
+  }
 
   constructor(private fb: FormBuilder,
               private userService: UserMenuService) { }
@@ -24,20 +31,15 @@ export class UserMenuComponent implements OnInit {
   ngOnInit() {
   }
 
-  saveHtmlString(html){
+  addStaticPage(html) {
     this.createPage.patchValue({
-      htmlString: html
+      content: html,
+      // title: this.title.value.trim()
     });
-  }
-
-  addStaticPage() {
-    this.userService.addPage(this.createPage)
+    console.log(this.createPage.value);
+    this.userService.addPage(this.createPage.value)
       .subscribe(
         res => window.alert("Successfully added page to database."),
-        err => {
-          window.alert(err.message);
-          console.log(err)
-        }
       );
   }
 }

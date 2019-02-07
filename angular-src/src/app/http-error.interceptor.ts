@@ -17,9 +17,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request)
       .pipe(
-        retry(3),
+        retry(1),
         catchError((error: HttpErrorResponse) => {
-          let errorMessage = "";
+          let errorMessage = `Error Code: ${error.status}\nMessage: An error has occurred while handling the request.`;
           if (error.error instanceof ErrorEvent) {
             // client-side error
             errorMessage = `Error: ${error.error.message}`;
@@ -28,9 +28,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             if(error.status >= 500) {
               errorMessage = `Error Code: ${error.status}\nMessage: Server Error`;
             }
-            else if(error.error.message == null) {
-              errorMessage = `Error Code: ${error.status}\nMessage: An error has occurred while handling the request.`;
-            }
+            // else if(error.error.message == null) {
+            //   errorMessage = `Error Code: ${error.status}\nMessage: An error has occurred while handling the request.`;
+            // }
             else {
               errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`;
             }
@@ -39,7 +39,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           console.log(error);
 
           if(error.status === 403) {
-            window.location.href = '/login';
+            //window.location.href = '/login';
           }
           return throwError(errorMessage);
         })

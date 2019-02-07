@@ -1,4 +1,4 @@
-import {Component, OnInit, SecurityContext, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
@@ -8,6 +8,7 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 })
 export class EditorComponent implements OnInit {
 
+  @Input() disabled: boolean;
   @Output() htmlString = new EventEmitter<string>();
 
   htmlContent = "<p>Enter text here...</p>";
@@ -19,6 +20,7 @@ export class EditorComponent implements OnInit {
   ngOnInit() {
   }
 
+  // Remove security so can preview HTML page with inline styles //
   getDirtyHTML() {
     this.html = this.sanitizer.bypassSecurityTrustHtml(this.htmlContent);
   }

@@ -43,7 +43,10 @@ PageRouter.post('/', Auth.Verify, (req, res, next) => {
     Page.addPage(newPage, (err) => {
         if (err) {
             if (err.code === 11000 && err.name === 'MongoError') {
-                err.message = `There is already a page with the title '${newPage.title}'`;
+                res.status(400).json({
+                    success: false,
+                    message: `There is already a page with the title '${newPage.title}'`
+                });
             }
             next(err);
         } else {
@@ -51,6 +54,7 @@ PageRouter.post('/', Auth.Verify, (req, res, next) => {
         }
     });
 });
+
 
 PageRouter.put('/', Auth.Verify, (req, res, next) => {
     Page.getOne({title: req.body.title}, (err, page) => {

@@ -13,10 +13,18 @@
       <label>Name</label>
       <div class="form-row">
         <div class="col">
-          <input type="text" class="form-control" placeholder="First name" required formControlName="firstName"/>
+          <input type="text" class="form-control" placeholder="First name" formControlName="firstName"
+                 [class.is-invalid]="firstName.invalid && firstName.touched"/>
+          <small [class.d-none]="firstName.valid || firstName.untouched" class="text-danger">
+            First name is required.
+          </small>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Last name" required formControlName="lastName"/>
+          <input type="text" class="form-control" placeholder="Last name" formControlName="lastName"
+                 [class.is-invalid]="lastName.invalid && lastName.touched"/>
+          <small [class.d-none]="lastName.valid || lastName.untouched" class="text-danger">
+            Last name is required.
+          </small>
         </div>
       </div>
     </div>
@@ -25,10 +33,18 @@
       <label>Password</label>
       <div class="form-row">
         <div class="col">
-          <input type="password" class="form-control" placeholder="Enter password" required formControlName="password"/>
+          <input type="password" class="form-control" placeholder="Enter password" formControlName="password"
+                 [class.is-invalid]="password.invalid && password.touched"/>
+          <small [class.d-none]="password.valid || password.untouched" class="text-danger">
+            Password is required.
+          </small>
         </div>
         <div class="col">
-          <input type="password" class="form-control" placeholder="Confirm password" required formControlName="confirmPassword"/>
+          <input type="password" class="form-control" placeholder="Confirm password" formControlName="confirmPassword"
+                 [class.is-invalid]="confirmPassword.invalid && confirmPassword.touched"/>
+          <small [class.d-none]="confirmPassword.valid || confirmPassword.untouched" class="text-danger">
+            Must confirm your password.
+          </small>
         </div>
       </div>
     </div>
@@ -38,10 +54,9 @@
       <input type="url" class="form-control" placeholder="Enter your website URL" formControlName="myWebsite"/>
     </div>
 
-
     <div class="form-group">
       <label>Social Media (Optional)</label>
-      <div formArrayName="sslinks" *ngFor="let link of sslinks.controls; let i=index">
+      <div formArrayName="smLinks" *ngFor="let link of smLinks.controls; let i=index">
         <div [formGroupName]="i">
           <div class="form-row">
             <div class="col-md-3">
@@ -52,22 +67,22 @@
                 </option>
               </select>
             </div>
-            <div [className]="inputLength">
+            <div [className]="linkLength">
               <input type="url" class="form-control" placeholder="Link URL" formControlName="URL">
             </div>
-            <div class="col-md-1" [hidden]="sslinks.length <= 1">
-              <button type="button" class="btn btn-color" (click)="deleteSSLinks(i)">
+            <div class="col-md-1" [hidden]="smLinks.length <= 1">
+              <button type="button" class="btn btn-color" (click)="deleteSMLinks(i)">
                 Delete
               </button>
             </div>
           </div>
         </div>
       </div>
-      <button type="button" class="btn btn-default btn-md" (click)="addSSLinks()">
+      <button [disabled]="linksLimit" type="button" class="btn btn-default btn-md" (click)="addSMLinks()">
         <span class="fa fa-plus"></span> Add </button>
     </div>
 
-    <button class="btn btn-color" type="submit">Submit</button>
+    <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
 
   </form>
   <app-error></app-error>
