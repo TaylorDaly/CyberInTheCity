@@ -90,6 +90,7 @@ EducationRouter.put('/', Auth.Verify, (req, res, next) => {
         }
     });
 });
+
 EducationRouter.delete('/:id', Auth.Verify, (req, res, next) => {
     Education.getEducation(req.params.id, (err, education) => {
         if (err) {

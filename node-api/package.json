@@ -21,12 +21,13 @@
     "express": "^4.16.4",
     "helmet": "^3.15.0",
     "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.4.2",
-    "nodemailer": "^2.7.2",
     "mongodb": "latest",
+    "mongoose": "^5.4.10",
+    "newsapi": "^2.4.0",
+    "nodemailer": "^2.7.2",
     "nodemon": "^1.18.9"
   },
   "devDependencies": {
-    "@types/express": "^4.16.0"
+    "@types/express": "^4.16.1"
   }
 }

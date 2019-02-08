@@ -63,7 +63,7 @@ UserRouter.post('/signup/:token', (req, res) => {
                         });
                     } else {
                         newPerson.password = hash;
-                        Person.addPerson(newPerson, (err, callback) => {
+                        Person.addPerson(newPerson, (err) => {
                             if (err) {
                                 res.status(500).json({
                                     success: false, message: `Failed to add new person. Error: ${err}`
