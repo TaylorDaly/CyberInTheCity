@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 import { NavmenuComponent } from './navmenu/navmenu.component';
 import { ErrorComponent } from './error/error.component';
 import { FooterComponent } from './footer/footer.component';
+import {ImageCropperComponent} from "ngx-img-cropper";
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { FooterComponent } from './footer/footer.component';
     RoutingComponents,
     ErrorComponent,
     FooterComponent,
+    ImageCropperComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,7 +4,8 @@ export interface Person {
   role: string,
   email: string,
   my_website_link: string,
-  links: Array<Link>
+  links: Array<Link>,
+  password: string,
 }
 
 export interface Image {

@@ -2,9 +2,7 @@
 <div class="container">
   <ckeditor
     [(ngModel)]="htmlContent"
-    [config]="{removeButtons: 'Source,Form,Checkbox,Radio,TextField,Textarea,Select,' +
-  'Button,ImageButton,HiddenField,Flash,Iframe,ShowBlocks,Anchor,Cut,Copy,Paste,' +
-  'PasteText,PasteFromWord,Templates,CopyFormatting,RemoveFormat,CreateDiv',
+    [config]="{removeButtons: removeButtons,
   extraAllowedContent: '*(*)'}"
     [readonly]="false"
     debounce="500"

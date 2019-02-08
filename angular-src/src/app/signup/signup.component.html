@@ -1,5 +1,5 @@
 <div class="container">
-  <form [formGroup]="signupForm">
+  <form [formGroup]="signupForm" (ngSubmit)="addUser()">
 
     {{signupForm.value | json}}
 
@@ -36,14 +36,17 @@
           <input type="password" class="form-control" placeholder="Enter password" formControlName="password"
                  [class.is-invalid]="password.invalid && password.touched"/>
           <small [class.d-none]="password.valid || password.untouched" class="text-danger">
-            Password is required.
+            Password is required. Must enter at least {{passwordLength}} characters.
           </small>
         </div>
         <div class="col">
           <input type="password" class="form-control" placeholder="Confirm password" formControlName="confirmPassword"
-                 [class.is-invalid]="confirmPassword.invalid && confirmPassword.touched"/>
+                 [class.is-invalid]="confirmPassword.invalid && confirmPassword.touched || signupForm.errors?.misMatch"/>
           <small [class.d-none]="confirmPassword.valid || confirmPassword.untouched" class="text-danger">
             Must confirm your password.
+          </small>
+          <small class="text-danger" *ngIf="signupForm.errors?.misMatch && confirmPassword.dirty">
+            Passwords do not match.
           </small>
         </div>
       </div>
@@ -82,8 +85,24 @@
         <span class="fa fa-plus"></span> Add </button>
     </div>
 
-    <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
+    <div class="form-group">
+      <label>Choose a profile image (Optional):</label>
+      <div class="form-row">
+        <div class="col">
+          <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
+      </div>
+        <div class="col">
+          <div *ngIf="imgSrc.image" style="padding-left: 10px;">
+            <label>Preview:</label>
+            <br/><img [src]="imgSrc.image" [width]="cropSettings.croppedWidth"
+                      [height]="cropSettings.croppedHeight"/>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!--{{imgSrc | json}}-->
+
+    <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
   </form>
-  <app-error></app-error>
 </div>

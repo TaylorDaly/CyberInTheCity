@@ -14,6 +14,10 @@ export class EditorComponent implements OnInit {
   htmlContent = "<p>Enter text here...</p>";
   html: SafeHtml;
 
+  removeButtons ='Source,Form,Checkbox,Radio,TextField,Textarea,Select,' +
+    'Button,ImageButton,HiddenField,Flash,Iframe,ShowBlocks,Anchor,Cut,Copy,Paste,' +
+    'PasteText,PasteFromWord,Templates,CopyFormatting,RemoveFormat,CreateDiv';
+
   constructor(private sanitizer: DomSanitizer) {
   }
 

@@ -28,28 +28,6 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
   word-wrap: break-word;
 }
 
-blockquote
-{
-  font-style: italic;
-  font-family: Georgia, Times, "Times New Roman", serif;
-  border: 0 solid #ccc;
-  padding: 2px 8px 2px 20px;
-}
-
-.cke_contents_ltr blockquote
-{
-  padding-left: 20px;
-  padding-right: 8px;
-  border-left-width: 5px;
-}
-
-.cke_contents_rtl blockquote
-{
-  padding-left: 8px;
-  padding-right: 20px;
-  border-right-width: 5px;
-}
-
 a
 {
   color: #0782C1;

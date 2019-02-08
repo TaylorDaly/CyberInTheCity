@@ -15,6 +15,7 @@ export class SignupGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean{
     // const token = route.params.token;
+    // localStorage.setItem("token", token);
     // // this.router.navigateByUrl('/register');
     // // return false;
     // return this.signupService.canSignUp(token)
