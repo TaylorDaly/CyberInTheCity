@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const regex = require('../Config/Regex.js');
 const jwt = require('jsonwebtoken');
 const dbConfig = require('../config/database');
+const Image = require('../models/Image');
 
 UserRouter.post('/verify', (req, res) => {
     let token = req.body.token;
@@ -40,13 +41,12 @@ UserRouter.post('/signup/:token', (req, res) => {
 
     jwt.verify(token, dbConfig.secret, function (err, decoded) {
         if (err) {
-            return res.status(500).json({auth: false, message: 'Failed to authenticate token.'})
+            return res.status(401).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
             let newPerson = new Person({
                 name: req.body.name,
                 role: req.body.role,
-                photo: req.body.photo,
-                email: decoded.email, //req.body.email,
+                email: decoded.email,
                 phone_number: req.body.phone_number,
                 office_location: req.body.office_location,
                 links: req.body.links,
@@ -59,19 +59,37 @@ UserRouter.post('/signup/:token', (req, res) => {
                 bcrypt.hash(req.body.password, 12, (err, hash) => {
                     if (err) {
                         return res.status(500).json({
-                            error: err
+                            success: false,
+                            message: err.message
                         });
                     } else {
                         newPerson.password = hash;
-                        Person.addPerson(newPerson, (err) => {
+
+                        let data = fs.readFileSync(req.body.photo);
+                        let newPic = new Image({
+                            buffer: data.toString('base64'),
+                            content_type: req.body.content_type
+                        });
+
+                        Image.saveImage(newPic, (err, img) => {
                             if (err) {
-                                res.status(500).json({
-                                    success: false, message: `Failed to add new person. Error: ${err}`
+                                res.json({
+                                    success: false,
+                                    message: `Failed to save image. Error: ${err}`
                                 })
                             } else {
-                                res.json({success: true, message: "Successfully added person."})
+                                newPerson.photo = img._id;
+                                Person.addPerson(newPerson, (err) => {
+                                    if (err) {
+                                        res.status(500).json({
+                                            success: false, message: `Failed to add new user. Error: ${err}`
+                                        })
+                                    } else {
+                                        res.json({success: true, message: "Successfully added person."});
+                                    }
+                                })
                             }
-                        })
+                        });
                     }
                 });
             } else {
@@ -107,7 +125,7 @@ UserRouter.post('/login', (req, res) => {
                 else if (result) {
                     const jwtToken = jwt.sign({
                             email: person.email,
-                            _id: person._id
+                            _id: person._id,
                         },
                         dbConfig.secret,
                         {
@@ -118,12 +136,11 @@ UserRouter.post('/login', (req, res) => {
                         message: "Login successful.",
                         token: jwtToken
                     });
-                }
-                else
+                } else
                     return res.status(401).json({success: false, message: "Password incorrect."})
             });
         } else {
-            return res.status(404).json({
+            return res.status(400).json({
                 success: false,
                 message: `Email does not exist.`
             })
