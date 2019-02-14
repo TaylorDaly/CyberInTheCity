@@ -2,6 +2,11 @@
 /*body {*/
   /*background-image: url("https://erpinnews.com/wp-content/uploads/2018/09/600MINUTES-INFORMATION-AND-CYBER-SECURITY.jpg");*/
 /*}*/
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.container{
+  margin-top: 30px;
+}
 .cu-gold
 {
   color:  #CFB87C;

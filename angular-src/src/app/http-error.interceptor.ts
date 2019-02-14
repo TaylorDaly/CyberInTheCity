@@ -19,29 +19,34 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       .pipe(
         retry(1),
         catchError((error: HttpErrorResponse) => {
-          let errorMessage = `Error Code: ${error.status}\nMessage: An error has occurred while handling the request.`;
-          if (error.error instanceof ErrorEvent) {
+          // Default Error message: //
+          let err = {
+            code: 500,
+            message: "An error occurred while handling the request"
+          };
+
+          if (error instanceof ErrorEvent) {
             // client-side error
-            errorMessage = `Error: ${error.error.message}`;
+            err.code = error.status;
+            err.message = error.message;
           } else {
             // server-side error
-            if(error.status >= 500) {
-              errorMessage = `Error Code: ${error.status}\nMessage: Server Error`;
+            if(error.status >= 500) {  // For all server errors //
+              err.code = error.status;
+              err.message = "Oh no! A server error has occurred.";
             }
-            // else if(error.error.message == null) {
-            //   errorMessage = `Error Code: ${error.status}\nMessage: An error has occurred while handling the request.`;
-            // }
             else {
-              errorMessage = `Error Code: ${error.status}\nMessage: ${error.error.message}`;
+              err.code = error.status;
+              err.message = error.error.message;
             }
           }
-          window.alert(errorMessage);
+          //window.alert(errorMessage);
           console.log(error);
 
-          if(error.status === 403) {
-            //window.location.href = '/login';
-          }
-          return throwError(errorMessage);
+          // if(error.status === 403) {
+          //   //window.location.href = '/login';
+          // }
+          return throwError(err);
         })
       )
   }

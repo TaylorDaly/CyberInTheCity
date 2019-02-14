@@ -1,8 +1,10 @@
 <div class="container">
+
   <form [formGroup]="signupForm" (ngSubmit)="addUser()">
 
-    {{signupForm.value | json}}
-
+    <!--{{signupForm.value | json}}-->
+    <p class="text-danger" *ngIf="errMsg !== ''">ERROR: {{errMsg}} Please Try Again.</p>
+    <h2>Sign Up Form</h2>
     <div class="form-group">
       <label>Email address</label>
       <input type="email" class="form-control" aria-describedby="emailHelp" readonly formControlName="email"/>
@@ -31,6 +33,9 @@
 
     <div class="form-group">
       <label>Password</label>
+      <button type="button" class="btn btn-md btn-icon" matTooltip={{pwdRequirements}} matTooltipPosition="right">
+        <span class="fa fa-info-circle"></span>
+      </button>
       <div class="form-row">
         <div class="col">
           <input type="password" class="form-control" placeholder="Enter password" formControlName="password"
@@ -108,7 +113,7 @@
 
     <!--{{imgSrc | json}}-->
     <div>
-      <p class="text-danger">ERROR: {{errMsg}}</p>
+      <p class="text-danger" *ngIf="errMsg !== ''">ERROR: {{errMsg}}</p>
     </div>
       <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
   </form>
