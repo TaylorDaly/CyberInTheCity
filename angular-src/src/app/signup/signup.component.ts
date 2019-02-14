@@ -146,6 +146,6 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
     console.log(this.newUser);
     //------------------------//
-    //this.signupService.postNewUser(localStorage.getItem('token'), newUser);
+    this.signupService.postNewUser(localStorage.getItem('token'), this.newUser);
   }
 }
