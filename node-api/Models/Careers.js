@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const CareersSchema = new mongoose.Schema({
-    title: {
+    jobtitle: {
         type: String,
         required: true
     },
@@ -9,13 +9,14 @@ const CareersSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
-    hours: {
+    company: String,
+    jobType: {
         type: String,
-        enum: ['Part-Time', 'Full-Time', 'Internship']
+        enum: ['Fulltime', 'Internship']
     },
-    link: String,
+    url: String,
     location: String,
-    deadlineDate: Date,
+    postedDate: Date,
     description: String,
 });
 

@@ -2,18 +2,73 @@ const express = require('express');
 const CareersRouter = express.Router();
 const Careers = require('../models/Careers');
 const Auth = require('../Config/Auth');
+const request = require('request');
 
 // Get all careers
-CareersRouter.get('/', (req, res) => {
+CareersRouter.get('/', (req, res, next) => {
     Careers.getAllCareers((err, careers) => {
         if (err) {
-            res.json({
-                success: false, message: `Failed to get all careers.\n
-            Error: ${err}`
-            })
+            next(err)
         } else {
-            //res.json({success: true, careers: careers})
-            res.json(careers)
+            var final = {};
+            var temp = {};
+            var fullTime = [];
+            var internship = [];
+            request(process.env.IndeedFullTimeCall, function (error, response, body) {
+                var data = JSON.parse(body);
+                if (response.statusCode === 200 && !(data.hasOwnProperty('error'))){
+                    temp['indeed'] = data.results;
+                    for (const posting of temp.indeed) {
+                        let newCareers = new Careers({
+                            jobtitle: posting.jobtitle,
+                            ownerID: 'indeed',
+                            company: posting.company,
+                            jobType: 'FullTime',
+                            url: posting.url,
+                            location: posting.formattedLocation,
+                            postedDate: posting.date,
+                            // description: (posting.snippet).replace(/[!@#$%^&*<b><\/b>]/g, "")
+                            description: posting.snippet
+                        });
+                        fullTime.push(newCareers);
+                    }
+                    request(process.env.IndeedInternshipCall, function (error, response, body) {
+                        var data = JSON.parse(body);
+                        if (response.statusCode === 200 && !(data.hasOwnProperty('error'))){
+                            temp['indeed'] = data.results;
+                            for (const posting of temp.indeed) {
+                                let newCareers = new Careers({
+                                    jobtitle: posting.jobtitle,
+                                    ownerID: 'indeed',
+                                    company: posting.company,
+                                    jobType: 'Internship',
+                                    url: posting.url,
+                                    location: posting.formattedLocation,
+                                    postedDate: posting.date,
+                                    // description: (posting.snippet).replace(/[!@#$%^&*<b><\/b>]/g, "")
+                                    description: posting.snippet
+                                });
+                                internship.push(newCareers);
+                                // console.log(newCareers);
+                            }
+                            final['internship'] = internship;
+                            final['fullTime'] = fullTime;
+                            final['ourCareers'] = careers;
+                            res.json(final);
+                        } else{
+                            res.json({
+                                success: false,
+                                message: `Attempt to get internship indeed postings. Error: ${err}`
+                            })
+                        }
+                    });
+                } else{
+                    res.json({
+                        success: false,
+                        message: `Attempt to get fullTime indeed postings. Error: ${err}`
+                    })
+                }
+            });
         }
     })
 });
@@ -40,12 +95,13 @@ CareersRouter.get('/:ownerID', (req, res) => {
 // Add
 CareersRouter.post('/', Auth.Verify, (req, res, next) => {
     let newCareers = new Careers({
-        title: req.body.title,
+        jobtitle: req.body.jobtitle,
         ownerID: req.body.ownerID,
-        hours: req.body.hours,
-        link: req.body.link,
+        company: req.body.company,
+        jobType: req.body.jobType,
+        url: req.body.url,
         location: req.body.location,
-        deadlineDate: req.body.deadlineDate,
+        postedDate: req.body.postedDate,
         description: req.body.description
     });
 
@@ -71,12 +127,13 @@ CareersRouter.put('/', Auth.Verify, (req, res, next) => {
                 message: `Attempt to get career failed. Error: ${err}`
             })
         } else if (careers) {
-            if (req.body.title) careers.title = req.body.title;
+            if (req.body.jobtitle) careers.jobtitle = req.body.jobtitle;
             if (req.body.ownerID) careers.ownerID = req.body.ownerID;
-            if (req.body.hours) careers.hours = req.body.hours;
-            if (req.body.link) careers.link = req.body.link;
+            if (req.body.company) careers.company = req.body.company;
+            if (req.body.jobType) careers.jobType = req.body.jobType;
+            if (req.body.url) careers.url = req.body.url;
             if (req.body.location) careers.location = req.body.location;
-            if (req.body.deadlineDate) careers.deadlineDate = req.body.deadlineDate;
+            if (req.body.postedDate) careers.postedDate = req.body.postedDate;
             if (req.body.description) careers.description = req.body.description;
 
             Careers.updateCareer(req.body._id, careers, (err) => {
