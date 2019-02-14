@@ -59,16 +59,21 @@
 
     <div class="form-group">
       <label>Social Media (Optional)</label>
-      <div formArrayName="smLinks" *ngFor="let link of smLinks.controls; let i=index">
+      <div formArrayName="smLinks" *ngFor="let smLink of smLinks.controls; let i=index">
         <div [formGroupName]="i">
           <div class="form-row">
             <div class="col-md-3">
-              <select class="form-control no-min-width" formControlName="description">
+              <select class="form-control no-min-width" formControlName="description"
+                      [class.is-invalid]="smLink.get('description').invalid">
                 <option value="" disabled>Select One</option>
                 <option *ngFor="let link of links" value="{{link.toLocaleLowerCase()}}">
                   {{link}}
                 </option>
               </select>
+              <div hidden *ngIf="descRequired(i)"></div>
+              <small *ngIf="smLink.get('description').invalid" class="text-danger">
+                Must select one for URL or erase URL.
+              </small>
             </div>
             <div [className]="linkLength">
               <input type="url" class="form-control" placeholder="Link URL" formControlName="URL">
@@ -102,7 +107,9 @@
     </div>
 
     <!--{{imgSrc | json}}-->
-
-    <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
+    <div>
+      <p class="text-danger">ERROR: {{errMsg}}</p>
+    </div>
+      <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
   </form>
 </div>

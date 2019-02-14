@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {SignupService} from "./signup.service";
-import {FormBuilder, FormArray, Validators} from "@angular/forms";
+import {FormBuilder, FormArray, Validators, FormGroup} from "@angular/forms";
 import {PasswordValidator} from "../shared/password.validator";
 import {CropperSettings} from "ngx-img-cropper";
 import {Person} from "../person/person";
@@ -11,32 +11,21 @@ import {Person} from "../person/person";
   styleUrls: ['./signup.component.css']
 })
 
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, AfterViewInit {
 
+  signupForm: FormGroup;
   // List of SM Link options: //
   links = ['Facebook', 'Twitter', 'LinkedIn', 'Google', 'RSS'];
   passwordLength = 8;
   linkLength = "col-md-9";  // SM Link URL input box length //
   linksLimit = false;  // Limit of SM Link inputs //
+  smLinksLimit = 5;
 
   imgSrc = {image: ""};  // Cropped image source //
   cropSettings = new CropperSettings();
 
-  signupForm = this.fb.group({
-    email: [localStorage.getItem('signupEmail')],
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
-    password: ['', [Validators.required, Validators.minLength(this.passwordLength)]],
-    confirmPassword: ['',[Validators.required]],
-    myWebsite: [''],
-    smLinks: this.fb.array([
-      this.fb.group({
-        URL: [''],
-        description: ['']
-      })
-    ])
-  }, {validators: PasswordValidator});
-
+  newUser: Person;  // Object to post to DB //
+  errMsg = "Blah";
 
   get firstName() {
     return this.signupForm.get('firstName');
@@ -55,20 +44,54 @@ export class SignupComponent implements OnInit {
   }
 
   constructor(private signupService: SignupService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private ref: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     this.setCropSettings();
+
+    this.signupForm = this.fb.group({
+      email: [localStorage.getItem('signupEmail')],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(this.passwordLength)]],
+      confirmPassword: ['',[Validators.required]],
+      myWebsite: [''],
+
+      smLinks: this.fb.array([this.smLink()])
+    }, {validators: PasswordValidator});
+  }
+
+  ngAfterViewInit() {
+    this.ref.detectChanges();
+  }
+
+  descRequired(i){
+    const desc = this.smLinks.at(i).get('description');
+
+    this.smLinks.at(i).get('URL').valueChanges
+      .subscribe(changed => {
+        if(changed && desc.value === "") {
+          desc.setValidators(Validators.required);
+        }else {
+          desc.clearValidators();
+        }
+        desc.updateValueAndValidity();
+      });
+  }
+
+  smLink():FormGroup {
+    return this.fb.group({
+      URL:[''],
+      description:['']
+    });
   }
 
   addSMLinks() {
     this.linkLength = 'col-md-8';
-    if(this.smLinks.length < 5) {
-      this.smLinks.push(this.fb.group({
-        URL: [''],
-        description: ['']
-      }));
+    if(this.smLinks.length < this.smLinksLimit) {
+      this.smLinks.push(this.smLink());
     } else {
       this.linksLimit = true;
     }
@@ -87,21 +110,19 @@ export class SignupComponent implements OnInit {
     this.cropSettings.height = 200;
     this.cropSettings.croppedWidth = 200;
     this.cropSettings.croppedHeight = 200;
-    this.cropSettings.canvasWidth = 500;
-    this.cropSettings.canvasHeight = 500;
+    this.cropSettings.canvasWidth = 300;
+    this.cropSettings.canvasHeight = 300;
 
     // Allow only jpg/jpeg and png files //
     this.cropSettings.allowedFilesRegex = /.(jpe?g|png)$/i;
   }
 
   addUser() {
-    let newUser: Person;
-
-    newUser.name = this.firstName.value + " " + this.lastName.value;
-    newUser.email = this.signupForm.get('email').value;
-    newUser.my_website_link = this.signupForm.get('myWebsite').value;
-    newUser.links = this.smLinks.value;
-    newUser.password = this.password.value;
+    this.newUser.name = this.firstName.value + " " + this.lastName.value;
+    this.newUser.email = this.signupForm.get('email').value;
+    this.newUser.my_website_link = this.signupForm.get('myWebsite').value;
+    this.newUser.links = this.smLinks.value;
+    this.newUser.password = this.password.value;
 
     // Prepare photo data: //
     //------------------------//
@@ -110,18 +131,20 @@ export class SignupComponent implements OnInit {
 
     // Set image file type //
     if(img[0].search('jpeg' || 'jpg') != -1) {
-      newUser.photo.content_type = 'image/jpeg';
+      this.newUser.photo.content_type = 'image/jpeg';
     } else if (img[0].search('png') != -1) {
-      newUser.photo.content_type = 'image/png';
+      this.newUser.photo.content_type = 'image/png';
     } else {
-      return;
+      this.newUser.photo = null;
     }
 
     if(img[1].length > 0) {
-      newUser.photo.buffer = img[1];
+      this.newUser.photo.buffer = img[1];
     } else {
-      return;
+      this.newUser.photo = null;
     }
+
+    console.log(this.newUser);
     //------------------------//
     //this.signupService.postNewUser(localStorage.getItem('token'), newUser);
   }
