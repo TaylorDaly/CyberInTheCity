@@ -70,6 +70,7 @@ PeopleRouter.delete('/:id', Auth.Verify, (req, res) => {
     })
 });
 
+// TODO: put in user controller
 PeopleRouter.put('/', Auth.Verify, (req, res) => {
 
     Person.getPerson({_id: req.body._id}, (err, person) => {

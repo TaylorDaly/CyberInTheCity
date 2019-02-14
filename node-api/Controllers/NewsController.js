@@ -2,6 +2,7 @@ const dbConfig = require('../Config/Database');
 const NewsAPI = new (require('newsapi'))(dbConfig.newsKey);
 const NewsRouter = require('express').Router();
 const News = require('../models/News');
+const schedule = require('node-schedule');
 
 NewsRouter.get('/', (req, res, next) => {
     let queryDate = new Date(req.body.createdOnBefore);
@@ -14,14 +15,13 @@ NewsRouter.get('/', (req, res, next) => {
         });
 });
 
-// Path to find news and add it to our own database
-// TODO: figure out how to set a schedule on this path. Should not be able to call this path, it should get news at
-//  some sort of interval i.e. daily. Maybe it shouldn't even be a path.
-NewsRouter.post('/', (req, res, next) => {
+// Scheduled job to find news and add it to our own database every day at midnight.
+// Collects the last 24 hours of articles every 24 hours.
+schedule.scheduleJob('0 0 * * *', () => {
     // 1. Hit News API
     // https://newsapi.org/docs/client-libraries/node-js
 
-    // Today and 24 hours ago in ISO 8601 format.
+    // Today and 24 hours ago in ISO 8601 format (yyyy-mm-dd).
     let today = new Date().toISOString();
     let yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
 
@@ -41,24 +41,24 @@ NewsRouter.post('/', (req, res, next) => {
                     response.articles.splice(i, 1);
                 }
             }
-            //   a. Send to machine learning script
+            //   a. Send articles to machine learning script.
             runPy(JSON.stringify(response)).then(async (learnedNews) => {
-                //    b. get
+                //    b. get response and save it.
                 try {
                     await addArticleArray(JSON.parse(learnedNews), next);
-                    res.json(JSON.parse(learnedNews));
+                    console.log(`[${new Date()}] : Successfully added ${(JSON.parse(learnedNews).length)} news articles.`);
 
                 } catch (err) {
-                    next(err)
+                    console.log(`[${new Date()}] : ${err}`)
                 }
             }).catch(err => {
-                next(err)
+                console.log(`[${new Date()}] : ${err}`)
             });
         } else {
-            res.json({success: false, message: 'NewsAPI returned 0 articles.'})
+            console.log('NewsAPI returned 0 articles.')
         }
     }).catch(err => {
-        next(err)
+        console.log(`[${new Date()}] : ${err}`)
     });
 });
 
@@ -84,7 +84,7 @@ const addArticleArray = async (learnedNews, next) => {
                 }
             });
         } catch (err) {
-            throw new Error(err.message);
+            throw new Error(err);
         }
     }
 };
@@ -100,7 +100,7 @@ const runPy = (news) => {
         });
 
         pyprog.stderr.on('data', (data) => {
-            console.log('[' + new Date() + ']' + ` : News Learn script broke. Error: ${data.toString()}`);
+            console.log('[' + new Date() + ']' + ` : Python error happened during News Learning script. Error: ${data.toString()}`);
             error(new Error(data.toString('utf-8')));
         });
     });
