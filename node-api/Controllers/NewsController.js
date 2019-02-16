@@ -45,8 +45,8 @@ schedule.scheduleJob('0 0 * * *', () => {
             runPy(JSON.stringify(response)).then(async (learnedNews) => {
                 //    b. get response and save it.
                 try {
-                    await addArticleArray(JSON.parse(learnedNews), next);
-                    console.log(`[${new Date()}] : Successfully added ${(JSON.parse(learnedNews).length)} news articles.`);
+                    await addArticleArray(JSON.parse(learnedNews));
+                    console.log(`[${new Date()}] : Successfully added ${(JSON.parse(learnedNews).articles.length)} news articles.`);
 
                 } catch (err) {
                     console.log(`[${new Date()}] : ${err}`)
@@ -62,7 +62,7 @@ schedule.scheduleJob('0 0 * * *', () => {
     });
 });
 
-const addArticleArray = async (learnedNews, next) => {
+const addArticleArray = async (learnedNews) => {
     //await Promise.all(learnedNews.articles.map(async (article) => {
     for (const article of learnedNews.articles) {
         let newNews = new News({
