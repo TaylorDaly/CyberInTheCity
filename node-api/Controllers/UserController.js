@@ -12,7 +12,7 @@ UserRouter.post('/verify', (req, res) => {
     let token = req.body.token;
     if (!token) return res.status(403).json({auth: false, message: 'No token provided.'});
 
-    jwt.verify(token, dbConfig.secret, function (err, decoded) {
+    jwt.verify(token, dbConfig.registerSecret, function (err, decoded) {
         if (err) {
             return res.status(403).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
@@ -39,7 +39,7 @@ UserRouter.post('/signup/:token', (req, res) => {
     let token = req.params.token;
     if (!token) return res.status(400).json({auth: false, message: 'No token provided.'});
 
-    jwt.verify(token, dbConfig.secret, function (err, decoded) {
+    jwt.verify(token, dbConfig.registerSecret, function (err, decoded) {
         if (err) {
             return res.status(401).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
@@ -65,10 +65,9 @@ UserRouter.post('/signup/:token', (req, res) => {
                     } else {
                         newPerson.password = hash;
 
-                        let data = fs.readFileSync(req.body.photo);
                         let newPic = new Image({
-                            buffer: data.toString('base64'),
-                            content_type: req.body.content_type
+                            buffer: req.body.photo.data,
+                            content_type: req.body.photo.content_type
                         });
 
                         Image.saveImage(newPic, (err, img) => {
@@ -175,7 +174,7 @@ UserRouter.post('/signup', (req, res) => {
                     }
                 });
 
-                let token = jwt.sign({email: req.body.email}, dbConfig.secret, {
+                let token = jwt.sign({email: req.body.email}, dbConfig.registerSecret, {
                     expiresIn: 7200 // expires in 2 hours
                 });
 
