@@ -16,6 +16,6 @@ export class NavmenuService {
   }
 
   getStaticPage(title:string) : Observable<StaticPage>{
-    return this.httpClient.get<StaticPage>(environment.apiUrl + '/page/' + title);
+    return this.httpClient.get<StaticPage>(environment.apiUrl + `/page/${title}`);
     }
 }

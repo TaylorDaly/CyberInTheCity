@@ -22,7 +22,7 @@ export class SignupService {
   }
 
   postNewUser(signupToken: string, newUser: Person): Observable<any> {
-    return this.httpClient.post(environment.apiUrl + '/user/signup/' + signupToken,
+    return this.httpClient.post(environment.apiUrl + `/user/signup/${signupToken}`,
       newUser);
   }
 }
