@@ -1,9 +1,9 @@
 <div class="container">
 
   <form [formGroup]="signupForm" (ngSubmit)="addUser()">
-
     <!--{{signupForm.value | json}}-->
-    <p class="text-danger" *ngIf="errMsg !== ''">ERROR: {{errMsg}} Please Try Again.</p>
+    <p class="text-danger" *ngIf="errMsg !== ''">ERROR: {{errMsg}}</p>
+
     <h2>Sign Up Form</h2>
     <div class="form-group">
       <label>Email address</label>
@@ -26,6 +26,18 @@
                  [class.is-invalid]="lastName.invalid && lastName.touched"/>
           <small [class.d-none]="lastName.valid || lastName.untouched" class="text-danger">
             Last name is required.
+          </small>
+        </div>
+        <div class="col">
+          <select class="form-control no-min-width" formControlName="role"
+                  [class.is-invalid]="role.invalid && role.touched">
+            <option value="" disabled>Select your role</option>
+            <option *ngFor="let r of roles">
+              {{r}}
+            </option>
+          </select>
+          <small *ngIf="role.invalid && role.touched" class="text-danger">
+            Role is required.
           </small>
         </div>
       </div>
@@ -108,10 +120,10 @@
                       [height]="cropSettings.croppedHeight"/>
           </div>
         </div>
+        <!--{{imgSrc | json}}-->
       </div>
     </div>
 
-    <!--{{imgSrc | json}}-->
     <div>
       <p class="text-danger" *ngIf="errMsg !== ''">ERROR: {{errMsg}}</p>
     </div>

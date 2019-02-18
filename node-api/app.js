@@ -16,8 +16,9 @@ const app = express();
 const port = dbConfig.nodePort || 3000;
 
 // Database Connection
-mongoose.connect(dbConfig.uri, {useNewUrlParser: true})
-    .then(res => console.log(`MongoDB connection _readyState: ${res.connections[0]._readyState}`));
+mongoose.connect(dbConfig.uri, require('./Config/MongooseConnectOptions'))
+    .then(res => console.log(`MongoDB connection: ${res.connections[0]._readyState === 1 ? 'Success' : `Failure. Response: ${res}`}.`))
+    .catch(err => console.log(err));
 
 // TODO: add TLS for security
 // app setup
@@ -27,7 +28,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, '../angular-src/dist')));
 
-// TODO: Fix mongoose deprecation warning as soon as mongoose updates.
 // TODO: JWT authentication on all routes
 // Routes
 app.use('/api/Person', require('./Controllers/PersonController'));
@@ -51,5 +51,5 @@ app.get('*', (req, res) => {
 app.use('/', require('./Controllers/ErrorHandler'));
 
 app.listen(port, function () {
-    console.log(`Starting the server at port ${port}`);
+    console.log(`Starting the server at port ${port}.`);
 });

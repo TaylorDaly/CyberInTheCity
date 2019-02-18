@@ -12,7 +12,7 @@ UserRouter.post('/verify', (req, res) => {
     let token = req.body.token;
     if (!token) return res.status(403).json({auth: false, message: 'No token provided.'});
 
-    jwt.verify(token, dbConfig.secret, function (err, decoded) {
+    jwt.verify(token, dbConfig.registerSecret, function (err, decoded) {
         if (err) {
             return res.status(403).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
@@ -39,7 +39,7 @@ UserRouter.post('/signup/:token', (req, res) => {
     let token = req.params.token;
     if (!token) return res.status(400).json({auth: false, message: 'No token provided.'});
 
-    jwt.verify(token, dbConfig.secret, function (err, decoded) {
+    jwt.verify(token, dbConfig.registerSecret, function (err, decoded) {
         if (err) {
             return res.status(401).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
@@ -65,15 +65,14 @@ UserRouter.post('/signup/:token', (req, res) => {
                     } else {
                         newPerson.password = hash;
 
-                        let data = fs.readFileSync(req.body.photo);
                         let newPic = new Image({
-                            buffer: data.toString('base64'),
-                            content_type: req.body.content_type
+                            buffer: req.body.photo.buffer,
+                            content_type: req.body.photo.content_type
                         });
 
                         Image.saveImage(newPic, (err, img) => {
                             if (err) {
-                                res.json({
+                                res.status(500).json({
                                     success: false,
                                     message: `Failed to save image. Error: ${err}`
                                 })
@@ -175,7 +174,7 @@ UserRouter.post('/signup', (req, res) => {
                     }
                 });
 
-                let token = jwt.sign({email: req.body.email}, dbConfig.secret, {
+                let token = jwt.sign({email: req.body.email}, dbConfig.registerSecret, {
                     expiresIn: 7200 // expires in 2 hours
                 });
 
@@ -188,7 +187,7 @@ UserRouter.post('/signup', (req, res) => {
                     html: '<a>Thank you for signing up with Cyber In the City. Please click the button below' +
                         ' to finish signing up.<br/></a><br/><div><!--[if mso]>\n' +
                         '  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" ' +
-                        'href="http://localhost:3000/api/signup/:token" style="height:40px;v-text-anchor:middle;width:250px;" ' +
+                        `href="${signupUrl}" style="height:40px;v-text-anchor:middle;width:250px;" ` +
                         'arcsize="45%" strokecolor="#e6e6e8" fillcolor="#fafafb">\n    <w:anchorlock/>\n' +
                         '    <center style="color:#000000;font-family:sans-serif;font-size:13px;font-weight:bold;">Finish Sign Up</center>\n' +
                         `  </v:roundrect>\n<![endif]--><a href="${signupUrl}"\n` +
