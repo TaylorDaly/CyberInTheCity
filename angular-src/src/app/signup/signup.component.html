@@ -28,6 +28,18 @@
             Last name is required.
           </small>
         </div>
+        <div class="col">
+          <select class="form-control no-min-width" formControlName="role"
+                  [class.is-invalid]="role.invalid && role.touched">
+            <option value="" disabled>Select your role</option>
+            <option *ngFor="let r of roles">
+              {{r}}
+            </option>
+          </select>
+          <small *ngIf="role.invalid && role.touched" class="text-danger">
+            Role is required.
+          </small>
+        </div>
       </div>
     </div>
 
@@ -108,11 +120,10 @@
                       [height]="cropSettings.croppedHeight"/>
           </div>
         </div>
-        {{imgSrc | json}}
+        <!--{{imgSrc | json}}-->
       </div>
     </div>
 
-    <!--{{imgSrc | json}}-->
     <div>
       <p class="text-danger" *ngIf="errMsg !== ''">ERROR: {{errMsg}}</p>
     </div>

@@ -66,13 +66,13 @@ UserRouter.post('/signup/:token', (req, res) => {
                         newPerson.password = hash;
 
                         let newPic = new Image({
-                            buffer: req.body.photo.data,
+                            buffer: req.body.photo.buffer,
                             content_type: req.body.photo.content_type
                         });
 
                         Image.saveImage(newPic, (err, img) => {
                             if (err) {
-                                res.json({
+                                res.status(500).json({
                                     success: false,
                                     message: `Failed to save image. Error: ${err}`
                                 })

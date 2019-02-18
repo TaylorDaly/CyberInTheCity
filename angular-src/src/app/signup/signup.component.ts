@@ -5,7 +5,7 @@ import {PasswordValidator} from "../shared/password.validator";
 import {CropperSettings} from "ngx-img-cropper";
 import {Person} from "../person/person";
 import {Router} from "@angular/router";
-import {environment} from "../../environments/environment";
+import {regex} from "../../environments/environment";
 
 @Component({
   selector: 'app-signup',
@@ -18,6 +18,8 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   // List of SM Link options: //
   links = ['Facebook', 'Twitter', 'LinkedIn', 'Google', 'RSS'];
+
+  roles = ['Graduate Student', 'Undergraduate Student', 'Assistant Professor', 'Teacher\'s Assistant', 'Professor'];
   passwordLength = 8;
   linkLength = "col-md-9";  // SM Link URL input box length //
   linksLimit = false;  // Limit of SM Link inputs //
@@ -41,6 +43,9 @@ export class SignupComponent implements OnInit {
   get lastName() {
     return this.signupForm.get('lastName');
   }
+  get role() {
+    return this.signupForm.get('role');
+  }
   get password() {
     return this.signupForm.get('password');
   }
@@ -63,7 +68,8 @@ export class SignupComponent implements OnInit {
       email: [localStorage.getItem('signupEmail')],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(this.passwordLength)]],
+      role: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(this.passwordLength), Validators.pattern(regex.password)]],
       confirmPassword: ['',[Validators.required]],
       myWebsite: [''],
 
@@ -128,7 +134,8 @@ export class SignupComponent implements OnInit {
     this.newUser.my_website_link = this.signupForm.get('myWebsite').value;
     this.newUser.links = this.smLinks.value;
     this.newUser.password = this.password.value;
-    console.log(this.newUser);
+    this.newUser.role = this.role.value;
+    //console.log(this.newUser);
 
     // Prepare photo data: //
     //------------------------//
@@ -159,6 +166,7 @@ export class SignupComponent implements OnInit {
     this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
       .subscribe(
         res => {
+          console.log(res);
           this.router.navigateByUrl('/login');
       }, err => {
           this.errMsg = err.message;
