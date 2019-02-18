@@ -187,7 +187,7 @@ UserRouter.post('/signup', (req, res) => {
                     html: '<a>Thank you for signing up with Cyber In the City. Please click the button below' +
                         ' to finish signing up.<br/></a><br/><div><!--[if mso]>\n' +
                         '  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" ' +
-                        'href="http://localhost:3000/api/signup/:token" style="height:40px;v-text-anchor:middle;width:250px;" ' +
+                        `href="${signupUrl}" style="height:40px;v-text-anchor:middle;width:250px;" ` +
                         'arcsize="45%" strokecolor="#e6e6e8" fillcolor="#fafafb">\n    <w:anchorlock/>\n' +
                         '    <center style="color:#000000;font-family:sans-serif;font-size:13px;font-weight:bold;">Finish Sign Up</center>\n' +
                         `  </v:roundrect>\n<![endif]--><a href="${signupUrl}"\n` +
