@@ -101,4 +101,5 @@ typings/
 # next.js build output
 .next
 
-angular-src/src/environments/*
+environment.ts
+environment.prod.ts
