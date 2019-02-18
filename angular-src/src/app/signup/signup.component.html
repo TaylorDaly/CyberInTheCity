@@ -2,7 +2,7 @@
 
   <form [formGroup]="signupForm" (ngSubmit)="addUser()">
     <!--{{signupForm.value | json}}-->
-    <p class="text-danger" *ngIf="errMsg !== ''">ERROR: {{errMsg}}</p>
+    <p class="text-danger">{{errMsg}}</p>
 
     <h2>Sign Up Form</h2>
     <div class="form-group">
