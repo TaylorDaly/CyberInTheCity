@@ -153,10 +153,10 @@ export class SignupComponent implements OnInit {
     }
 
     console.log(this.newUser);
-    //console.log(localStorage.getItem('token'));
+    console.log(localStorage.getItem('token'));
     //------------------------//
     //this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
-    this.signupService.postNewUser(environment.devToken, this.newUser)
+    this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
       .subscribe(
         res => {
           this.router.navigateByUrl('/login');

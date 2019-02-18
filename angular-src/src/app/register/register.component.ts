@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit {
   }
 
   sendEmail() {
-    this.signupService.sendSignupEmail(this.signupEmail + "@ucdenver.edu")
+    this.signupService.sendSignupEmail(this.signupEmail.value)
       .subscribe(
         response => {
           this.message = response.message;

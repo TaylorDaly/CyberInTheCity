@@ -6,7 +6,6 @@
 export const environment = {
   production: false,
   apiUrl: "http://localhost:3000/api",
-  devToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InFAcS5jb20iLCJfaWQiOiI1YzA2ZGQ3MmQwMjFmZTE5ZmMzODM4MjUiLCJpYXQiOjE1NTA0NDE2ODksImV4cCI6MTU1MDUyODA4OX0.-aqODMsGxEq18ROk6fwyXbzX_0tjHgjGOYyj8USzLTA"
 };
 
 export const regex = {

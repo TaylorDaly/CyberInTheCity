@@ -15,19 +15,20 @@ export class SignupGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean{
     const token = route.params.token;
-    console.log(token);
+    //console.log(token);
 
     return this.signupService.canSignUp(token)
       .pipe(
         map(res => {
           localStorage.setItem("token", token);
-          console.log(localStorage.getItem('token'));
+          //console.log(localStorage.getItem('token'));
           localStorage.setItem("signupEmail", res['email']);
           return res['auth'];
         }),
         catchError((err) => {
           window.alert(`Error ${err.code}: ${err.message}`);
           this.router.navigateByUrl('/login');
+          console.log(token);
           return of(false);
         })
       );
