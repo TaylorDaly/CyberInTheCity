@@ -5,6 +5,7 @@ import {PasswordValidator} from "../shared/password.validator";
 import {CropperSettings} from "ngx-img-cropper";
 import {Person} from "../person/person";
 import {Router} from "@angular/router";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-signup',
@@ -122,7 +123,8 @@ export class SignupComponent implements OnInit {
 
   addUser() {
     this.newUser.name = this.firstName.value + " " + this.lastName.value;
-    this.newUser.email = this.signupForm.get('email').value;
+    //this.newUser.email = this.signupForm.get('email').value;
+    this.newUser.email = 'se.yu@ucdenver.edu';
     this.newUser.my_website_link = this.signupForm.get('myWebsite').value;
     this.newUser.links = this.smLinks.value;
     this.newUser.password = this.password.value;
@@ -151,9 +153,10 @@ export class SignupComponent implements OnInit {
     }
 
     console.log(this.newUser);
-    console.log(localStorage.getItem('token'));
+    //console.log(localStorage.getItem('token'));
     //------------------------//
-    this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
+    //this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
+    this.signupService.postNewUser(environment.devToken, this.newUser)
       .subscribe(
         res => {
           this.router.navigateByUrl('/login');

@@ -5,5 +5,17 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:3000/api"
+  apiUrl: "http://localhost:3000/api",
+  devToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InFAcS5jb20iLCJfaWQiOiI1YzA2ZGQ3MmQwMjFmZTE5ZmMzODM4MjUiLCJpYXQiOjE1NTA0NDE2ODksImV4cCI6MTU1MDUyODA4OX0.-aqODMsGxEq18ROk6fwyXbzX_0tjHgjGOYyj8USzLTA"
+};
+
+export const regex = {
+  // RFC 5322 Official Email Standard
+  //email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@(ucdenver.edu)$/,
+  // TODO: Phone number regex
+  // Check if password is 8 character and has one capital, one lower case, and one special
+  password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+  // Check if any characters are not a-z, A-Z, 0-9, or #?!@$%^&*-
+  disallowedCharacters: /[^a-zA-Z0-9#?!@$%^&*-]/,
 };
