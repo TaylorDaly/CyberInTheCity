@@ -15,39 +15,39 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   errorMessage: string;
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request)
+      return next.handle(request)
       .pipe(
         retry(1),
         catchError((error: HttpErrorResponse) => {
-          // Default Error message: //
-          let err = {
-            code: 500,
-            message: "An error occurred while handling the request"
-          };
+            // Default Error message: //
+            let err = {
+              code: 500,
+              message: "An error occurred while handling the request"
+            };
 
-          if (error instanceof ErrorEvent) {
-            // client-side error
-            err.code = error.status;
-            err.message = error.message;
-          } else {
-            // server-side error
-            if(error.status >= 500) {  // For all server errors //
+            if (error instanceof ErrorEvent) {
+              // client-side error
               err.code = error.status;
-              err.message = "Oh no! A server error has occurred.";
+              err.message = error.message;
+            } else {
+              // server-side error
+              if(error.status >= 500) {  // For all server errors //
+                err.code = error.status;
+                err.message = error.error.message;
+              }
+              else {
+                err.code = error.status;
+                err.message = error.error.message;
+              }
             }
-            else {
-              err.code = error.status;
-              err.message = error.error.message;
-            }
-          }
-          //window.alert(errorMessage);
-          console.log(error);
+            //window.alert(err.message);
+            console.log(error);
 
-          // if(error.status === 403) {
-          //   //window.location.href = '/login';
-          // }
-          return throwError(err);
-        })
+            // if(error.status === 403) {
+            //   //window.location.href = '/login';
+            // }
+            return throwError(err);
+          })
       )
   }
 }

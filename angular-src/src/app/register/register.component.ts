@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SignupService} from "../signup/signup.service";
+import {FormBuilder, Validators} from "@angular/forms";
+import {regex} from "../../environments/environment";
 
 @Component({
   selector: 'app-register',
@@ -8,11 +10,19 @@ import {SignupService} from "../signup/signup.service";
 })
 export class RegisterComponent implements OnInit {
 
-  signupEmail = "";
+  registerForm = this.fb.group({
+    signupEmail: ['', [Validators.required, Validators.pattern(regex.email)]]
+  });
+
   message = "";
   error = "";
 
-  constructor(private signupService: SignupService) { }
+  get signupEmail() {
+    return this.registerForm.get('signupEmail');
+  }
+
+  constructor(private signupService: SignupService,
+              private fb: FormBuilder) { }
 
   ngOnInit() {
   }
@@ -20,8 +30,14 @@ export class RegisterComponent implements OnInit {
   sendEmail() {
     this.signupService.sendSignupEmail(this.signupEmail + "@ucdenver.edu")
       .subscribe(
-        response => {this.message = response.message},
-        error => {this.error = error.message}
+        response => {
+          this.message = response.message;
+          this.error = "";
+        },
+        error => {
+          this.error = error.message;
+          this.message = "";
+        }
       );
   }
 }
