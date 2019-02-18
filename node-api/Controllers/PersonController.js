@@ -6,6 +6,8 @@ const Person = require('../models/Person');
 
 PeopleRouter.get('/', (req, res) => {
     let query = req.query;
+    // Only return people that have been verified by an admin.
+    query['verified'] = true;
     Person.getPeople(query, (err, people) => {
         if (err) {
             res.json({
