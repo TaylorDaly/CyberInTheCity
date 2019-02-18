@@ -72,7 +72,7 @@ UserRouter.post('/signup/:token', (req, res) => {
 
                         Image.saveImage(newPic, (err, img) => {
                             if (err) {
-                                res.json({
+                                res.status(500).json({
                                     success: false,
                                     message: `Failed to save image. Error: ${err}`
                                 })
