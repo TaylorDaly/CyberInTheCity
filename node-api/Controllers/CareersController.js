@@ -104,6 +104,7 @@ CareersRouter.get('/', (req, res, next) => {
     })
 });
 
+// TODO: consider deleting
 //Get all careers given the owners ID (HandShake or professor)
 CareersRouter.get('/:ownerID', (req, res) => {
     Careers.getOwnerCareer(req.params.ownerID, (err, careers) => {
@@ -124,7 +125,7 @@ CareersRouter.get('/:ownerID', (req, res) => {
 });
 
 // Add
-CareersRouter.post('/', Auth.Verify, (req, res, next) => {
+CareersRouter.post('/', Auth.VerifyAdmin, (req, res, next) => {
     let today = new Date();
     let newCareers = new Careers({
         jobtitle: req.body.jobtitle,
@@ -150,7 +151,7 @@ CareersRouter.post('/', Auth.Verify, (req, res, next) => {
 });
 
 // Update
-CareersRouter.put('/', Auth.Verify, (req, res, next) => {
+CareersRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
     Careers.getCareer(req.body._id, (err, careers) => {
         if (err) {
             res.json({
@@ -190,7 +191,7 @@ CareersRouter.put('/', Auth.Verify, (req, res, next) => {
 });
 
 // Delete
-CareersRouter.delete('/:id', Auth.Verify, (req, res, next) => {
+CareersRouter.delete('/:id', Auth.VerifyAdmin, (req, res, next) => {
     Careers.getCareer(req.params.id, (err, careers) => {
         if (err) {
             res.json({
