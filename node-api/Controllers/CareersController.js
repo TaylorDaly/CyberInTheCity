@@ -3,7 +3,34 @@ const CareersRouter = express.Router();
 const Careers = require('../models/Careers');
 const Auth = require('../Config/AuthController');
 const request = require('request');
+var schedule = require('node-schedule');
 
+//add a scheduler for removing the on campus posting
+//only allowing for the posting to be active for 30 days
+schedule.scheduleJob('0 * * * * *', function(){
+    let eraseMonth = new Date(new Date().setDate(new Date().getDate() - 30));//.getMonth() + 1;
+    Careers.getAllCareers((err, careers) => {
+        if (err) {
+            next(err)
+        } else {
+            var i;
+            for (i = 0; i < careers.length; i++) {
+                careerID = careers[i]._id;
+                careerDate = careers[i].postedDate;
+                    if (careerDate <= eraseMonth) {
+                        Careers.deleteCareer(careers[i], (err) => {
+                            if (err) {
+                                console.log(`[${new Date()}] : ${err}`)
+                            } else {
+                                console.log(`[${new Date()}] : Successfully removed`);
+                            }
+                        });
+                    }
+            }
+        }
+    })
+
+});
 // Get all careers
 CareersRouter.get('/', (req, res, next) => {
     Careers.getAllCareers((err, careers) => {
@@ -12,8 +39,10 @@ CareersRouter.get('/', (req, res, next) => {
         } else {
             var final = {};
             var temp = {};
+            var total = [];
             var fullTime = [];
             var internship = [];
+            var partTime = [];
             request(process.env.IndeedFullTimeCall, function (error, response, body) {
                 var data = JSON.parse(body);
                 if (response.statusCode === 200 && !(data.hasOwnProperty('error'))){
@@ -21,25 +50,26 @@ CareersRouter.get('/', (req, res, next) => {
                     for (const posting of temp.indeed) {
                         let newCareers = new Careers({
                             jobtitle: posting.jobtitle,
-                            ownerID: 'indeed',
                             company: posting.company,
                             jobType: 'FullTime',
                             url: posting.url,
                             location: posting.formattedLocation,
                             postedDate: posting.date,
                             // description: (posting.snippet).replace(/[!@#$%^&*<b><\/b>]/g, "")
+                            // description: (posting.snippet).substring(0, length)
                             description: posting.snippet
                         });
                         fullTime.push(newCareers);
+                        total.push(newCareers);
                     }
                     request(process.env.IndeedInternshipCall, function (error, response, body) {
                         var data = JSON.parse(body);
                         if (response.statusCode === 200 && !(data.hasOwnProperty('error'))){
                             temp['indeed'] = data.results;
                             for (const posting of temp.indeed) {
+                                //async function or use a callback
                                 let newCareers = new Careers({
                                     jobtitle: posting.jobtitle,
-                                    ownerID: 'indeed',
                                     company: posting.company,
                                     jobType: 'Internship',
                                     url: posting.url,
@@ -49,9 +79,10 @@ CareersRouter.get('/', (req, res, next) => {
                                     description: posting.snippet
                                 });
                                 internship.push(newCareers);
-                                // console.log(newCareers);
+                                total.push(newCareers);
                             }
                             final['internship'] = internship;
+                            final['total'] = total;
                             res.json(final);
                         } else{
                             res.json({
@@ -94,14 +125,14 @@ CareersRouter.get('/:ownerID', (req, res) => {
 
 // Add
 CareersRouter.post('/', Auth.Verify, (req, res, next) => {
+    let today = new Date();
     let newCareers = new Careers({
         jobtitle: req.body.jobtitle,
-        ownerID: req.body.ownerID,
         company: req.body.company,
         jobType: req.body.jobType,
         url: req.body.url,
         location: req.body.location,
-        postedDate: req.body.postedDate,
+        postedDate: today,
         description: req.body.description
     });
 
@@ -128,7 +159,6 @@ CareersRouter.put('/', Auth.Verify, (req, res, next) => {
             })
         } else if (careers) {
             if (req.body.jobtitle) careers.jobtitle = req.body.jobtitle;
-            if (req.body.ownerID) careers.ownerID = req.body.ownerID;
             if (req.body.company) careers.company = req.body.company;
             if (req.body.jobType) careers.jobType = req.body.jobType;
             if (req.body.url) careers.url = req.body.url;

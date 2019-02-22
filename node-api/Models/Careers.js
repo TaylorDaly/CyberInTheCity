@@ -5,14 +5,10 @@ const CareersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    ownerID: {
-        type: [String],
-        required: true
-    },
     company: String,
     jobType: {
         type: String,
-        enum: ['Fulltime', 'Internship']
+        enum: ['FullTime', 'Internship']
     },
     url: String,
     location: String,
@@ -41,10 +37,10 @@ module.exports.addCareer = (newCareers, callback) => {
 };
 
 module.exports.updateCareer = (id, update, callback) => {
-    careers.findOneAndUpdate(id, update, callback);
+    careers.findByIdAndUpdate(id, update, callback);
 };
 
 module.exports.deleteCareer = (id, callback) => {
     let query = {_id: id};
-    careers.findOneAndDelete(query, callback)
+    careers.deleteOne(query, callback)
 };

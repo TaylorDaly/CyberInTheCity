@@ -1,4 +1,5 @@
 <div class="container" xmlns="http://www.w3.org/1999/html">
+Lame campus jobs
   <div class="row">
     <div class="col-md-6" *ngFor="let career of careers.ourCareers">
       <app-card-careers
@@ -12,36 +13,62 @@
       </app-card-careers>
     </div>
   </div>
-  <hr style="height:1px;border:none;color:#333;background-color:#333;" />
-  <span id="indeed_at"><a>Internship jobs</a> by <a href="http://www.indeed.com/" rell="nofollow" title="Job Search"><img src="http://www.indeed.com/p/jobsearch.gif" style="border: 0; vertical-align: middle;" alt="Indeed job search"></a></span>
-<br><br>
-  <div class="row">
-    <div class="col-md-6" *ngFor="let career of careers.internship">
-      <app-card-careers
-                        [jobtitle]="career.jobtitle"
-                        [url]="career.url"
-                        [company]="career.company"
-                        [jobType]="career.jobType"
-                        [location]="career.location"
-                        [postedDate]="'Date posted: ' + (career.postedDate | date)"
-                        [description]="career.description">
-      </app-card-careers>
-    </div>
+    <hr style="height:1px;border:none;color:#333;background-color:#333;" />
+    <span>Powered by <a href="http://www.indeed.com/" rell="nofollow" title="Job Search"><img src="http://www.indeed.com/p/jobsearch.gif" style="border: 0; vertical-align: middle;" alt="Indeed job search"></a></span>
+    <br><br>
+  <div>Job Type:
+    <select [(ngModel)]="listingSelected" (ngModelChange)="onListingSelected($event)">
+      <option *ngFor="let listingIndeed of JobListing" [value]="listingIndeed.ID" >
+        {{listingIndeed.name}}
+      </option>
+    </select>
   </div>
-  <hr style="height:1px;border:none;color:#333;background-color:#333;" />
-  <span id="indeed_at"><a>FullTime jobs</a> by <a href="http://www.indeed.com/" rell="nofollow" title="Job Search"><img src="http://www.indeed.com/p/jobsearch.gif" style="border: 0; vertical-align: middle;" alt="Indeed job search"></a></span>
-  <br><br>
   <div class="row">
     <div class="col-md-6" *ngFor="let career of careers.fullTime">
-      <app-card-careers
-                        [jobtitle]="career.jobtitle"
-                        [url]="career.url"
-                        [company]="career.company"
-                        [jobType]="career.jobType"
-                        [location]="career.location"
-                        [postedDate]="'Date posted: ' + (career.postedDate | date)"
-                        [description]="career.description">
-      </app-card-careers>
+      <div *ngIf="displayF">
+        <app-card-careers
+          [jobtitle]="career.jobtitle"
+          [url]="career.url"
+          [company]="career.company"
+          [jobType]="career.jobType"
+          [location]="career.location"
+          [postedDate]="'Date posted: ' + (career.postedDate | date)"
+          [description]="career.description">
+        </app-card-careers>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" *ngFor="let career of careers.internship">
+      <div *ngIf="displayI">
+        <app-card-careers
+          [jobtitle]="career.jobtitle"
+          [url]="career.url"
+          [company]="career.company"
+          [jobType]="career.jobType"
+          [location]="career.location"
+          [postedDate]="'Date posted: ' + (career.postedDate | date)"
+          [description]="career.description">
+        </app-card-careers>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" *ngFor="let career of careers.total">
+      <div *ngIf="displayT">
+        <app-card-careers
+          [jobtitle]="career.jobtitle"
+          [url]="career.url"
+          [company]="career.company"
+          [jobType]="career.jobType"
+          [location]="career.location"
+          [postedDate]="'Date posted: ' + (career.postedDate | date)"
+          [description]="career.description">
+        </app-card-careers>
+      </div>
     </div>
   </div>
 </div>
+
+
+
