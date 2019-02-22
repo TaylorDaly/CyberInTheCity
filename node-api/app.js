@@ -6,6 +6,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const helmet = require('helmet');
+const https = require('https');
+const fs = require('fs');
 require('dotenv').config();
 
 // Imports
@@ -53,3 +55,11 @@ app.use('/', require('./Controllers/ErrorHandler'));
 app.listen(port, function () {
     console.log(`Starting the server at port ${port}.`);
 });
+
+// TODO: for TLS, get cert and key
+const options = {
+    // key: fs.readFileSync("key.pem"),
+    // cert: fs.readFileSync("cert.pem")
+};
+
+https.createServer(options, app).listen(8443);

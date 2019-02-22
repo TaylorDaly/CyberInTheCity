@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const dbConfig = require('../config/database');
 const Image = require('../models/Image');
 
+// Authenticate token from register page before letting user access sign up page since token may have expired since
+// accessing the register form.
 UserRouter.post('/verify', (req, res) => {
     let token = req.body.token;
     if (!token) return res.status(403).json({auth: false, message: 'No token provided.'});
@@ -35,6 +37,7 @@ UserRouter.post('/verify', (req, res) => {
     });
 });
 
+// Sign up using token from register email.
 UserRouter.post('/signup/:token', (req, res) => {
     let token = req.params.token;
     if (!token) return res.status(400).json({auth: false, message: 'No token provided.'});
@@ -125,11 +128,13 @@ UserRouter.post('/login', (req, res) => {
                     const jwtToken = jwt.sign({
                             email: person.email,
                             _id: person._id,
+                            sys_role: person.sys_role
                         },
                         dbConfig.secret,
                         {
                             expiresIn: '24h'
                         });
+                    
                     return res.status(200).json({
                         success: true,
                         message: "Login successful.",
@@ -147,6 +152,7 @@ UserRouter.post('/login', (req, res) => {
     })
 });
 
+// Beginning of registration process, user must enter email and click link in email.
 UserRouter.post('/signup', (req, res) => {
     let email = req.body.email;
     Person.findOne({email: email}, 'email', (err, person) => {
@@ -180,10 +186,9 @@ UserRouter.post('/signup', (req, res) => {
 
                 let signupUrl = req.protocol + '://' + req.get('host') + '/signup/' + token.toString();
                 let mailOptions = {
-                    from: '"DoNotReplyCyberInTheCity" <DoNotReplyCyberInTheCity@gmail.com>', // sender address
+                    from: '"Cyber in the City Registration" <DoNotReplyCyberInTheCity@gmail.com>', // sender address
                     to: email,
                     subject: 'Cyber In the City Sign up',
-                    //text: 'That was easy!',
                     html: '<a>Thank you for signing up with Cyber In the City. Please click the button below' +
                         ' to finish signing up.<br/></a><br/><div><!--[if mso]>\n' +
                         '  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" ' +

@@ -1,7 +1,7 @@
 const express = require('express');
 const PageRouter = express.Router();
 const Page = require('../models/Page');
-const Auth = require("../Config/Auth");
+const Auth = require("../Config/AuthController");
 
 PageRouter.get('/', (req, res) => {
     Page.getAllPages((err, pages) => {

@@ -4,7 +4,7 @@ const ImageRouter = express.Router();
 const Image = require('../models/Image');
 const fs = require('fs');
 const Buffer = require('buffer').Buffer;
-const Auth = require("../Config/Auth");
+const Auth = require("../Config/AuthController");
 
 ImageRouter.get('/:id', (req, res) => {
     Image.findImage(req.params.id, (err, image) => {

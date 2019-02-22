@@ -1,7 +1,7 @@
 const express = require('express');
 const CareersRouter = express.Router();
 const Careers = require('../models/Careers');
-const Auth = require('../Config/Auth');
+const Auth = require('../Config/AuthController');
 const request = require('request');
 
 // Get all careers
