@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {Component,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+  ComponentRef,
+  ComponentFactory,
+  OnInit} from '@angular/core';
 import {navItems} from "../navmenu/navItems";
-import {UserMenuService} from "./user-menu.service";
+import {EditStaticComponent} from "./edit-admin/edit-static/edit-static.component";
 
 @Component({
   selector: 'app-user-menu',
@@ -10,45 +15,33 @@ import {UserMenuService} from "./user-menu.service";
 })
 export class UserMenuComponent implements OnInit {
 
+  @ViewChild('editComponent', {read: ViewContainerRef}) entry: ViewContainerRef;
+
+  componentRef: any;
+  factory: any;
+
   parents = new navItems().getParents();
 
-  createPage = this.fb.group({
-    content: [''],
-    title: ['', Validators.required],
-    parent: ['', Validators.required]
-  });
-
-  errMsg = "";
-
-  get title() {
-    return this.createPage.get('title');
-  }
-  get parent() {
-    return this.createPage.get('parent');
-  }
-
-  constructor(private fb: FormBuilder,
-              private userService: UserMenuService,
-              ) { }
+  constructor(private resolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
+    this.editStaticPage();
   }
 
-  addStaticPage(html) {
-    this.createPage.patchValue({
-      content: html,
-      // title: this.title.value.trim()
-    });
-    console.log(this.createPage.value);
-    this.userService.addPage(this.createPage.value)
-      .subscribe(
-        res => {
-          window.alert(res['message']);
-          location.reload();
-          },
-        err => {
-          this.errMsg = err.message;
-        }
-      );
+  editStaticPage() {
+    this.destroyComponent();
+    this.createComponent(EditStaticComponent);
+  }
+
+  createComponent(editComponent) {
+    this.entry.clear();
+    this.factory = this.resolver.resolveComponentFactory(editComponent);
+    this.componentRef = this.entry.createComponent(this.factory);
+  }
+
+  destroyComponent() {
+    if(this.componentRef != null) {
+      this.componentRef.destroy();
+    }
   }
 }

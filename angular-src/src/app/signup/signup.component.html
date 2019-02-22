@@ -4,7 +4,7 @@
     <!--{{signupForm.value | json}}-->
     <p class="text-danger">{{errMsg}}</p>
 
-    <h2>Sign Up Form</h2>
+    <h2 style="padding-bottom: 10px;">Sign Up Form</h2>
     <div class="form-group">
       <label>Email address</label>
       <input type="email" class="form-control" aria-describedby="emailHelp" readonly formControlName="email"/>
@@ -124,9 +124,7 @@
       </div>
     </div>
 
-    <div>
-      <p class="text-danger" *ngIf="errMsg !== ''">ERROR: {{errMsg}}</p>
-    </div>
       <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
+      <p class="text-danger">{{errMsg}}</p>
   </form>
 </div>

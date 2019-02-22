@@ -1,0 +1,34 @@
+<div>
+  <form [formGroup]="createPage">
+    <div class="form-group">
+      <label>Page Title:</label>
+      <input type="text" [class.is-invalid]="title.invalid && title.touched"
+             class="form-control" placeholder="Enter title"
+             formControlName="title" />
+      <small class="text-danger" [class.d-none]="title.valid || title.untouched">
+        Page title is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-2">
+          <label>Navigation Parent: </label>
+        </div>
+        <div class="col-md-10">
+          <select class="form-control" [class.is-invalid]="parent.invalid && parent.touched"
+                  formControlName="parent">
+            <option value="" disabled>Select One</option>
+            <option *ngFor="let p of parents" value="{{p.name}}">
+              {{p.name}}
+            </option>
+          </select>
+          <small class="text-danger" [class.d-none]="parent.valid || parent.untouched">
+            Parent of the page is required.
+          </small>
+        </div>
+      </div>
+    </div>
+    <app-editor [disabled]="!createPage.valid" (htmlString)="addStaticPage($event)"></app-editor>
+    <p class="text-danger" style="text-align: right;">{{errMsg}}</p>
+  </form>
+</div>

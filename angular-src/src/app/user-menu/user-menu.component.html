@@ -1,34 +1,22 @@
 <div class="container">
-  <form [formGroup]="createPage">
-    <p class="text-danger">{{errMsg}}</p>
-    <div class="form-group">
-      <label>Page Title:</label>
-      <input type="text" [class.is-invalid]="title.invalid && title.touched"
-             class="form-control" placeholder="Enter title"
-             formControlName="title" />
-      <small class="text-danger" [class.d-none]="title.valid || title.untouched">
-        Page title is required.
-      </small>
-    </div>
-    <div class="form-group">
-      <div class="form-row">
-        <div class="col-md-3">
-          <label>Pick Navigation Parent for the page: </label>
-        </div>
-        <div class="col-md-9">
-          <select class="form-control" [class.is-invalid]="parent.invalid && parent.touched"
-                  formControlName="parent">
-            <option value="" disabled>Select One</option>
-            <option *ngFor="let p of parents" value="{{p.name}}">
-              {{p.name}}
-            </option>
-          </select>
-          <small class="text-danger" [class.d-none]="parent.valid || parent.untouched">
-            Parent of the page is required.
-          </small>
-        </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="list-group" role="tablist">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item menu-label">Edit Menu</li>
+        </ul>
+        <button type="button" class="list-group-item list-group-item-action active" data-toggle="list"
+        (click)="editStaticPage()">
+          Static Page
+        </button>
+        <button type="button" class="list-group-item list-group-item-action" data-toggle="list" *ngFor="let p of parents">
+          {{p.name}}
+        </button>
       </div>
     </div>
-  </form>
-  <app-editor [disabled]="!createPage.valid" (htmlString)="addStaticPage($event)"></app-editor>
+    <div class="col-md-10">
+      <template #editComponent></template>
+      <!--<app-edit-static></app-edit-static>-->
+    </div>
+  </div>
 </div>

@@ -8,13 +8,15 @@ import { CardCareersComponent } from './card-careers/card-careers.component';
 import { EditorComponent } from './editor/editor.component';
 
 import {CKEditorModule} from "ng2-ckeditor";
+import { ListDataComponent } from './list-data/list-data.component';
 
 @NgModule({
   declarations: [
     CardInfoComponent,
     CardBusinessComponent,
     CardCareersComponent,
-    EditorComponent
+    EditorComponent,
+    ListDataComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import {CKEditorModule} from "ng2-ckeditor";
     CardBusinessComponent,
     CardCareersComponent,
     EditorComponent,
+    ListDataComponent,
   ]
 })
 export class AppDesignModule { }
