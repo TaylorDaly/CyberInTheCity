@@ -7,7 +7,7 @@ var schedule = require('node-schedule');
 
 //add a scheduler for removing the on campus posting
 //only allowing for the posting to be active for 30 days
-schedule.scheduleJob('0 * * * * *', function(){
+schedule.scheduleJob('0 0 * * *', function(){
     let eraseMonth = new Date(new Date().setDate(new Date().getDate() - 30));//.getMonth() + 1;
     Careers.getAllCareers((err, careers) => {
         if (err) {
