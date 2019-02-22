@@ -38,9 +38,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               else {
                 err.code = error.status;
                 err.message = error.error.message;
+                //window.alert(`Error ${err.code}: ${err.message}`);
               }
             }
-            //window.alert(err.message);
+
             console.log(error);
 
             // if(error.status === 403) {

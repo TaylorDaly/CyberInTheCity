@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatButtonModule,MatTooltipModule} from '@angular/material'
-import {HttpErrorInterceptor} from "./http-error.interceptor";
+import {HttpErrorInterceptor} from "./error/http-error.interceptor";
 
 import {AppRoutingModule, RoutingComponents} from "./app-routing.module";
 import {AppDesignModule} from "./app-design/app-design.module";
@@ -14,6 +14,7 @@ import { ErrorComponent } from './error/error.component';
 import { FooterComponent } from './footer/footer.component';
 import {ImageCropperComponent} from "ngx-img-cropper";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {AuthInterceptor} from "./Authentication/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,11 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true
     },
   ],

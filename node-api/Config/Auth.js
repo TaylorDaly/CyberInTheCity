@@ -3,7 +3,7 @@ const dbConfig = require('./Database.js');
 
 let Verify = (req, res, next) => {
     // TODO: delete dev token later.
-    let token = req.headers['x-access-token'] || req.headers['authorization'] || process.env.DEV_TOKEN;
+    let token = req.headers['x-access-token'] || req.headers['authorization']; // || process.env.DEV_TOKEN;
 
     if (token) {
         if (token.startsWith('Bearer ')) {
