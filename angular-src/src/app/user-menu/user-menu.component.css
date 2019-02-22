@@ -1,0 +1,18 @@
+.menu-label {
+  background-color: #CFB87C;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+.list-group-item-action {
+  text-align: center;
+  border-radius: 5px;
+  margin: 5px 0 5px 0;
+}
+.list-group-item-action:active, .active {
+  background-color: #A2A4A3;
+  border-color: #A2A4A3;
+  opacity: 0.7;
+}
+

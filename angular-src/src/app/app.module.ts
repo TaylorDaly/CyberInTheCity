@@ -15,6 +15,7 @@ import { FooterComponent } from './footer/footer.component';
 import {ImageCropperComponent} from "ngx-img-cropper";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthInterceptor} from "./Authentication/auth.interceptor";
+import {EditAdminModule} from "./user-menu/edit-admin/edit-admin.module";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {AuthInterceptor} from "./Authentication/auth.interceptor";
     MatButtonModule,
     MatTooltipModule,
     BrowserAnimationsModule,
+    EditAdminModule,
   ],
   providers: [
     {
