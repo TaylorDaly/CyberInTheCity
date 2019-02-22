@@ -138,6 +138,7 @@ UserRouter.post('/login', (req, res) => {
                     return res.status(200).json({
                         success: true,
                         message: "Login successful.",
+                        role: person.sys_role,
                         token: jwtToken
                     });
                 } else

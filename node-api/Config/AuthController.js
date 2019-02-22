@@ -1,4 +1,4 @@
-let jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const dbConfig = require('./Database.js');
 const Person = require('../models/Person');
 
@@ -19,7 +19,7 @@ let Verify = (req, res, next) => {
                 });
             } else {
                 // Get Person from DB to check sys_role
-                Person.getPerson({_id: decoded._id}, (err, person) => {
+                Person.findOne({ _id: decoded._id }, 'sys_role', (err, person) => {
                     if (err) {
                         res.status(500).json({
                             success: false, message: `Something broke when attempting to find user.`
@@ -61,7 +61,7 @@ let VerifyAdmin = (req, res, next) => {
                 });
             } else {
                 // Get Person from DB to check sys_role
-                Person.getPerson({_id: decoded._id}, (err, person) => {
+                Person.findOne({ _id: decoded._id }, 'sys_role', (err, person) => {
                     if (err) {
                         res.status(500).json({
                             success: false, message: `Something broke when attempting to find user.`
@@ -69,8 +69,8 @@ let VerifyAdmin = (req, res, next) => {
                     } else if (person) {
                         if (person.sys_role !== 'Admin') {
                             res.status(401).json({
-                                success: false, message: 'You do not have permission to access' +
-                                    ' this resource.'
+                                success: false,
+                                message: 'You do not have permission to access this resource.'
                             })
                         } else {
                             decoded['sys_role'] = person.sys_role;

@@ -1,5 +1,5 @@
 // Dependencies
-const Auth = require("../Config/AuthController");
+const Auth = require('../Config/AuthController');
 const express = require('express');
 const PeopleRouter = express.Router();
 const Person = require('../models/Person');
@@ -25,7 +25,7 @@ PeopleRouter.get('/', (req, res) => {
 });
 
 PeopleRouter.get('/:id', (req, res) => {
-    Person.getPerson({_id: req.params.id}, (err, person) => {
+    Person.getPerson({ _id: req.params.id }, (err, person) => {
         if (err) {
             res.json({
                 success: false,
@@ -44,7 +44,7 @@ PeopleRouter.get('/:id', (req, res) => {
 
 // Delete User by _id. Only Admins may delete users.
 PeopleRouter.delete('/:id', Auth.VerifyAdmin, (req, res) => {
-    Person.getPerson({_id: req.params.id}, (err, person) => {
+    Person.getPerson({ _id: req.params.id }, (err, person) => {
         if (err) {
             res.json({
                 success: false,
@@ -77,8 +77,7 @@ PeopleRouter.delete('/:id', Auth.VerifyAdmin, (req, res) => {
 // This is a dual purpose route for Admins to update Sys_role and verify users, and for users to update their own
 // information.
 PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
-
-    Person.getPerson({_id: req.body._id}, (err, person) => {
+    Person.getPerson({ _id: req.body._id }, (err, person) => {
         if (err) {
             res.json({
                 success: false,
@@ -87,7 +86,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
         } else if (person) {
             // The ID from the token must match the person to update, unless the user is an admin.
             if (person._id !== req.decoded._id && req.decoded.sys_role !== `Admin`) {
-                res.status(401).json({success: false, message: "You do not have access to update this person."})
+                res.status(401).json({ success: false, message: 'You do not have access to update this person.' })
             } else {
                 // Admin may use this route to update a sys_role, but that is all they are allowed to update on
                 // other people since _id's must match.
