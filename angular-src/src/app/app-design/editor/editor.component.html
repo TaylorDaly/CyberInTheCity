@@ -10,10 +10,10 @@
   </ckeditor>
   <button [disabled]="disabled" type="button" class="btn btn-color mt-3 float-right" (click)="passHtmlString()">Save</button>
 
-  <div [innerHTML]="html" class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
+  <div>
+    <div [innerHTML]="html" class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
+    </div>
   </div>
-
-  {{htmlContent}}
 </div>
 
 

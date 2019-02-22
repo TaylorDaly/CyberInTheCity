@@ -129,8 +129,7 @@ export class SignupComponent implements OnInit {
 
   addUser() {
     this.newUser.name = this.firstName.value + " " + this.lastName.value;
-    //this.newUser.email = this.signupForm.get('email').value;
-    this.newUser.email = 'se.yu@ucdenver.edu';
+    this.newUser.email = this.signupForm.get('email').value;
     this.newUser.my_website_link = this.signupForm.get('myWebsite').value;
     this.newUser.links = this.smLinks.value;
     this.newUser.password = this.password.value;
@@ -159,14 +158,15 @@ export class SignupComponent implements OnInit {
       }
     }
 
-    console.log(this.newUser);
-    console.log(localStorage.getItem('token'));
+    //console.log(this.newUser);
+    //console.log(localStorage.getItem('token'));
     //------------------------//
     //this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
     this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
       .subscribe(
         res => {
-          console.log(res);
+          //console.log(res);
+          window.alert(res['message']);
           this.router.navigateByUrl('/login');
       }, err => {
           this.errMsg = err.message;

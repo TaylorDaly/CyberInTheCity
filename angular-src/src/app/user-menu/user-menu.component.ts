@@ -18,6 +18,8 @@ export class UserMenuComponent implements OnInit {
     parent: ['', Validators.required]
   });
 
+  errMsg = "";
+
   get title() {
     return this.createPage.get('title');
   }
@@ -26,7 +28,8 @@ export class UserMenuComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
-              private userService: UserMenuService) { }
+              private userService: UserMenuService,
+              ) { }
 
   ngOnInit() {
   }
@@ -39,7 +42,13 @@ export class UserMenuComponent implements OnInit {
     console.log(this.createPage.value);
     this.userService.addPage(this.createPage.value)
       .subscribe(
-        res => window.alert("Successfully added page to database."),
+        res => {
+          window.alert(res['message']);
+          location.reload();
+          },
+        err => {
+          this.errMsg = err.message;
+        }
       );
   }
 }

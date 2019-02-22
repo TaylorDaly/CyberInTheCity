@@ -52,8 +52,6 @@ CareersRouter.get('/', (req, res, next) => {
                                 // console.log(newCareers);
                             }
                             final['internship'] = internship;
-                            final['fullTime'] = fullTime;
-                            final['ourCareers'] = careers;
                             res.json(final);
                         } else{
                             res.json({
@@ -62,6 +60,7 @@ CareersRouter.get('/', (req, res, next) => {
                             })
                         }
                     });
+                    final['fullTime'] = fullTime;
                 } else{
                     res.json({
                         success: false,
@@ -69,6 +68,7 @@ CareersRouter.get('/', (req, res, next) => {
                     })
                 }
             });
+            final['ourCareers'] = careers;
         }
     })
 });

@@ -1,5 +1,6 @@
 <div class="container">
   <form [formGroup]="createPage">
+    <p class="text-danger">{{errMsg}}</p>
     <div class="form-group">
       <label>Page Title:</label>
       <input type="text" [class.is-invalid]="title.invalid && title.touched"
@@ -30,6 +31,4 @@
     </div>
   </form>
   <app-editor [disabled]="!createPage.valid" (htmlString)="addStaticPage($event)"></app-editor>
-  {{createPage.value | json}}
-  {{!createPage.valid}}
 </div>
