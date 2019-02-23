@@ -104,26 +104,6 @@ CareersRouter.get('/', (req, res, next) => {
     })
 });
 
-// TODO: consider deleting
-//Get all careers given the owners ID (HandShake or professor)
-CareersRouter.get('/:ownerID', (req, res) => {
-    Careers.getOwnerCareer(req.params.ownerID, (err, careers) => {
-        if (err) {
-            res.json({
-                success: false,
-                message: `Attempt to get an owners careers failed. Error: ${err}`
-            })
-        } else if (careers) {
-            res.json(careers)
-        } else {
-            res.status(404).send({
-                success: false,
-                message: `404: Owner's careers does not exist.`
-            })
-        }
-    })
-});
-
 // Add
 CareersRouter.post('/', Auth.VerifyAdmin, (req, res, next) => {
     let today = new Date();

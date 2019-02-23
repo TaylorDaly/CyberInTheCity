@@ -22,11 +22,6 @@ module.exports.getAllCareers = (callback) => {
     careers.find(callback);
 };
 
-module.exports.getOwnerCareer = (ownerID, callback) => {
-    let query = {ownerID: ownerID};
-    careers.find(query, callback);
-};
-
 module.exports.getCareer = (id, callback) => {
     let query = {_id: id};
     careers.findOne(query, callback);
