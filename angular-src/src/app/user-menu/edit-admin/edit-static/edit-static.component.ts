@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {navItems} from "../../../navmenu/navItems";
+import {navItems, StaticPage} from "../../../navmenu/navItems";
 import {FormBuilder, Validators} from "@angular/forms";
 import {UserMenuService} from "../../user-menu.service";
+import {NavmenuService} from "../../../navmenu/navmenu.service";
+import {catchError, map} from "rxjs/operators";
+import {Observable, of} from "rxjs";
 
 @Component({
   selector: 'app-edit-static',
@@ -18,7 +21,11 @@ export class EditStaticComponent implements OnInit {
     parent: ['', Validators.required]
   });
 
+  pageList = [];
+  pageFields = ['title', 'parent'];
+
   errMsg = "";
+  loadTable = false;
 
   get title() {
     return this.createPage.get('title');
@@ -29,9 +36,30 @@ export class EditStaticComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private userService: UserMenuService,
-  ) { }
+              private navService: NavmenuService,) { }
 
   ngOnInit() {
+    this.getAllPages();
+  }
+
+  getAllPages(){
+    this.navService.getAllStaticPages()
+      .subscribe(
+        res => {this.setPageList(res)},
+        err => {
+          window.alert(`Error ${err.code}: ${err.message}`);
+          console.log(err)
+        }
+      )
+  }
+
+  setPageList(data) {
+    //console.log(data);
+    for(let i = 0; i < data.length; ++i) {
+      this.pageList.push({_id: data[i]._id, title: data[i].title, parent: data[i].parent});
+    }
+    console.log(this.pageList);
+    this.loadTable = true;
   }
 
   addStaticPage(html) {

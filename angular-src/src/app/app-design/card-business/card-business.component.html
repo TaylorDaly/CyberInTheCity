@@ -13,10 +13,10 @@
       <p class="card-text">
         {{role}}
         <br/><a href="mailto: {{email}}">Email</a>
-        <br/><a *ngIf="myWebsite != '' && myWebsite != null" href="http://{{myWebsite}}">My Website</a>
+        <br/><a *ngIf="myWebsite != '' && myWebsite != null" href="{{myWebsite}}">My Website</a>
       </p>
       <div *ngFor="let link of socialLinks" style="display: inline;">
-        <a class="fa fa-{{link.description}}" href="http://{{link.URL}}"></a>
+        <a class="fa fa-{{link.description}}" href="{{link.URL}}"></a>
       </div>
     </div>
   </div>

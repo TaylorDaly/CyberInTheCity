@@ -1,22 +1,3 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-2">
-      <div class="list-group" role="tablist">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item menu-label">Edit Menu</li>
-        </ul>
-        <button type="button" class="list-group-item list-group-item-action active" data-toggle="list"
-        (click)="editStaticPage()">
-          Static Page
-        </button>
-        <button type="button" class="list-group-item list-group-item-action" data-toggle="list" *ngFor="let p of parents">
-          {{p.name}}
-        </button>
-      </div>
-    </div>
-    <div class="col-md-10">
-      <template #editComponent></template>
-      <!--<app-edit-static></app-edit-static>-->
-    </div>
-  </div>
+  <app-admin></app-admin>
 </div>
