@@ -36,6 +36,7 @@ export class Person {
   my_website_link: string;
   links: Array<Link>;
   password: string;
+  sys_role: string;
 
   constructor() {
     this.photo = new Image();

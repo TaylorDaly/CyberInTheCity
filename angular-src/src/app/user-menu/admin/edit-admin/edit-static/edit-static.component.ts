@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {navItems, StaticPage} from "../../../navmenu/navItems";
+import {navItems, StaticPage} from "../../../../navmenu/navItems";
 import {FormBuilder, Validators} from "@angular/forms";
-import {PageService} from "../../../Services/page.service";
+import {PageService} from "../../../../Services/page.service";
 
 @Component({
   selector: 'app-edit-static',
@@ -56,7 +56,7 @@ export class EditStaticComponent implements OnInit {
     for(let i = 0; i < data.length; ++i) {
       this.pageList.push({_id: data[i]._id, title: data[i].title, parent: data[i].parent});
     }
-    console.log(this.pageList);
+    //console.log(this.pageList);
     this.loadTable = true;
   }
 

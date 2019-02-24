@@ -1,0 +1,10 @@
+<div>
+  <p class="text-danger">{{errMsg}}</p>
+  <div *ngIf="loadTable">
+    <app-list-data [listItems]="personList" [listFields]="personFields"></app-list-data>
+  </div>
+  <div>
+    <button type="button" class="btn btn-color btn-md btn-add">
+      <span class="fa fa-plus"></span> Add</button>
+  </div>
+</div>

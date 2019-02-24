@@ -20,9 +20,12 @@ export class PersonComponent implements OnInit {
   }
 
   getAllPeople() {
-    this.personService.getPerson()
+    this.personService.getVerifiedPeople()
       .subscribe(
-        response => this.personList = response,
+        response => {
+          this.personList = response;
+          console.log(response)
+        },
         error => this.error = error
       );
   }

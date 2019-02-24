@@ -15,7 +15,7 @@ import { FooterComponent } from './footer/footer.component';
 import {ImageCropperComponent} from "ngx-img-cropper";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthInterceptor} from "./Authentication/auth.interceptor";
-import {EditAdminModule} from "./user-menu/edit-admin/edit-admin.module";
+import {EditAdminModule} from "./user-menu/admin/edit-admin/edit-admin.module";
 import { AdminComponent } from './user-menu/admin/admin.component';
 
 @NgModule({

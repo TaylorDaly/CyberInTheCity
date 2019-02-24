@@ -1,6 +1,14 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef, Input} from '@angular/core';
 import {navItems} from "../../navmenu/navItems";
-import {EditStaticComponent} from "../edit-admin/edit-static/edit-static.component";
+import {EditStaticComponent} from "./edit-admin/edit-static/edit-static.component";
+import {EditAboutComponent} from "./edit-admin/edit-about/edit-about.component";
+import {EditPeopleComponent} from "./edit-admin/edit-people/edit-people.component";
+import {EditResearchComponent} from "./edit-admin/edit-research/edit-research.component";
+import {EditEducationComponent} from "./edit-admin/edit-education/edit-education.component";
+import {EditCareersComponent} from "./edit-admin/edit-careers/edit-careers.component";
+import {EditEventsComponent} from "./edit-admin/edit-events/edit-events.component";
+import {EditNewsComponent} from "./edit-admin/edit-news/edit-news.component";
+import {EditContactComponent} from "./edit-admin/edit-contact/edit-contact.component";
 
 @Component({
   selector: 'app-admin',
@@ -10,22 +18,53 @@ import {EditStaticComponent} from "../edit-admin/edit-static/edit-static.compone
 export class AdminComponent implements OnInit {
 
   @ViewChild('editComponent', {read: ViewContainerRef}) entry: ViewContainerRef;
-  @Input() errMsg: string;
 
   componentRef: any;
   factory: any;
 
   parents = new navItems().getParents();
+  errMsg = "";
 
   constructor(private resolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    this.editStaticPage();
+    this.editComp('Static');
   }
 
-  editStaticPage() {
+  // Loading editing components for each Nav parent and static pages //
+  editComp(edit: string) {
     this.destroyComponent();
-    this.createComponent(EditStaticComponent);
+    switch (edit) {
+      case "Static":
+        this.createComponent(EditStaticComponent);
+        break;
+      case "About Us":
+        this.createComponent(EditAboutComponent);
+        break;
+      case "People":
+        this.createComponent(EditPeopleComponent);
+        break;
+      case "Research":
+        this.createComponent(EditResearchComponent);
+        break;
+      case "Education":
+        this.createComponent(EditEducationComponent);
+        break;
+      case "Careers":
+        this.createComponent(EditCareersComponent);
+        break;
+      case "Events":
+        this.createComponent(EditEventsComponent);
+        break;
+      case "News":
+        this.createComponent(EditNewsComponent);
+        break;
+      case "Contact Us":
+        this.createComponent(EditContactComponent);
+        break;
+      default:
+        this.createComponent(EditStaticComponent);
+    }
   }
 
   createComponent(editComponent) {
@@ -39,9 +78,4 @@ export class AdminComponent implements OnInit {
       this.componentRef.destroy();
     }
   }
-
-  showError(error) {
-    this.errMsg = error;
-  }
-
 }

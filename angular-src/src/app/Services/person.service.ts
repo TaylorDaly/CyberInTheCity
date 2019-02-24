@@ -12,8 +12,12 @@ export class PersonService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getPerson(): Observable<Person[]> {
+  getVerifiedPeople(): Observable<Person[]> {
     return this.httpClient.get<Person[]>(environment.apiUrl + '/person');
+  }
+
+  getAllPeople(): Observable<Person[]> {
+    return this.httpClient.get<Person[]>(environment.apiUrl + '/person/admin');
   }
 
   loginPerson(loginUser): Observable<any> {
