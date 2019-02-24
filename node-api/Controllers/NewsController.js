@@ -4,13 +4,16 @@ const NewsRouter = require('express').Router();
 const News = require('../models/News');
 const schedule = require('node-schedule');
 
+// Gets 10 news sources with created on date less than the passed 'createdOnBefore'. For pagination follow up
+// requests need to get the 10th created on date and pass that as the new 'createdOnBefore' so that articles are
+// returned sequentially based on date.
 NewsRouter.get('/', (req, res, next) => {
-    let queryDate = new Date(req.body.createdOnBefore);
+    let queryDate = new Date(req.query.createdOnBefore);
     News.find({createdOn: {$lt: queryDate}})
         .limit(10)
         .sort('-createdOn')
         .exec((err, items) => {
-            if (err) next(new Error('Unable to get news'));
+            if (err) next(err);
             res.json(items);
         });
 });
@@ -21,7 +24,7 @@ schedule.scheduleJob('0 0 * * *', () => {
     // 1. Hit News API
     // https://newsapi.org/docs/client-libraries/node-js
 
-    // Today and 24 hours ago in ISO 8601 format (yyyy-mm-dd).
+    // Today and 24 hours ago in ISO 8601 format (yyyy-mm-dd). The NewsAPI requires this format.
     let today = new Date().toISOString();
     let yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
 
@@ -89,7 +92,7 @@ const addArticleArray = async (learnedNews) => {
     }
 };
 
-const runPy = (news) => {
+const runPy = async (news) => {
     return new Promise((success, error) => {
 
         const {spawn} = require('child_process');
