@@ -42,12 +42,6 @@ PageRouter.post('/', Auth.VerifyAdmin, (req, res, next) => {
 
     Page.addPage(newPage, (err) => {
         if (err) {
-            if (err.code === 11000 && err.name === 'MongoError') {
-                res.status(400).json({
-                    success: false,
-                    message: `There is already a page with the title '${newPage.title}'`
-                });
-            }
             next(err);
         } else {
             res.json({ success: true, message: `Page successfully created` })
