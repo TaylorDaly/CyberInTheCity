@@ -67,7 +67,7 @@ let VerifyAdmin = (req, res, next) => {
                             success: false, message: `Something broke when attempting to find user.`
                         })
                     } else if (person) {
-                        if (person.sys_role !== 'Admin') {
+                        if (person.sys_role !== 'Admin' && person.sys_role !== 'Sys_Admin') {
                             res.status(401).json({
                                 success: false,
                                 message: 'You do not have permission to access this resource.'
