@@ -43,6 +43,7 @@ app.use('/api/Page', require('./Controllers/PageController'))
 app.use('/api/News', require('./Controllers/NewsController'))
 app.use('/api/Careers', require('./Controllers/CareersController'))
 app.use('/api/UserMenu', require('./Controllers/CareersController'))
+app.use('/api/Events', require('./Controllers/EventController'))
 
 // re-route bad requests back to home page.
 app.get('*', (req, res) => {

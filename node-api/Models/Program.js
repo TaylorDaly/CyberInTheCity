@@ -41,7 +41,7 @@ module.exports.addProgram = (newPrograms, callback) => {
 };
 
 module.exports.updateProgram = (id, update, callback) => {
-    program.findOneAndUpdate(id, update, callback);
+    program.findByIdAndUpdate(id, update, callback);
 };
 
 module.exports.deleteProgram = (id, callback) => {

@@ -43,7 +43,7 @@ module.exports.addPublication = (newPublication, callback) => {
 };
 
 module.exports.updatePublication = (id, update, callback) => {
-    publication.findOneAndUpdate(id, update, callback);
+    publication.findByIdAndUpdate(id, update, callback);
 };
 
 module.exports.deletePublication = (id, callback) => {

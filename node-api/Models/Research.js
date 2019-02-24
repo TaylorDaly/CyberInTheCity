@@ -42,7 +42,7 @@ module.exports.addResearch = (newResearch, callback) => {
 };
 
 module.exports.updateResearch = (id, update, callback) => {
-    research.findOneAndUpdate(id, update, callback);
+    research.findByIdAndUpdate(id, update, callback);
 };
 
 module.exports.deleteResearch = (id, callback) => {
