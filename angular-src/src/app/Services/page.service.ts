@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {StaticPage} from "./navItems";
+import {StaticPage} from "../navmenu/navItems";
 
 @Injectable({
   providedIn: 'root'

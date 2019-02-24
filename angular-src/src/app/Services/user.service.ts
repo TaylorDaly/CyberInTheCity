@@ -10,7 +10,4 @@ export class UserMenuService {
 
   constructor(private httpClient: HttpClient) { }
 
-  addPage(page: object): Observable<any> {
-    return this.httpClient.post(environment.apiUrl + '/page', page);
-  }
 }
