@@ -1,6 +1,7 @@
 const {AssertionError} = require('assert');
 const {MongoError} = require('mongodb');
 const app = require('express')();
+const pluralize = require('pluralize');
 
 handleAssertionError = (error, req, res, next) => {
     if (error instanceof AssertionError) {
@@ -14,7 +15,7 @@ handleAssertionError = (error, req, res, next) => {
 
 // If the URL gets messed with simply redirect to homepage.
 handleURIError = (error, req, res, next) => {
-    if (error instanceof URIError){
+    if (error instanceof URIError) {
         return res.redirect('/')
     }
 
@@ -23,13 +24,20 @@ handleURIError = (error, req, res, next) => {
 
 handleDatabaseError = (error, req, res, next) => {
     if (error instanceof MongoError) {
+        // if 11000 error there is a duplicate key. This parses the error message to make it user friendly.
         if (error.code === 11000) {
+            let object = pluralize.singular(error.message.split('index: cyberinthecity.')[1].split('.')[0]);
+            let dupKey = error.message.split('dup key: { : "')[1].split('" }')[0];
+            let key = error.message.split('.$')[1].split('_1 dup')[0];
+            let errMessage = `There is already a ${object} with the ${key} '${dupKey}'`;
+
             return res.status(409).json({
-                message: `${error.message}`
+                success: false,
+                message: errMessage
             })
         }
         return res.status(500).json({
-            type: 'MongoError',
+            success: false,
             message: error.message
         });
     }
@@ -43,9 +51,9 @@ handleOtherError = (error, req, res, next) => {
 };
 
 module.exports =
-[
-    handleAssertionError,
-    handleDatabaseError,
-    handleURIError,
-    handleOtherError,
-];
+    [
+        handleAssertionError,
+        handleDatabaseError,
+        handleURIError,
+        handleOtherError,
+    ];
