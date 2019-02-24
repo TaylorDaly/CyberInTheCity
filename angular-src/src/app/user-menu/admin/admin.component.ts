@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef, Input} from '@angular/core';
 import {navItems} from "../../navmenu/navItems";
 import {EditStaticComponent} from "../edit-admin/edit-static/edit-static.component";
 
@@ -10,6 +10,7 @@ import {EditStaticComponent} from "../edit-admin/edit-static/edit-static.compone
 export class AdminComponent implements OnInit {
 
   @ViewChild('editComponent', {read: ViewContainerRef}) entry: ViewContainerRef;
+  @Input() errMsg: string;
 
   componentRef: any;
   factory: any;
@@ -37,6 +38,10 @@ export class AdminComponent implements OnInit {
     if(this.componentRef != null) {
       this.componentRef.destroy();
     }
+  }
+
+  showError(error) {
+    this.errMsg = error;
   }
 
 }

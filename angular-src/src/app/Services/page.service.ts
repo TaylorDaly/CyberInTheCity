@@ -7,7 +7,7 @@ import {StaticPage} from "../navmenu/navItems";
 @Injectable({
   providedIn: 'root'
 })
-export class NavmenuService {
+export class PageService {
 
   constructor(private httpClient: HttpClient) { }
 
@@ -18,4 +18,8 @@ export class NavmenuService {
   getStaticPage(title:string) : Observable<StaticPage>{
     return this.httpClient.get<StaticPage>(environment.apiUrl + `/page/${title}`);
     }
+
+  addPage(page: object): Observable<any> {
+    return this.httpClient.post(environment.apiUrl + '/page', page);
+  }
 }

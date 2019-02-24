@@ -2,8 +2,7 @@
 <div class="container">
   <ckeditor
     [(ngModel)]="htmlContent"
-    [config]="{removeButtons: removeButtons,
-  extraAllowedContent: '*(*)'}"
+    [config]="{removeButtons: removeButtons, extraAllowedContent: '*(*)'}"
     [readonly]="false"
     debounce="500"
     (change)="getDirtyHTML()" required>

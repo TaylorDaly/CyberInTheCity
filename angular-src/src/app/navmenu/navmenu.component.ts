@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NavmenuService} from "./navmenu.service";
+import {PageService} from "../Services/page.service";
 import {HttpClient} from "@angular/common/http";
 import {navItems} from "./navItems";
 
@@ -13,14 +13,14 @@ export class NavmenuComponent implements OnInit {
   parents = new navItems().getParents();
 
   constructor(private http: HttpClient,
-              private navmenuService: NavmenuService) { }
+              private pageService: PageService) { }
 
   ngOnInit() {
     this.getStaticPages();
   }
 
   getStaticPages() {
-    this.navmenuService.getAllStaticPages()
+    this.pageService.getAllStaticPages()
       .subscribe(
         response => {
           this.sortNavItems(response)

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ResearchService} from "./research.service";
+import {ResearchService} from "../Services/research.service";
 import {ResearchItem} from "./research";
 
 @Component({

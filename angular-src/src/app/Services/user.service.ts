@@ -6,7 +6,7 @@ import {environment} from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
-export class UserMenuService {
+export class UserService {
 
   constructor(private httpClient: HttpClient) { }
 

@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {navItems, StaticPage} from "../../../navmenu/navItems";
 import {FormBuilder, Validators} from "@angular/forms";
-import {UserMenuService} from "../../user-menu.service";
-import {NavmenuService} from "../../../navmenu/navmenu.service";
-import {catchError, map} from "rxjs/operators";
-import {Observable, of} from "rxjs";
+import {PageService} from "../../../Services/page.service";
 
 @Component({
   selector: 'app-edit-static',
@@ -24,31 +21,32 @@ export class EditStaticComponent implements OnInit {
   pageList = [];
   pageFields = ['title', 'parent'];
 
-  errMsg = "";
   loadTable = false;
+  errMsg = "";
 
   get title() {
     return this.createPage.get('title');
+
   }
   get parent() {
     return this.createPage.get('parent');
   }
 
   constructor(private fb: FormBuilder,
-              private userService: UserMenuService,
-              private navService: NavmenuService,) { }
+              private pageService: PageService,) { }
 
   ngOnInit() {
     this.getAllPages();
   }
 
   getAllPages(){
-    this.navService.getAllStaticPages()
+    this.pageService.getAllStaticPages()
       .subscribe(
         res => {this.setPageList(res)},
         err => {
-          window.alert(`Error ${err.code}: ${err.message}`);
-          console.log(err)
+          //window.alert(`Error ${err.code}: ${err.message}`);
+          this.errMsg = err.message;
+          console.log(err);
         }
       )
   }
@@ -68,7 +66,7 @@ export class EditStaticComponent implements OnInit {
       // title: this.title.value.trim()
     });
     console.log(this.createPage.value);
-    this.userService.addPage(this.createPage.value)
+    this.pageService.addPage(this.createPage.value)
       .subscribe(
         res => {
           window.alert(res['message']);
