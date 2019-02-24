@@ -7,8 +7,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ErrorComponent implements OnInit {
 
-  @Input() code: number;
-  @Input() errMsg: string;
+  private _error = {
+    code: null,
+    message: ""
+  };
 
   constructor() { }
 

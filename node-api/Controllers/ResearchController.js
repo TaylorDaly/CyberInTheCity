@@ -1,7 +1,7 @@
 const express = require('express');
 const ResearchRouter = express.Router();
 const Research = require('../models/Research');
-const Auth = require('../Config/AuthController');
+const Auth = require('../Config/Auth');
 
 // Get all researches
 ResearchRouter.get('/', (req, res) => {
@@ -42,7 +42,6 @@ ResearchRouter.post('/', Auth.Verify, (req, res, next) => {
     let newResearch = new Research({
         title: req.body.title,
         ownerID: req.body.ownerID,
-        type: req.body.type,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
         description: req.body.description
@@ -55,7 +54,7 @@ ResearchRouter.post('/', Auth.Verify, (req, res, next) => {
             Error: ${err}`
             })
         } else {
-            res.json({success: true, message: "Successfully added research.", research: newResearch});
+            res.json({success: true, message: "Successfully added research."})
         }
     })
 
@@ -72,7 +71,6 @@ ResearchRouter.put('/', Auth.Verify, (req, res, next) => {
         } else if (research) {
             if (req.body.title) research.title = req.body.title;
             if (req.body.ownerID) research.ownerID = req.body.ownerID;
-            if (req.body.type) research.type = req.body.type;
             if (req.body.startDate) research.startDate = req.body.startDate;
             if (req.body.endDate) research.endDate = req.body.endDate;
             if (req.body.description) research.description = req.body.description;

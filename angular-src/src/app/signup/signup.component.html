@@ -1,10 +1,8 @@
 <div class="container">
+  <form [formGroup]="signupForm">
 
-  <form [formGroup]="signupForm" (ngSubmit)="addUser()">
-    <!--{{signupForm.value | json}}-->
-    <p class="text-danger">{{errMsg}}</p>
+    {{signupForm.value | json}}
 
-    <h2 style="padding-bottom: 10px;">Sign Up Form</h2>
     <div class="form-group">
       <label>Email address</label>
       <input type="email" class="form-control" aria-describedby="emailHelp" readonly formControlName="email"/>
@@ -15,56 +13,22 @@
       <label>Name</label>
       <div class="form-row">
         <div class="col">
-          <input type="text" class="form-control" placeholder="First name" formControlName="firstName"
-                 [class.is-invalid]="firstName.invalid && firstName.touched"/>
-          <small [class.d-none]="firstName.valid || firstName.untouched" class="text-danger">
-            First name is required.
-          </small>
+          <input type="text" class="form-control" placeholder="First name" required formControlName="firstName"/>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Last name" formControlName="lastName"
-                 [class.is-invalid]="lastName.invalid && lastName.touched"/>
-          <small [class.d-none]="lastName.valid || lastName.untouched" class="text-danger">
-            Last name is required.
-          </small>
-        </div>
-        <div class="col">
-          <select class="form-control no-min-width" formControlName="role"
-                  [class.is-invalid]="role.invalid && role.touched">
-            <option value="" disabled>Select your role</option>
-            <option *ngFor="let r of roles">
-              {{r}}
-            </option>
-          </select>
-          <small *ngIf="role.invalid && role.touched" class="text-danger">
-            Role is required.
-          </small>
+          <input type="text" class="form-control" placeholder="Last name" required formControlName="lastName"/>
         </div>
       </div>
     </div>
 
     <div class="form-group">
       <label>Password</label>
-      <button type="button" class="btn btn-md btn-icon" matTooltip={{pwdRequirements}} matTooltipPosition="right">
-        <span class="fa fa-info-circle"></span>
-      </button>
       <div class="form-row">
         <div class="col">
-          <input type="password" class="form-control" placeholder="Enter password" formControlName="password"
-                 [class.is-invalid]="password.invalid && password.touched"/>
-          <small [class.d-none]="password.valid || password.untouched" class="text-danger">
-            Password is required. Must enter at least {{passwordLength}} characters.
-          </small>
+          <input type="password" class="form-control" placeholder="Enter password" required formControlName="password"/>
         </div>
         <div class="col">
-          <input type="password" class="form-control" placeholder="Confirm password" formControlName="confirmPassword"
-                 [class.is-invalid]="confirmPassword.invalid && confirmPassword.touched || signupForm.errors?.misMatch"/>
-          <small [class.d-none]="confirmPassword.valid || confirmPassword.untouched" class="text-danger">
-            Must confirm your password.
-          </small>
-          <small class="text-danger" *ngIf="signupForm.errors?.misMatch && confirmPassword.dirty">
-            Passwords do not match.
-          </small>
+          <input type="password" class="form-control" placeholder="Confirm password" required formControlName="confirmPassword"/>
         </div>
       </div>
     </div>
@@ -74,57 +38,37 @@
       <input type="url" class="form-control" placeholder="Enter your website URL" formControlName="myWebsite"/>
     </div>
 
+
     <div class="form-group">
       <label>Social Media (Optional)</label>
-      <div formArrayName="smLinks" *ngFor="let smLink of smLinks.controls; let i=index">
+      <div formArrayName="sslinks" *ngFor="let link of sslinks.controls; let i=index">
         <div [formGroupName]="i">
           <div class="form-row">
             <div class="col-md-3">
-              <select class="form-control no-min-width" formControlName="description"
-                      [class.is-invalid]="smLink.get('description').invalid">
+              <select class="form-control no-min-width" formControlName="description">
                 <option value="" disabled>Select One</option>
                 <option *ngFor="let link of links" value="{{link.toLocaleLowerCase()}}">
                   {{link}}
                 </option>
               </select>
-              <div hidden *ngIf="descRequired(i)"></div>
-              <small *ngIf="smLink.get('description').invalid" class="text-danger">
-                Must select one for URL or erase URL.
-              </small>
             </div>
-            <div [className]="linkLength">
+            <div [className]="inputLength">
               <input type="url" class="form-control" placeholder="Link URL" formControlName="URL">
             </div>
-            <div class="col-md-1" [hidden]="smLinks.length <= 1">
-              <button type="button" class="btn btn-color" (click)="deleteSMLinks(i)">
+            <div class="col-md-1" [hidden]="sslinks.length <= 1">
+              <button type="button" class="btn btn-color" (click)="deleteSSLinks(i)">
                 Delete
               </button>
             </div>
           </div>
         </div>
       </div>
-      <button [disabled]="linksLimit" type="button" class="btn btn-default btn-md" (click)="addSMLinks()">
+      <button type="button" class="btn btn-default btn-md" (click)="addSSLinks()">
         <span class="fa fa-plus"></span> Add </button>
     </div>
 
-    <div class="form-group">
-      <label>Choose a profile image (Optional):</label>
-      <div class="form-row">
-        <div class="col">
-          <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
-      </div>
-        <div class="col">
-          <div *ngIf="imgSrc.image" style="padding-left: 10px;">
-            <label>Preview:</label>
-            <br/><img [src]="imgSrc.image" [width]="cropSettings.croppedWidth"
-                      [height]="cropSettings.croppedHeight"/>
-          </div>
-        </div>
-        <!--{{imgSrc | json}}-->
-      </div>
-    </div>
+    <button class="btn btn-color" type="submit">Submit</button>
 
-      <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
-      <p class="text-danger">{{errMsg}}</p>
   </form>
+  <app-error></app-error>
 </div>

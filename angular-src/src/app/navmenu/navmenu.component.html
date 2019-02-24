@@ -1,6 +1,6 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark flex-column">
   <a class="navbar-brand" routerLink="/home">
-    <img width="300" height="80" src=""/>
+    <img width="300" height="80" src="https://www1.ucdenver.edu/images/default-source/offices-ucomm-images/brand/brandlogo_colors_den_rv.png?sfvrsn=ffa1b2b8_3"/>
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -8,7 +8,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav">
-      <div *ngFor="let navItem of parents">
+      <div *ngFor="let navItem of navItems">
         <ng-template [ngIf]="navItem.child.length > 0" [ngIfElse]="NoDropdown">
           <li class="nav-item dropdown">
             <a class="nav-link" routerLink="{{navItem.route}}" role="button" aria-haspopup="true" aria-expanded="false">

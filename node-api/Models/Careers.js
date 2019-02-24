@@ -1,18 +1,21 @@
 const mongoose = require('mongoose');
 
 const CareersSchema = new mongoose.Schema({
-    jobtitle: {
+    title: {
         type: String,
         required: true
     },
-    company: String,
-    jobType: {
-        type: String,
-        enum: ['FullTime', 'Internship']
+    ownerID: {
+        type: [String],
+        required: true
     },
-    url: String,
+    hours: {
+        type: String,
+        enum: ['Part-Time', 'Full-Time', 'Internship']
+    },
+    link: String,
     location: String,
-    postedDate: Date,
+    deadlineDate: Date,
     description: String,
 });
 
@@ -37,10 +40,10 @@ module.exports.addCareer = (newCareers, callback) => {
 };
 
 module.exports.updateCareer = (id, update, callback) => {
-    careers.findByIdAndUpdate(id, update, callback);
+    careers.findOneAndUpdate(id, update, callback);
 };
 
 module.exports.deleteCareer = (id, callback) => {
     let query = {_id: id};
-    careers.deleteOne(query, callback)
+    careers.findOneAndDelete(query, callback)
 };

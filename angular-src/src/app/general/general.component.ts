@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import {NavmenuService} from "../navmenu/navmenu.service";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-general',
@@ -11,12 +10,11 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 })
 export class GeneralComponent implements OnInit {
 
-  content: SafeHtml;
+  content = "";
 
   constructor(private activeRoute: ActivatedRoute,
               private navmenuService: NavmenuService,
-              private location: Location,
-              private sanitizer: DomSanitizer) { }
+              private location: Location) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(
@@ -28,7 +26,7 @@ export class GeneralComponent implements OnInit {
   getPageTitle(title: string) {
     this.navmenuService.getStaticPage(title)
       .subscribe(
-        response => this.content = this.sanitizer.bypassSecurityTrustHtml(response['content']),
+        response => this.content = response['content'],
         error => this.content = error
       );
   }

@@ -1,19 +1,7 @@
 <!--<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true"></app-ngx-editor>-->
-<div class="container">
-  <ckeditor
-    [(ngModel)]="htmlContent"
-    [config]="{removeButtons: removeButtons,
-  extraAllowedContent: '*(*)'}"
-    [readonly]="false"
-    debounce="500"
-    (change)="getDirtyHTML()" required>
-  </ckeditor>
-  <button [disabled]="disabled" type="button" class="btn btn-color mt-3 float-right" (click)="passHtmlString()">Save</button>
-
-  <div>
-    <div [innerHTML]="html" class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
-    </div>
-  </div>
-</div>
-
-
+<ckeditor
+  [(ngModel)]="htmlContent"
+  [readonly]="false"
+  debounce="500">
+</ckeditor>
+{{htmlContent}}

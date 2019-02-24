@@ -5,4 +5,4 @@ const EventSchema = new mongoose.Schema({
     // TODO
 });
 
-module.exports = mongoose.model('Page', EventSchema);
+const event = module.exports = mongoose.model('Page', EventSchema);

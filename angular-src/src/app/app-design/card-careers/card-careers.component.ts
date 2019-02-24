@@ -8,12 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CardCareersComponent implements OnInit {
 
-  @Input() url: string;
-  @Input() jobtitle: string;
-  @Input() company: string;
-  @Input() jobType: string;
+  @Input() link: string;
+  @Input() title: string;
+  @Input() hours: string;
   @Input() location: string;
-  @Input() postedDate: string;
+  @Input() deadlineDate: string;
   @Input() description: string;
 
   constructor() { }

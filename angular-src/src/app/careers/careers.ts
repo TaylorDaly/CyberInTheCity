@@ -1,10 +1,9 @@
 export interface CareersItem {
-  jobtitle: string,
+  title: string,
   ownerID: Array<string>,
-  company: string,
-  jobType: string,
-  url: string,
-  location: Date,
-  postedDate: string,
+  hours: string,
+  link: string,
+  location: string,
+  deadlineDate: Date,
   description: string,
 }

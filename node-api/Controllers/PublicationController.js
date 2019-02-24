@@ -1,7 +1,7 @@
 const express = require('express');
 const PublicationRouter = express.Router();
 const Publication = require('../models/Publication');
-const Auth = require('../Config/AuthController');
+const Auth = require('../Config/Auth');
 
 // Get all publications
 PublicationRouter.get('/', (req, res) => {

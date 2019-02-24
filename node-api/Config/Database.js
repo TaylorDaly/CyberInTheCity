@@ -2,7 +2,5 @@ module.exports = {
     uri: process.env.DB,
     nodePort: process.env.NODE_PORT,
     angPort: process.env.ANGULAR_PORT,
-    secret: process.env.SECRET,
-    registerSecret: process.env.REGISTER_SECRET,
-    newsKey: process.env.NEWS_API_KEY
+    secret: process.env.SECRET
 };

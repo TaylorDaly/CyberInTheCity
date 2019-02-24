@@ -9,7 +9,6 @@ import {ResearchItem} from "./research";
 })
 export class ResearchComponent implements OnInit {
 
-
   research: ResearchItem[];
   error = "";
 

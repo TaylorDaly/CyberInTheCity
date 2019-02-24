@@ -13,9 +13,3 @@
 
     Fix: Go into node-api and ```npm install``` 
     then go into angular-src and ```npm install```
-    
-    Could also be missing .env file.
-    
-* Problem: machine learning script won't run
-
-    Fix: Install python 3 and makes sure it is set in the PATH.

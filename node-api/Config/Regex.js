@@ -7,4 +7,6 @@ module.exports = {
     password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
     // Check if any characters are not a-z, A-Z, 0-9, or #?!@$%^&*-
     disallowedCharacters: /[^a-zA-Z0-9#?!@$%^&*-]/,
+    // Check link has correct number of characters and a . and only accepted characters.
+    link: /[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)/g
 };

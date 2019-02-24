@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {StaticPage} from "./navItems";
+import {StaticPage} from "./static-page";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,6 @@ export class NavmenuService {
   }
 
   getStaticPage(title:string) : Observable<StaticPage>{
-    return this.httpClient.get<StaticPage>(environment.apiUrl + `/page/${title}`);
+    return this.httpClient.get<StaticPage>(environment.apiUrl + '/page/' + title);
     }
 }

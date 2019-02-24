@@ -15,7 +15,6 @@ node-api/node_modules
 .c9/
 *.launch
 .settings/
-.idea/*
 
 # misc
 .sass-cache
@@ -100,6 +99,3 @@ typings/
 
 # next.js build output
 .next
-
-environment.ts
-environment.prod.ts

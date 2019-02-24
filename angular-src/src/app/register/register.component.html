@@ -1,17 +1,7 @@
 <div class="container">
-  <div>
-    <p class="text-danger">{{message}}{{error}}</p>
-  </div>
-
-  <form [formGroup]="registerForm" (ngSubmit)="sendEmail()">
-    <!--{{registerForm.value | json}}-->
-    <h2>Sign Up</h2>
-    <div class="form-group">
-      <label>School Email (CU Denver emails only)</label>
-      <input class="form-control" type="email" placeholder="Enter CU Denver email"
-      formControlName="signupEmail" [class.is-invalid]="signupEmail.invalid && signupEmail.touched"/>
-      <small class="text-danger" [class.d-none]="signupEmail.valid || signupEmail.untouched">Must enter a valid school email to register.</small>
-    </div>
-    <button class="btn btn-color" [disabled]="!registerForm.valid">Register</button>
-  </form>
+  <h2>Sign Up</h2>
+  <input type="email" placeholder="School Email" [(ngModel)]="signupEmail"/>
+  <p>@ucdenver.edu</p>
+  <button (click)="sendEmail()">Register</button>
+  <p>{{message}}{{error}}</p>
 </div>

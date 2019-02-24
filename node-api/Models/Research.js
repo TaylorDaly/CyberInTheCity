@@ -9,10 +9,6 @@ const ResearchSchema = new mongoose.Schema({
         type: [String],
         required: true
     },
-    type: {
-        type: String,
-        enum: ['Faculty Project', 'Faculty Funding', 'Student Project']
-    },
     startDate: Date,
     endDate: Date,
     description: String,
