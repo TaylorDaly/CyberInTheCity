@@ -11,7 +11,7 @@ const PersonSchema = mongoose.Schema({
     sys_role: {
         type: String,
         required: true,
-        enum: ['Admin', 'User'],
+        enum: ['Sys_Admin', 'Admin', 'User'],
         default: 'None',
         select: false
     },

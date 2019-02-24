@@ -58,8 +58,9 @@ PeopleRouter.get('/:id', (req, res) => {
     })
 });
 
-// Delete User by _id. Only Admins may delete users.
-PeopleRouter.delete('/:id', Auth.VerifyAdmin, (req, res) => {
+// Delete Person by _id. Only Sys_Admins may delete users.
+PeopleRouter.delete('/:id', Auth.VerifySysAdmin, (req, res) => {
+
     Person.getPerson({_id: req.params.id}, (err, person) => {
         if (err) {
             res.json({
@@ -106,8 +107,8 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
             } else {
                 // Admin may use this route to update a sys_role, but that is all they are allowed to update on
                 // other people since _id's must match.
-                if (req.decoded.sys_role === 'Admin') {
-                    if (person.sys_role !== 'Admin') {
+                if (req.decoded.sys_role === 'Sys_Admin') {
+                    if (person.sys_role !== 'Sys_Admin') {
                         if (req.body.sys_role) person.sys_role = req.body.sys_role;
                     }
                     if (req.body.verified) person.verified = req.body.verified;
@@ -117,7 +118,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     if (req.body.role) person.role = req.body.role;
                     if (req.body.password) person.password = req.body.password;
                     // If person has a photo, need to wait for photo to delete and new photo to upload before doing
-                    // save, so async is required here.
+                    // save on person object, so async is required here.
                     if (req.body.photo) {
                         if (person.photo) await deleteImage(person.photo).catch(err => {
                             next(err)

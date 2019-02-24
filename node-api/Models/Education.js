@@ -33,7 +33,7 @@ module.exports.addEducation = (newEducation, callback) => {
 };
 
 module.exports.updateEducation = (id, update, callback) => {
-    education.findOneAndUpdate(id, update, callback);
+    education.findByIdAndUpdate(id, update, callback);
 };
 
 module.exports.deleteEducation = (id, callback) => {

@@ -1,4 +1,15 @@
 <div class="container">
-  <p>Events</p>
-</div>
+  <div class="row">
+    <div class="col-md-6" *ngFor="let e of eventItem">
 
+      <app-card-careers
+        [jobtitle]="e.title"
+        [url]="e.url"
+        [jobType]= "e.timeFrame"
+        [location]="e.location"
+        [postedDate]="'Event Date posted: ' + (e.eventDate | date)"
+        [description]="e.description">
+      </app-card-careers>
+    </div>
+  </div>
+</div>
