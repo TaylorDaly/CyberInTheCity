@@ -1,7 +1,7 @@
 const express = require('express');
 const ProgramRouter = express.Router();
 const Program = require('../models/Program');
-const Auth = require('../Config/Auth');
+const Auth = require('../Config/AuthController');
 
 // Get all programs
 ProgramRouter.get('/', (req, res) => {

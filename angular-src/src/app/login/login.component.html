@@ -1,3 +1,32 @@
-<p>
-  login works!
-</p>
+<div class="container">
+  <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+    <p class="text-danger">{{errMsg}}</p>
+
+    <h2 style="padding-bottom: 10px;">Login</h2>
+    <div class="form-group">
+      <div class="form-row">
+        <div clss="col">
+          <label style="padding: 10px;">School Email:</label>
+        </div>
+        <div class="col">
+          <input class="form-control" type="email" formControlName="email"
+                 [class.is-invalid]="email.touched && email.invalid" placeholder="Enter school email"/>
+          <small class="text-danger" *ngIf="email.touched && email.invalid">Email is required.</small>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-row">
+        <div clss="col">
+          <label style="padding: 10px;">Password:</label>
+        </div>
+        <div class="col">
+          <input type="password" class="form-control" formControlName="password"
+                 [class.is-invalid]="password.touched && password.invalid" placeholder="Enter password"/>
+          <small class="text-danger" *ngIf="password.touched && password.invalid">Password is required.</small>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-color" [disabled]="loginForm.invalid">Submit</button>
+  </form>
+</div>

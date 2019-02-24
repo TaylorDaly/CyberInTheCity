@@ -4,7 +4,7 @@ const ImageRouter = express.Router();
 const Image = require('../models/Image');
 const fs = require('fs');
 const Buffer = require('buffer').Buffer;
-const Auth = require("../Config/Auth");
+const Auth = require("../Config/AuthController");
 
 ImageRouter.get('/:id', (req, res) => {
     Image.findImage(req.params.id, (err, image) => {
@@ -35,7 +35,6 @@ ImageRouter.get('/:id', (req, res) => {
 ImageRouter.post('/', Auth.Verify, (req, res) => {
     let data = fs.readFileSync(req.body.file);
     let newPic = new Image({
-        // TODO: remove base64 conversion if we decide to do it in HTML later
         buffer: data.toString('base64'),
         content_type: req.body.content_type
     });

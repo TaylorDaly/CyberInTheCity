@@ -1,7 +1,7 @@
 const express = require('express');
 const ResearchLabRouter = express.Router();
 const ResearchLab = require('../models/ResearchLab');
-const Auth = require('../Config/Auth');
+const Auth = require('../Config/AuthController');
 
 // Get all researchLabs
 ResearchLabRouter.get('/', (req, res) => {

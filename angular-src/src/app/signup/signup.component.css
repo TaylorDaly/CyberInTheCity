@@ -1,6 +1,14 @@
-.btn-color {
-  background-color: #CFB87C;
+.img-size{
+  max-height: 700px;
+  max-width: 700px;
+  padding-top: 10px;
 }
-.btn-no-color {
+.btn-icon {
   background-color: transparent;
+  padding: 5px;
+}
+::ng-deep .mat-tooltip {
+  /* your own custom styles here */
+  /* e.g. */
+  font-size: 13px;
 }

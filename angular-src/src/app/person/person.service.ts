@@ -15,5 +15,9 @@ export class PersonService {
   getPerson(): Observable<Person[]> {
     return this.httpClient.get<Person[]>(environment.apiUrl + '/person');
   }
+
+  loginPerson(loginUser): Observable<any> {
+    return this.httpClient.post<any>(environment.apiUrl + '/user/login', loginUser);
+  }
 }
 
