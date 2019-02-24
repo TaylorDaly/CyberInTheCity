@@ -1,9 +1,10 @@
 .menu-label {
-  background-color: #CFB87C;
+  background-color: transparent;
   text-align: center;
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 5px;
-  border-radius: 5px;
+  font-size: 20px;
+  border-color: black;
 }
 .list-group-item-action {
   text-align: center;

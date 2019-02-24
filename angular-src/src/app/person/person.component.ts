@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
-import {PersonService} from "./person.service";
+import {PersonService} from "../Services/person.service";
 
 @Component({
   selector: 'app-person',

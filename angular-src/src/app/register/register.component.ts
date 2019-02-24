@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SignupService} from "../signup/signup.service";
+import {SignupService} from "../Services/signup.service";
 import {FormBuilder, Validators} from "@angular/forms";
 import {regex} from "../../environments/environment";
 

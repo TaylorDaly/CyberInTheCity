@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from "../../environments/environment";
-import {CareersItem} from "./careers";
+import {ResearchItem} from "../research/research";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CareersService {
+export class ResearchService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllCareers(): Observable<CareersItem[]>{
-    return this.httpClient.get<CareersItem[]>(environment.apiUrl + '/careers');
+  getAllResearch(): Observable<ResearchItem[]>{
+    return this.httpClient.get<ResearchItem[]>(environment.apiUrl + '/research');
   }
 }
