@@ -13,6 +13,7 @@ import { RegisterComponent } from './register/register.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { CareersComponent } from './careers/careers.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { UserMenuComponent } from './user-menu/user-menu.component';
 
 import {SignupGuard} from "./Authentication/auth.guard";
 
@@ -30,6 +31,7 @@ const AppRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'general/:title', component: GeneralComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'user-menu', component: UserMenuComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/home', pathMatch: 'full'},
 ];
@@ -55,5 +57,6 @@ export const RoutingComponents =
     AboutUsComponent,
     CareersComponent,
     ContactUsComponent,
+    UserMenuComponent,
   ];
 

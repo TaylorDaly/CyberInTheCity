@@ -1,7 +1,7 @@
 const express = require('express');
 const EducationRouter = express.Router();
 const Education = require('../models/Education');
-const Auth = require('../Config/Auth');
+const Auth = require('../Config/AuthController');
 
 // Get all education
 EducationRouter.get('/', (req, res) => {
@@ -90,6 +90,7 @@ EducationRouter.put('/', Auth.Verify, (req, res, next) => {
         }
     });
 });
+
 EducationRouter.delete('/:id', Auth.Verify, (req, res, next) => {
     Education.getEducation(req.params.id, (err, education) => {
         if (err) {
