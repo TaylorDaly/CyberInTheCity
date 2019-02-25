@@ -5,8 +5,7 @@ const Auth = require('../Config/AuthController');
 const request = require('request');
 var schedule = require('node-schedule');
 
-//todo add a scheduler
-//add a scheduler for removing the on campus posting
+//a scheduler for removing the on campus events
 //only allowing for the posting to be active for 30 days
 schedule.scheduleJob('0 0 * * *', function(){
     let eraseDay = new Date(new Date().setDate(new Date().getDate() + 1));
@@ -34,7 +33,7 @@ schedule.scheduleJob('0 0 * * *', function(){
 });
 // Get all Events
 EventRouter.get('/', (req, res, next) => {
-    Event.getAllEvents((err, events) => {
+    Event.find({}).sort({eventDate: 'asc'}).exec((err, events) => {
         if (err) {
             next(err)
         } else {

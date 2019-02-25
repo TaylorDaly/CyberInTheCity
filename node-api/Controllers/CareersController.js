@@ -5,7 +5,7 @@ const Auth = require('../Config/AuthController');
 const request = require('request');
 var schedule = require('node-schedule');
 
-//add a scheduler for removing the on campus posting
+//a scheduler for removing the on campus posting
 //only allowing for the posting to be active for 30 days
 schedule.scheduleJob('0 0 * * *', function(){
     let eraseMonth = new Date(new Date().setDate(new Date().getDate() - 30));//.getMonth() + 1;
@@ -33,7 +33,7 @@ schedule.scheduleJob('0 0 * * *', function(){
 });
 // Get all careers
 CareersRouter.get('/', (req, res, next) => {
-    Careers.getAllCareers((err, careers) => {
+    Careers.find({}).sort({postedDate: 'asc'}).exec((err, careers) => {
         if (err) {
             next(err)
         } else {
@@ -42,7 +42,6 @@ CareersRouter.get('/', (req, res, next) => {
             var total = [];
             var fullTime = [];
             var internship = [];
-            var partTime = [];
             request(process.env.IndeedFullTimeCall, function (error, response, body) {
                 var data = JSON.parse(body);
                 if (response.statusCode === 200 && !(data.hasOwnProperty('error'))){
@@ -55,8 +54,6 @@ CareersRouter.get('/', (req, res, next) => {
                             url: posting.url,
                             location: posting.formattedLocation,
                             postedDate: posting.date,
-                            // description: (posting.snippet).replace(/[!@#$%^&*<b><\/b>]/g, "")
-                            // description: (posting.snippet).substring(0, length)
                             description: posting.snippet
                         });
                         fullTime.push(newCareers);
@@ -75,7 +72,6 @@ CareersRouter.get('/', (req, res, next) => {
                                     url: posting.url,
                                     location: posting.formattedLocation,
                                     postedDate: posting.date,
-                                    // description: (posting.snippet).replace(/[!@#$%^&*<b><\/b>]/g, "")
                                     description: posting.snippet
                                 });
                                 internship.push(newCareers);
