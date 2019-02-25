@@ -22,7 +22,7 @@ schedule.scheduleJob('0 0 * * *', function(){
                             if (err) {
                                 console.log(`[${new Date()}] : ${err}`)
                             } else {
-                                console.log(`[${new Date()}] : Successfully removed`);
+                                console.log(`[${new Date()}] : Successfully removed expired Career`);
                             }
                         });
                     }
