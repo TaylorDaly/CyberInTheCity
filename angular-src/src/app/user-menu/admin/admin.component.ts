@@ -7,7 +7,6 @@ import {EditResearchComponent} from "./edit-admin/edit-research/edit-research.co
 import {EditEducationComponent} from "./edit-admin/edit-education/edit-education.component";
 import {EditCareersComponent} from "./edit-admin/edit-careers/edit-careers.component";
 import {EditEventsComponent} from "./edit-admin/edit-events/edit-events.component";
-import {EditNewsComponent} from "./edit-admin/edit-news/edit-news.component";
 import {EditContactComponent} from "./edit-admin/edit-contact/edit-contact.component";
 
 @Component({
@@ -25,7 +24,12 @@ export class AdminComponent implements OnInit {
   parents = new navItems().getParents();
   errMsg = "";
 
-  constructor(private resolver: ComponentFactoryResolver) { }
+  constructor(private resolver: ComponentFactoryResolver) {
+    let index = this.parents.map(function(parent) {return parent.name; }).indexOf("News");
+    if(index != -1) {
+      this.parents.splice(index, 1);
+    }
+  }
 
   ngOnInit() {
     this.editComp('Static');
@@ -55,9 +59,6 @@ export class AdminComponent implements OnInit {
         break;
       case "Events":
         this.createComponent(EditEventsComponent);
-        break;
-      case "News":
-        this.createComponent(EditNewsComponent);
         break;
       case "Contact Us":
         this.createComponent(EditContactComponent);

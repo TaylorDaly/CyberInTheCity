@@ -64,7 +64,7 @@ export class CareersComponent implements OnInit {
           this.careers = res;
         },
         err => {
-          this.error = err["error"].message;
+          this.error = err.message;
         }
       )
   }

@@ -10,7 +10,6 @@ import { EditResearchComponent } from './edit-research/edit-research.component';
 import { EditEducationComponent } from './edit-education/edit-education.component';
 import { EditCareersComponent } from './edit-careers/edit-careers.component';
 import { EditEventsComponent } from './edit-events/edit-events.component';
-import { EditNewsComponent } from './edit-news/edit-news.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
 
 const editList = [
@@ -21,7 +20,6 @@ const editList = [
   EditEducationComponent,
   EditCareersComponent,
   EditEventsComponent,
-  EditNewsComponent,
   EditContactComponent,
 ];
 

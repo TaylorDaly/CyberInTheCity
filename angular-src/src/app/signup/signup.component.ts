@@ -167,6 +167,7 @@ export class SignupComponent implements OnInit {
         res => {
           //console.log(res);
           window.alert(res['message']);
+          localStorage.clear();
           this.router.navigateByUrl('/login');
       }, err => {
           this.errMsg = err.message;

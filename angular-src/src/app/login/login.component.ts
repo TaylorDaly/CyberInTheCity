@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser() {
-    console.log(this.loginForm.value);
+    //console.log(this.loginForm.value);
     this.personService.loginPerson(this.loginForm.value)
       .subscribe(
         res => {
