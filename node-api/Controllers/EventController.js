@@ -5,36 +5,35 @@ const Auth = require('../Config/AuthController');
 const request = require('request');
 var schedule = require('node-schedule');
 
-//todo add a scheduler
-//add a scheduler for removing the on campus posting
+//a scheduler for removing the on campus events
 //only allowing for the posting to be active for 30 days
-// schedule.scheduleJob('0 0 * * *', function(){
-//     let eraseMonth = new Date(new Date().setDate(new Date().getDate() - 30));//.getMonth() + 1;
-//     Event.getAllEvents((err, event) => {
-//         if (err) {
-//             next(err)
-//         } else {
-//             var i;
-//             for (i = 0; i < event.length; i++) {
-//                 careerID = careers[i]._id;
-//                 careerDate = careers[i].postedDate;
-//                 if (careerDate <= eraseMonth) {
-//                     Event.deleteEvent(careers[i], (err) => {
-//                         if (err) {
-//                             console.log(`[${new Date()}] : ${err}`)
-//                         } else {
-//                             console.log(`[${new Date()}] : Successfully removed`);
-//                         }
-//                     });
-//                 }
-//             }
-//         }
-//     })
-//
-// });
+schedule.scheduleJob('0 0 * * *', function(){
+    let eraseDay = new Date(new Date().setDate(new Date().getDate() + 1));
+    Event.getAllEvents((err, event) => {
+        if (err) {
+            next(err)
+        } else {
+            var i;
+            for (i = 0; i < event.length; i++) {
+                eID = event[i]._id;
+                eDate = event[i].eventDate;
+                if (eDate < eraseDay) {
+                    Event.deleteEvent(event[i], (err) => {
+                        if (err) {
+                            console.log(`[${new Date()}] : ${err}`)
+                        } else {
+                            console.log(`[${new Date()}] : Successfully removed expired Events`);
+                        }
+                    });
+                }
+            }
+        }
+    })
+
+});
 // Get all Events
 EventRouter.get('/', (req, res, next) => {
-    Event.getAllEvents((err, events) => {
+    Event.find({}).sort({eventDate: 'asc'}).exec((err, events) => {
         if (err) {
             next(err)
         } else {
