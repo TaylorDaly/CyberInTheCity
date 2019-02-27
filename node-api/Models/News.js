@@ -27,6 +27,9 @@ const NewsSchema = mongoose.Schema({
         type: String,
         required: true,
         enum: ['User', 'NewsAPI']
+    },
+    source : {
+        type: String
     }
 });
 

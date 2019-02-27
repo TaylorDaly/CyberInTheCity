@@ -1,14 +1,17 @@
 <div class="container">
   <div class="row">
-    <div class="col" *ngFor="let news of newsItem">
-      <app-card-news
-                     [title]="news.title"
-                     [URL]="news.URL"
-                     [content]="news.content"
-                     [imageLink]="news.imageLink"
-                     [createdOn]="(news.createdOn | date)"
-                     [createdBy]="news.createdBy">
-      </app-card-news>
+    <div infiniteScroll
+         (scrolled)="onScrollDown()">
+      <div class="col" *ngFor="let news of newsItem">
+        <app-card-news
+          [title]="news.title"
+          [URL]="news.URL"
+          [content]="news.content"
+          [imageLink]="news.imageLink"
+          [createdOn]="(news.createdOn | date)"
+          [source]="news.source">
+        </app-card-news>
+      </div>
     </div>
   </div>
 </div>

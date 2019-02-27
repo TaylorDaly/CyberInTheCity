@@ -15,6 +15,7 @@ export class CardNewsComponent implements OnInit {
   @Input() createdOn: string;
   @Input() createdBy: string;
   @Input() content: string;
+  @Input() source: string;
 
   constructor() { }
 

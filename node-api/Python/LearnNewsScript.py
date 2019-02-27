@@ -58,12 +58,12 @@ for article in news['articles']:
     # Cosine similarity for words we want to see.
     cosine_similarity = cosine_sim(article['learn_content'], news_learn_reference)
     # Cosine similarity for words we don't want to see.
-    bad_cosine_similarity = cosine_sim(article['content'], bad_news_learn_reference)
+    bad_cosine_similarity = cosine_sim(article['learn_content'], bad_news_learn_reference)
     article.pop('learn_content', None)
     # Prints every article and cosine similarities for debugging.
     # print('Article: ' + article['title'] +'\nCosine Similarity: ' + str(cosine_similarity) + '\nBad Cosine Similarity: ' + str(bad_cosine_similarity))# + '\n')
     # print(article['content'] + '\n')
-    if ((cosine_similarity > 0.12) & (bad_cosine_similarity < 0.2)):
+    if ((cosine_similarity > 0.12) & (bad_cosine_similarity < 0.1)):
 	    good_news['articles'].append(article)
 	    article_num += 1
 		

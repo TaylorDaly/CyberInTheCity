@@ -17,9 +17,9 @@ const port = dbConfig.nodePort || 3000
 
 // Database Connection
 mongoose.connect(dbConfig.uri, require('./Config/MongooseConnectOptions'))
-  .then((res) => console.log(`MongoDB connection: ${res.connections[0]._readyState === 1
-    ? 'Success' : `Failure. Response: ${res}`}.`))
-  .catch((err) => console.log(err))
+  .then((res) => console.log(`[${new Date()}] : MongoDB connection ${res.connections[0]._readyState === 1
+    ? 'Successful' : `Failure. Response: ${res}`}.`))
+  .catch((err) => console.log(`[${new Date()}] : ${err}`));
 
 // TODO: add TLS for security
 // app setup
@@ -54,7 +54,7 @@ app.get('*', (req, res) => {
 app.use('/', require('./Controllers/ErrorHandler'))
 
 app.listen(port, () => {
-  console.log(`Starting the server at port ${port}.`)
+  console.log(`[${new Date()}] : Starting the server at port ${port}.`)
 })
 
 // TODO: for TLS, get cert and key
@@ -63,4 +63,4 @@ const options = {
   // cert: fs.readFileSync("cert.pem")
 }
 
-https.createServer(options, app).listen(8443)
+https.createServer(options, app).listen(8443);

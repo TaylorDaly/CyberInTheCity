@@ -13,8 +13,7 @@ NewsRouter.get('/', (req, res, next) => {
         .limit(10)
         .sort('-createdOn')
         .exec((err, items) => {
-            if (err) next(err);
-            res.json(items);
+            err ? next(err) : res.json(items);
         });
 });
 
@@ -27,7 +26,7 @@ schedule.scheduleJob('0 0 * * *', () => {
     // Today and 24 hours ago in ISO 8601 format (yyyy-mm-dd). The NewsAPI requires this format.
     let today = new Date().toISOString();
     let yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
-
+    console.log(yesterday);
     NewsAPI.v2.everything({
         q: 'cybersecurity',
         from: yesterday,
@@ -38,19 +37,23 @@ schedule.scheduleJob('0 0 * * *', () => {
     }).then(response => {
         // 2. Find Relevant News
         if (response.articles.length > 0) {
-            // Remove articles with missing content.
+            // Null checks
             for (let i = 0; i < response.articles.length; i++) {
-                if (!response.articles[i].content || !(response.articles[i].content.length > 0)) {
+                if (!response.articles[i].content || !(response.articles[i].content.length > 250)
+                    || !response.articles[i].urlToImage || !response.articles[i].title || !response.articles[i].url
+                    || !response.articles[i].source.name) {
                     response.articles.splice(i, 1);
                 }
             }
+            // Remove articles with missing content.
+            console.log(`[${new Date()}] : Running learning script on ${response.articles.length} news articles.`);
             //   a. Send articles to machine learning script.
             runPy(JSON.stringify(response)).then(async (learnedNews) => {
                 //    b. get response and save it.
                 try {
                     await addArticleArray(JSON.parse(learnedNews));
-                    console.log(`[${new Date()}] : Successfully added ${(JSON.parse(learnedNews).articles.length)} news articles.`);
-
+                    if ((JSON.parse(learnedNews).articles.length) !== 0) console.log(`[${new Date()}] : Successfully added ${(JSON.parse(learnedNews).articles.length)} news articles.`);
+                    else console.log(`[${new Date()}] : Found 0 suitable articles.`)
                 } catch (err) {
                     console.log(`[${new Date()}] : ${err}`)
                 }
@@ -66,21 +69,25 @@ schedule.scheduleJob('0 0 * * *', () => {
 });
 
 const addArticleArray = async (learnedNews) => {
-    //await Promise.all(learnedNews.articles.map(async (article) => {
     for (const article of learnedNews.articles) {
         let newNews = new News({
             title: article.title,
             URL: article.url,
             content: article.content,
             imageLink: article.urlToImage,
-            createdBy: 'NewsAPI'
+            createdBy: 'NewsAPI',
+            source: article.source.name
         });
+
+        // Removes the [+1234 chars] at the end of content string.
+        newNews.content = newNews.content.split('… [')[0] + '...';
+
         // 3. Save News
         try {
             await newNews.save((err) => {
                 if (err) {
                     if (err.code === 11000 && err.name === 'MongoError') {
-                        // Do nothing if news already exists.
+                        // Do nothing if news already exists. Duplicate error will be based on
                     } else {
                         throw new Error(err)
                     }

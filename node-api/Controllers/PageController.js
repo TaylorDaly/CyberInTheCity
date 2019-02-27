@@ -15,8 +15,11 @@ PageRouter.get('/', (req, res) => {
     })
 });
 
-PageRouter.get('/:title', (req, res) => {
-    Page.findOne({ title: req.params.title }, 'title content parent', (err, page) => {
+PageRouter.get('/', (req, res) => {
+    let query = {};
+    if (req.query._id) query['_id'] = req.query._id;
+    if (req.query.title) query['title'] = req.query.title;
+    Page.findOne(query, 'title content parent', (err, page) => {
         if (err) {
             res.status(500).json({
                 success: false,
@@ -50,7 +53,7 @@ PageRouter.post('/', Auth.VerifyAdmin, (req, res, next) => {
 });
 
 PageRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
-    Page.getOne({ title: req.body.title }, (err, page) => {
+    Page.getOne({ _id: req.body._id }, (err, page) => {
         if (err) {
             res.status(500).json({
                 success: false,

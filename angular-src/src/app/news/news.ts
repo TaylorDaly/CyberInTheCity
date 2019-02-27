@@ -5,4 +5,5 @@ export interface NewsItem {
   URL: String,
   createdOn: Date,
   createdBy: String,
+  source : String
 }
