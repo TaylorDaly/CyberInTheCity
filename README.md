@@ -7,6 +7,7 @@
 3. Go into angular-src and 'ng update @angular/cli' 
     * ng build to generate angular artifacts for Express to use.
 4. Add .env to project. 
+5. Machine learning script relies on python 3. Can be downloaded at https://www.python.org/downloads/.
 ---
 #### Troubleshooting ####
 * Problem: project will not start after getting latest.

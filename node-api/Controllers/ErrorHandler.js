@@ -1,5 +1,5 @@
-const {AssertionError} = require('assert');
-const {MongoError} = require('mongodb');
+const { AssertionError } = require('assert');
+const { MongoError } = require('mongodb');
 const app = require('express')();
 const pluralize = require('pluralize');
 
@@ -7,10 +7,10 @@ handleValidationError = (error, req, res, next) => {
     if (error.name === 'ValidationError') {
         // If error is {Path `property` is requried} remove the 'Path ' bit.
         if (error.errors.title.kind === 'required')
-        return res.status(400).json({
+            {return res.status(400).json({
             success: false,
             message: error.errors.title.message.split('Path ')[1]
-        });
+        });}
     }
     next(error);
 };
@@ -62,7 +62,7 @@ handleOtherError = (error, req, res, next) => {
     console.log(`[${new Date()}] : ${error}`);
 
     return res.status(500).json({
-        success : false,
+        success: false,
         message: `Something broke. Please try again.`
     });
 };
@@ -73,5 +73,5 @@ module.exports =
         handleAssertionError,
         handleDatabaseError,
         handleURIError,
-        handleOtherError,
+        handleOtherError
     ];

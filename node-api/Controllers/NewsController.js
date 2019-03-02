@@ -9,7 +9,7 @@ const schedule = require('node-schedule');
 // returned sequentially based on date.
 NewsRouter.get('/', (req, res, next) => {
     let queryDate = new Date(req.query.createdOnBefore);
-    News.find({createdOn: {$lt: queryDate}})
+    News.find({ createdOn: { $lt: queryDate } })
         .limit(10)
         .sort('-createdOn')
         .exec((err, items) => {
@@ -26,7 +26,6 @@ schedule.scheduleJob('0 0 * * *', () => {
     // Today and 24 hours ago in ISO 8601 format (yyyy-mm-dd). The NewsAPI requires this format.
     let today = new Date().toISOString();
     let yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
-    console.log(yesterday);
     NewsAPI.v2.everything({
         q: 'cybersecurity',
         from: yesterday,
@@ -39,9 +38,9 @@ schedule.scheduleJob('0 0 * * *', () => {
         if (response.articles.length > 0) {
             // Null checks
             for (let i = 0; i < response.articles.length; i++) {
-                if (!response.articles[i].content || !(response.articles[i].content.length > 250)
-                    || !response.articles[i].urlToImage || !response.articles[i].title || !response.articles[i].url
-                    || !response.articles[i].source.name) {
+                if (!response.articles[i].content || !(response.articles[i].content.length > 250) ||
+                    !response.articles[i].urlToImage || !response.articles[i].title || !response.articles[i].url ||
+                    !response.articles[i].source.name) {
                     response.articles.splice(i, 1);
                 }
             }
@@ -100,18 +99,17 @@ const addArticleArray = async (learnedNews) => {
 };
 
 const runPy = async (news) => {
-    return new Promise((success, error) => {
-
-        const {spawn} = require('child_process');
+    return new Promise((resolve, reject) => {
+        const { spawn } = require('child_process');
         const pyprog = spawn('python', ['./Python/LearnNewsScript.py', news]);
 
         pyprog.stdout.on('data', (data) => {
-            success(data.toString('utf-8'));
+            resolve(data.toString('utf-8'));
         });
 
         pyprog.stderr.on('data', (data) => {
             console.log('[' + new Date() + ']' + ` : Python error happened during News Learning script. Error: ${data.toString()}`);
-            error(new Error(data.toString('utf-8')));
+            reject(new Error(data.toString('utf-8')));
         });
     });
 };
