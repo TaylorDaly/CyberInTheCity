@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dbConfig = require('./Database.js');
-const Person = require('../models/Person');
+const Person = require('../Models/Person');
 
 // Add to paths that require a user to have a token and any permission level.
 let Verify = (req, res, next) => {

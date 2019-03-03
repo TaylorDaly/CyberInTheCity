@@ -1,7 +1,7 @@
 const dbConfig = require('../Config/Database');
 const NewsAPI = new (require('newsapi'))(dbConfig.newsKey);
 const NewsRouter = require('express').Router();
-const News = require('../models/News');
+const News = require('../Models/News');
 const schedule = require('node-schedule');
 
 // Gets 10 news sources with created on date less than the passed 'createdOnBefore'. For pagination follow up

@@ -1,6 +1,6 @@
 const express = require('express');
 const PageRouter = express.Router();
-const Page = require('../models/Page');
+const Page = require('../Models/Page');
 const Auth = require('../Config/AuthController');
 
 PageRouter.get('/', (req, res) => {

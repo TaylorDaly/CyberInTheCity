@@ -1,7 +1,7 @@
 // Dependencies
 const express = require('express');
 const ImageRouter = express.Router();
-const Image = require('../models/Image');
+const Image = require('../Models/Image');
 const fs = require('fs');
 const Buffer = require('buffer').Buffer;
 const Auth = require("../Config/AuthController");

@@ -9,7 +9,7 @@ const https = require('https')
 require('dotenv').config()
 
 // Imports
-const dbConfig = require('./config/database')
+const dbConfig = require('./Config/database')
 
 // Constants
 const app = express()

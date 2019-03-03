@@ -2,8 +2,8 @@
 const Auth = require('../Config/AuthController');
 const express = require('express');
 const PeopleRouter = express.Router();
-const Person = require('../models/Person');
-const Image = require('../models/Image');
+const Person = require('../Models/Person');
+const Image = require('../Models/Image');
 
 PeopleRouter.get('/Admin', Auth.VerifyAdmin, (req, res) => {
     Person.find(req.query, 'email _id sys_role name verified', (err, people) => {
