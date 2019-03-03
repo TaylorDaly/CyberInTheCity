@@ -1,7 +1,13 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {navItems, StaticPage} from "../../../../navmenu/navItems";
+import {
+  Component, ComponentFactoryResolver,
+  OnInit,
+  //ViewChild,
+  //ViewContainerRef,
+} from '@angular/core';
+import {navItems} from "../../../../navmenu/navItems";
 import {FormBuilder, Validators} from "@angular/forms";
 import {PageService} from "../../../../Services/page.service";
+//import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
 
 @Component({
   selector: 'app-edit-static',
@@ -10,9 +16,14 @@ import {PageService} from "../../../../Services/page.service";
 })
 export class EditStaticComponent implements OnInit {
 
+  // @ViewChild('dataTable', {read: ViewContainerRef}) table: ViewContainerRef;
+  // componentRef: any;
+  // factory: any;
+
   parents = new navItems().getParents();
 
   createPage = this.fb.group({
+    _id: [''],
     content: [''],
     title: ['', Validators.required],
     parent: ['', Validators.required]
@@ -22,6 +33,7 @@ export class EditStaticComponent implements OnInit {
   pageFields = ['title', 'parent'];
 
   loadTable = false;
+  editPage = false;
   errMsg = "";
 
   get title() {
@@ -33,7 +45,8 @@ export class EditStaticComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder,
-              private pageService: PageService,) { }
+              private pageService: PageService,
+              private resolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
     this.getAllPages();
@@ -42,7 +55,11 @@ export class EditStaticComponent implements OnInit {
   getAllPages(){
     this.pageService.getAllStaticPages()
       .subscribe(
-        res => {this.setPageList(res)},
+        res => {
+          this.errMsg = "";
+          this.setPageList(res);
+          //this.createTable();
+        },
         err => {
           //window.alert(`Error ${err.code}: ${err.message}`);
           this.errMsg = err.message;
@@ -56,8 +73,8 @@ export class EditStaticComponent implements OnInit {
     for(let i = 0; i < data.length; ++i) {
       this.pageList.push({_id: data[i]._id, title: data[i].title, parent: data[i].parent});
     }
-    //console.log(this.pageList);
     this.loadTable = true;
+    //console.log(this.pageList);
   }
 
   addStaticPage(html) {
@@ -65,12 +82,16 @@ export class EditStaticComponent implements OnInit {
       content: html,
       // title: this.title.value.trim()
     });
-    console.log(this.createPage.value);
+    //console.log(this.createPage.value);
     this.pageService.addPage(this.createPage.value)
       .subscribe(
         res => {
           window.alert(res['message']);
+          //this.setTable();
+          //this.editPage = false;
+          this.errMsg = "";
           location.reload();
+          //this.resetTable();
         },
         err => {
           this.errMsg = err.message;
@@ -78,4 +99,50 @@ export class EditStaticComponent implements OnInit {
       );
   }
 
+  editTable(editObj) {
+    this.createPage.patchValue({
+      _id: editObj._id
+    });
+
+    //console.log(this.createPage.value);
+
+    if(editObj.option == "update") {
+      this.editPage = true;
+      this.pageService.getStaticPageById(editObj._id)
+        .subscribe(
+          res => {
+            this.errMsg = "";
+          },
+          err => {
+            this.errMsg = err.message;
+          }
+        )
+      // this.pageService.updatePage(this.createPage.value)
+      //   .subscribe(
+      //     res => {
+      //       window.alert(res['message']);
+      //     },
+      //     err => {
+      //       this.errMsg = err.message;
+      //     }
+      //   )
+    } else  {  // Delete table item //
+      //console.log(this.createPage.value);
+      if(window.confirm('Are you sure you want to delete this page?')) {
+        this.pageService.deletePage(this.createPage.value)
+          .subscribe(
+            res => {
+              window.alert(res['message']);
+              this.errMsg = "";
+              location.reload();
+              //this.resetTable();
+              //location.reload();
+            },
+            err => {
+              this.errMsg = err.message;
+            }
+          )
+      }
+    }
+  }
 }

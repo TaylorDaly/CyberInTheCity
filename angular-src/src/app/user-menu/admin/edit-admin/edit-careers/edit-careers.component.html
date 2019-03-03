@@ -1,10 +1,64 @@
-<div>
-  <p class="text-danger">{{errMsg}}</p>
-  <div *ngIf="loadTable">
-    <app-list-data [listItems]="careerList" [listFields]="careerFields"></app-list-data>
-  </div>
+<p class="text-danger">{{errMsg}}</p>
+<div [hidden]="editCareers">
+  <template #dataTable></template>
   <div>
-    <button type="button" class="btn btn-color btn-md btn-add">
+    <button type="button" class="btn btn-color btn-md btn-add" (click)="editCareers=true">
       <span class="fa fa-plus"></span> Add</button>
   </div>
 </div>
+<div [hidden]="!editCareers">
+  <form [formGroup]="createCareer">
+    <div class="form-group">
+    <label>Job Title:</label>
+    <input type="text" [class.is-invalid]="jobtitle.invalid && jobtitle.touched"
+           class="form-control" placeholder="Enter a job title" formControlName="jobtitle" />
+    <small class="text-danger" [class.d-none]="jobtitle.valid || jobtitle.untouched">
+      Job title is required.
+    </small>
+  </div>
+    <div class="form-group">
+      <label>Company:</label>
+      <input type="text" [class.is-invalid]="company.invalid && company.touched"
+             class="form-control" placeholder="Enter a company" formControlName="company" />
+      <small class="text-danger" [class.d-none]="company.valid || company.untouched">
+        Company is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Location:</label>
+      <input type="text" [class.is-invalid]="location.invalid && location.touched"
+             class="form-control" placeholder="Enter a location" formControlName="location" />
+      <small class="text-danger" [class.d-none]="location.valid || location.untouched">
+        Location is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-2">
+          <label style="padding-top: 5px;">Job Type:</label>
+        </div>
+        <div class="col-md-10">
+          <select class="form-control" [class.is-invalid]="jobType.invalid && jobType.touched"
+                  formControlName="jobType">
+            <option value="" disabled>Select One</option>
+            <option *ngFor="let type of jobTypeList">{{type}}</option>
+          </select>
+          <small class="text-danger" [class.d-none]="jobType.valid || jobType.untouched">
+            Job type is required.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Link:</label>
+      <input type="text" class="form-control" placeholder="Enter link to job site" formControlName="url" />
+    </div>
+    <div class="form-group">
+      <label>Description:</label>
+      <textarea class="form-control" rows="5" placeholder="Enter job description"
+                formControlName="description"></textarea>
+    </div>
+    <button class="btn btn-color" style="float: right;" [disabled]="createCareer.invalid">Save</button>
+  </form>
+</div>
+

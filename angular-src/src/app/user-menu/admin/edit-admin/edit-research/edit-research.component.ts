@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ResearchService} from "../../../../Services/research.service";
+import {FormBuilder, Validators} from "@angular/forms";
+import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
 
 @Component({
   selector: 'app-edit-research',
@@ -8,13 +10,43 @@ import {ResearchService} from "../../../../Services/research.service";
 })
 export class EditResearchComponent implements OnInit {
 
+  @ViewChild('dataTable', {read: ViewContainerRef}) table: ViewContainerRef;
+  componentRef: any;
+  factory: any;
+
   researchList = [];
   researchFields = ['title', 'type', 'start_date', 'end_date'];
 
-  loadTable = false;
   errMsg = "";
 
-  constructor(private researchService: ResearchService) { }
+  editResearch = false;
+  researchTypeList = ['Faculty Project', 'Faculty Funding', 'Student Project'];
+
+  createResearch = this.fb.group({
+    title: ['', Validators.required],
+    ownerID: [''],
+    type: ['', Validators.required],
+    startDate: ['', Validators.required],
+    endDate: ['', Validators.required],
+    description: [''],
+  });
+
+  get title() {
+    return this.createResearch.get('title');
+  }
+  get type() {
+    return this.createResearch.get('type');
+  }
+  get startDate() {
+    return this.createResearch.get('startDate');
+  }
+  get endDate() {
+    return this.createResearch.get('endDate');
+  }
+
+  constructor(private researchService: ResearchService,
+              private fb: FormBuilder,
+              private resolver: ComponentFactoryResolver,) { }
 
   ngOnInit() {
     this.getAllResearch();
@@ -25,12 +57,13 @@ export class EditResearchComponent implements OnInit {
       .subscribe(
         res => {
           this.setResearch(res);
+          this.createTable();
           //console.log(res);
         },
         err => {
           //window.alert(`Error ${err.code}: ${err.message}`);
           this.errMsg = err.message;
-          console.log(err);
+          //console.log(err);
         }
       )
   }
@@ -44,6 +77,31 @@ export class EditResearchComponent implements OnInit {
         start_date: new Date(data[i].startDate).toLocaleDateString(),
         end_date: new Date(data[i].endDate).toLocaleDateString()});
     }
-    this.loadTable = true;
+  }
+  createTable() {
+    this.table.clear();
+    this.factory = this.resolver.resolveComponentFactory(ListDataComponent);
+    this.componentRef = this.table.createComponent(this.factory);
+    this.componentRef.instance.listItems = this.researchList;
+    this.componentRef.instance.listFields = this.researchFields;
+    this.componentRef.instance.edit.subscribe(
+      edit => {
+        //this.editTable(edit);
+      }
+    )
+  }
+
+  destroyTable() {
+    if (this.componentRef != null) {
+      //console.log("Destroy");
+      this.componentRef.destroy();
+    }
+  }
+
+  resetTable() {
+    this.destroyTable();
+    this.researchList = [];
+    this.getAllResearch();
+    this.createTable();
   }
 }

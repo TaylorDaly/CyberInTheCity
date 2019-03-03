@@ -1,10 +1,65 @@
-<div>
-  <p class="text-danger">{{errMsg}}</p>
-  <div *ngIf="loadTable">
-    <app-list-data [listItems]="eventList" [listFields]="eventFields"></app-list-data>
-  </div>
+<p class="text-danger">{{errMsg}}</p>
+<div [hidden]="editEvent">
+  <template #dataTable></template>
   <div>
-    <button type="button" class="btn btn-color btn-md btn-add">
+    <button type="button" class="btn btn-color btn-md btn-add" (click)="editEvent=true">
       <span class="fa fa-plus"></span> Add</button>
   </div>
+</div>
+
+<div [hidden]="!editEvent">
+  <form [formGroup]="createEvent">
+    <div class="form-group">
+      <label>Event Title:</label>
+      <input type="text" [class.is-invalid]="title.invalid && title.touched"
+             class="form-control" placeholder="Enter a event title" formControlName="title" />
+      <small class="text-danger" [class.d-none]="title.valid || title.untouched">
+        Event title is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Event Date:</label>
+      <input type="date" [class.is-invalid]="eventDate.invalid && eventDate.touched"
+             class="form-control" placeholder="Enter a event date" formControlName="eventDate" />
+      <small class="text-danger" [class.d-none]="eventDate.valid || eventDate.untouched">
+        Course name is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Location:</label>
+      <input type="text" [class.is-invalid]="location.invalid && location.touched"
+             class="form-control" placeholder="Enter a location" formControlName="location" />
+      <small class="text-danger" [class.d-none]="location.valid || location.untouched">
+        Location is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col">
+          <label style="padding-top: 5px;">From:</label>
+          <input type="time" [class.is-invalid]="(timeTo.invalid || timeFrom.invalid) &&
+          (timeTo.touched || timeFrom.touched)" class="form-control" formControlName="timeTo" />
+        </div>
+        <div class="col">
+          <label style="padding-top: 5px;">To:</label>
+          <input type="time" [class.is-invalid]="(timeTo.invalid || timeFrom.invalid) &&
+          (timeTo.touched || timeFrom.touched)" class="form-control" formControlName="timeFrom" />
+        </div>
+      </div>
+      <small class="text-danger" [class.d-none]="(timeTo.valid && timeFrom.valid) ||
+          (timeTo.untouched && timeFrom.untouched)">
+        Time is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Link:</label>
+      <input type="text" class="form-control" placeholder="Enter a url to event" formControlName="url" />
+    </div>
+    <div class="form-group">
+      <label>Description:</label>
+      <textarea class="form-control" rows="5" placeholder="Enter event description"
+                formControlName="description"></textarea>
+    </div>
+    <button class="btn btn-color" style="float: right;" [disabled]="createEvent.invalid">Save</button>
+  </form>
 </div>

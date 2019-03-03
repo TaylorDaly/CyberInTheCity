@@ -31,6 +31,9 @@
   float: right;
   margin-top: 15px;
 }
+.btn-gray{
+  background-color: #A2A4A3;
+}
 blockquote
 {
   font-style: italic;

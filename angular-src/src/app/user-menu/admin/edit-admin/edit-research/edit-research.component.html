@@ -1,10 +1,60 @@
-<div>
-  <p class="text-danger">{{errMsg}}</p>
-  <div *ngIf="loadTable">
-    <app-list-data [listItems]="researchList" [listFields]="researchFields"></app-list-data>
-  </div>
+<p class="text-danger">{{errMsg}}</p>
+<div [hidden]="editResearch">
+  <template #dataTable></template>
   <div>
-    <button type="button" class="btn btn-color btn-md btn-add">
+    <button type="button" class="btn btn-color btn-md btn-add" (click)="editResearch=true">
       <span class="fa fa-plus"></span> Add</button>
   </div>
 </div>
+<div [hidden]="!editResearch">
+  <form [formGroup]="createResearch">
+    <div class="form-group">
+      <label>Research Title:</label>
+      <input type="text" [class.is-invalid]="title.invalid && title.touched"
+             class="form-control" placeholder="Enter a research title" formControlName="title" />
+      <small class="text-danger" [class.d-none]="title.valid || title.untouched">
+        Research title is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-2">
+          <label style="padding-top: 5px;">Research Type:</label>
+        </div>
+        <div class="col-md-10">
+          <select class="form-control" [class.is-invalid]="type.invalid && type.touched"
+                  formControlName="type">
+            <option value="" disabled>Select One</option>
+            <option *ngFor="let type of researchTypeList">{{type}}</option>
+          </select>
+          <small class="text-danger" [class.d-none]="type.valid || type.untouched">
+            Research type is required.
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Start Date:</label>
+      <input type="date" [class.is-invalid]="startDate.invalid && startDate.touched"
+             class="form-control" placeholder="Enter a start date" formControlName="startDate" />
+      <small class="text-danger" [class.d-none]="startDate.valid || startDate.untouched">
+        Start date is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>End Date:</label>
+      <input type="date" [class.is-invalid]="endDate.invalid && endDate.touched"
+             class="form-control" placeholder="Enter a end date" formControlName="endDate" />
+      <small class="text-danger" [class.d-none]="endDate.valid || endDate.untouched">
+        End date is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Description:</label>
+      <textarea class="form-control" rows="5" placeholder="Enter research description"
+                formControlName="description"></textarea>
+    </div>
+    <button class="btn btn-color" style="float: right;" [disabled]="createResearch.invalid">Save</button>
+  </form>
+</div>
+

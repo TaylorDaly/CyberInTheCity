@@ -16,7 +16,7 @@ import {EditContactComponent} from "./edit-admin/edit-contact/edit-contact.compo
 })
 export class AdminComponent implements OnInit {
 
-  @ViewChild('editComponent', {read: ViewContainerRef}) entry: ViewContainerRef;
+  @ViewChild('editComponent', {read: ViewContainerRef}) loadComp: ViewContainerRef;
 
   componentRef: any;
   factory: any;
@@ -69,9 +69,9 @@ export class AdminComponent implements OnInit {
   }
 
   createComponent(editComponent) {
-    this.entry.clear();
+    this.loadComp.clear();
     this.factory = this.resolver.resolveComponentFactory(editComponent);
-    this.componentRef = this.entry.createComponent(this.factory);
+    this.componentRef = this.loadComp.createComponent(this.factory);
   }
 
   destroyComponent() {

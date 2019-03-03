@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {EducationService} from "../../../../Services/education.service";
+import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-edit-education',
@@ -8,13 +10,43 @@ import {EducationService} from "../../../../Services/education.service";
 })
 export class EditEducationComponent implements OnInit {
 
+  @ViewChild('dataTable', {read: ViewContainerRef}) table: ViewContainerRef;
+  componentRef: any;
+  factory: any;
+
   courseList = [];
   courseFields = ['course', 'name', 'term'];
 
-  loadTable = false;
+  editCourse = false;
   errMsg = "";
 
-  constructor(private eduService: EducationService) { }
+  createCourse = this.fb.group({
+    courseNumber: ['', Validators.required],
+    courseName: ['', Validators.required],
+    description: [''],
+    category: [''],
+    department: ['', Validators.required],
+    termYear: ['', Validators.required],
+    content: [''],
+    syllabus: [''],
+  });
+
+  get courseNumber() {
+    return this.createCourse.get('courseNumber');
+  }
+  get courseName() {
+    return this.createCourse.get('courseName');
+  }
+  get termYear() {
+    return this.createCourse.get('termYear');
+  }
+  get department() {
+    return this.createCourse.get('department');
+  }
+
+  constructor(private eduService: EducationService,
+              private resolver: ComponentFactoryResolver,
+              private fb: FormBuilder) { }
 
   ngOnInit() {
     this.getAllCourses();
@@ -25,12 +57,13 @@ export class EditEducationComponent implements OnInit {
       .subscribe(
         res => {
           this.setCourses(res);
+          this.createTable();
           //console.log(res);
           },
         err => {
           //window.alert(`Error ${err.code}: ${err.message}`);
           this.errMsg = err.message;
-          console.log(err);
+          //console.log(err);
         }
       )
   }
@@ -43,6 +76,32 @@ export class EditEducationComponent implements OnInit {
         name: data[i].courseName,
         term: data[i].termYear});
     }
-    this.loadTable = true;
+  }
+
+  createTable() {
+    this.table.clear();
+    this.factory = this.resolver.resolveComponentFactory(ListDataComponent);
+    this.componentRef = this.table.createComponent(this.factory);
+    this.componentRef.instance.listItems = this.courseList;
+    this.componentRef.instance.listFields = this.courseFields;
+    this.componentRef.instance.edit.subscribe(
+      edit => {
+        //this.editTable(edit);
+      }
+    )
+  }
+
+  destroyTable() {
+    if (this.componentRef != null) {
+      //console.log("Destroy");
+      this.componentRef.destroy();
+    }
+  }
+
+  resetTable() {
+    this.destroyTable();
+    this.courseList = [];
+    this.getAllCourses();
+    this.createTable();
   }
 }

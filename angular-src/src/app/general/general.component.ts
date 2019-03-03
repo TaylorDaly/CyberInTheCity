@@ -26,7 +26,7 @@ export class GeneralComponent implements OnInit {
   }
 
   getPageTitle(title: string) {
-    this.pageService.getStaticPage(title)
+    this.pageService.getStaticPageByTitle(title)
       .subscribe(
         response => this.content = this.sanitizer.bypassSecurityTrustHtml(response['content']),
         error => this.content = error

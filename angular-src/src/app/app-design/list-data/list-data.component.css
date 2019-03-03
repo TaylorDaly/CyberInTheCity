@@ -1,7 +1,7 @@
 .list-size{
-  min-height: 300px;
-  max-height: 300px;
+  max-height: 500px;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 li:hover {
   background-color: rgba(207,184,124,0.7);

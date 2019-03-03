@@ -36,6 +36,9 @@ import { ListDataComponent } from './list-data/list-data.component';
     EditorComponent,
     ListDataComponent,
     MatTableModule,
+  ],
+  entryComponents: [
+    ListDataComponent
   ]
 })
 export class AppDesignModule { }

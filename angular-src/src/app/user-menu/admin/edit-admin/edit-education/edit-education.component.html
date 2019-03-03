@@ -1,10 +1,55 @@
-<div>
-  <p class="text-danger">{{errMsg}}</p>
-  <div *ngIf="loadTable">
-    <app-list-data [listItems]="courseList" [listFields]="courseFields"></app-list-data>
-  </div>
+<p class="text-danger">{{errMsg}}</p>
+<div [hidden]="editCourse">
+  <template #dataTable></template>
   <div>
-    <button type="button" class="btn btn-color btn-md btn-add">
+    <button type="button" class="btn btn-color btn-md btn-add" (click)="editCourse=true">
       <span class="fa fa-plus"></span> Add</button>
   </div>
 </div>
+<div [hidden]="!editCourse">
+  <form [formGroup]="createCourse">
+    <div class="form-group">
+      <label>Course Number:</label>
+      <input type="text" [class.is-invalid]="courseNumber.invalid && courseNumber.touched"
+             class="form-control" placeholder="Enter a course number" formControlName="courseNumber" />
+      <small class="text-danger" [class.d-none]="courseNumber.valid || courseNumber.untouched">
+        Course number is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Course Name:</label>
+      <input type="text" [class.is-invalid]="courseName.invalid && courseName.touched"
+             class="form-control" placeholder="Enter a course name" formControlName="courseName" />
+      <small class="text-danger" [class.d-none]="courseName.valid || courseName.untouched">
+        Course name is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Term Year:</label>
+      <input type="text" [class.is-invalid]="termYear.invalid && termYear.touched"
+             class="form-control" placeholder="Enter a term year" formControlName="termYear" />
+      <small class="text-danger" [class.d-none]="termYear.valid || termYear.untouched">
+        Term year is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Department:</label>
+      <input type="text" [class.is-invalid]="department.invalid && department.touched"
+             class="form-control" placeholder="Enter a department" formControlName="department" />
+      <small class="text-danger" [class.d-none]="department.valid || department.untouched">
+        Department is required.
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Category:</label>
+      <input type="text" class="form-control" placeholder="Enter a category" formControlName="category" />
+    </div>
+    <div class="form-group">
+      <label>Description:</label>
+      <textarea class="form-control" rows="5" placeholder="Enter course description"
+                formControlName="description"></textarea>
+    </div>
+    <button class="btn btn-color" style="float: right;" [disabled]="createCourse.invalid">Save</button>
+  </form>
+</div>
+

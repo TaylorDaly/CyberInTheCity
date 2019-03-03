@@ -22,7 +22,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             // Default Error message: //
             let err = {
               code: 500,
-              message: "An errRes occurred while handling the request."
+              message: "An error occurred while handling the request."
             };
 
             if (errRes instanceof ErrorEvent) {

@@ -14,7 +14,7 @@
 //   }));
 //
 //   beforeEach(() => {
-//     fixture = TestBed.createComponent(NewsComponent);
+//     fixture = TestBed.createTable(NewsComponent);
 //     component = fixture.componentInstance;
 //     fixture.detectChanges();
 //   });
