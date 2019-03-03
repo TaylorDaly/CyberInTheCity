@@ -9,7 +9,7 @@ PageRouter.get('/', (req, res) => {
     if (req.query.title) query['title'] = req.query.title;
 
     if (query !== {}) {
-        Page.findOne(query, 'title content parent', (err, page) => {
+        Page.find(query, 'title content parent', (err, page) => {
             if (err) {
                 res.status(500).json({
                     success: false,
