@@ -101,8 +101,8 @@ ResearchRouter.put('/', Auth.Verify, (req, res, next) => {
 });
 
 // Delete
-ResearchRouter.delete('/:id', Auth.Verify, (req, res, next) => {
-    Research.getResearch(req.params.id, (err, research) => {
+ResearchRouter.delete('/:_id', Auth.Verify, (req, res, next) => {
+    Research.getResearch(req.params._id, (err, research) => {
         if (err) {
             res.json({
                 success: false,

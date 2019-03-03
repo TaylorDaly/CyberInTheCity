@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const ResearchSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     ownerID: {
         type: [String],
