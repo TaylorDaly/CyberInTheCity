@@ -1,6 +1,6 @@
 {
   "name": "cyberinthecity",
-  "version": "0.5.0",
+  "version": "0.7.0",
   "description": "MEAN application for a new Cyber Security portal for CU Denver.",
   "main": "app.js",
   "scripts": {

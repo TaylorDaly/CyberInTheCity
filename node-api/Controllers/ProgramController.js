@@ -1,6 +1,6 @@
 const express = require('express');
 const ProgramRouter = express.Router();
-const Program = require('../models/Program');
+const Program = require('../Models/Program');
 const Auth = require('../Config/AuthController');
 
 // Get all programs

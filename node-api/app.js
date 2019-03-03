@@ -9,7 +9,7 @@ const https = require('https')
 require('dotenv').config()
 
 // Imports
-const dbConfig = require('./config/database')
+const dbConfig = require('./Config/database')
 
 // Constants
 const app = express()
@@ -17,9 +17,9 @@ const port = dbConfig.nodePort || 3000
 
 // Database Connection
 mongoose.connect(dbConfig.uri, require('./Config/MongooseConnectOptions'))
-  .then((res) => console.log(`[${new Date()}] : MongoDB connection ${res.connections[0]._readyState === 1
-    ? 'Successful' : `Failure. Response: ${res}`}.`))
-  .catch((err) => console.log(`[${new Date()}] : ${err}`));
+    .then((res) => console.log(`[${new Date()}] : MongoDB connection ${res.connections[0]._readyState === 1
+        ? 'Successful' : `Failure. Response: ${res}`}.`))
+    .catch((err) => console.log(`[${new Date()}] : ${err}`));
 
 // TODO: add TLS for security
 // app setup
@@ -29,7 +29,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, '../angular-src/dist')))
 
-// TODO: JWT authentication on all routes
 // Routes
 app.use('/api/Person', require('./Controllers/PersonController'))
 app.use('/api/Publication', require('./Controllers/PublicationController'))
@@ -47,20 +46,20 @@ app.use('/api/Events', require('./Controllers/EventController'))
 
 // re-route bad requests back to home page.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../angular-src/dist/index.html'))
+    res.sendFile(path.join(__dirname, '../angular-src/dist/index.html'))
 })
 
 // Custom Error handler
 app.use('/', require('./Controllers/ErrorHandler'))
 
 app.listen(port, () => {
-  console.log(`[${new Date()}] : Starting the server at port ${port}.`)
+    console.log(`[${new Date()}] : Starting the server at port ${port}.`)
 })
 
 // TODO: for TLS, get cert and key
 const options = {
-  // key: fs.readFileSync("key.pem"),
-  // cert: fs.readFileSync("cert.pem")
+    // key: fs.readFileSync("key.pem"),
+    // cert: fs.readFileSync("cert.pem")
 }
 
 https.createServer(options, app).listen(8443);

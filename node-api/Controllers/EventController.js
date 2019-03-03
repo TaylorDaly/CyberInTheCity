@@ -1,6 +1,6 @@
 const express = require('express');
 const EventRouter = express.Router();
-const Event = require('../models/Events');
+const Event = require('../Models/Events');
 const Auth = require('../Config/AuthController');
 const request = require('request');
 var schedule = require('node-schedule');

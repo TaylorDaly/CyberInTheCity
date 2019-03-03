@@ -1,39 +1,40 @@
 const express = require('express');
 const PageRouter = express.Router();
-const Page = require('../models/Page');
+const Page = require('../Models/Page');
 const Auth = require('../Config/AuthController');
-
-PageRouter.get('/', (req, res) => {
-    Page.getAllPages((err, pages) => {
-        if (err) {
-            res.status(500).json({
-                success: false, message: `Failed to get all pages. Error: ${err}`
-            })
-        } else {
-            res.json(pages)
-        }
-    })
-});
 
 PageRouter.get('/', (req, res) => {
     let query = {};
     if (req.query._id) query['_id'] = req.query._id;
     if (req.query.title) query['title'] = req.query.title;
-    Page.findOne(query, 'title content parent', (err, page) => {
-        if (err) {
-            res.status(500).json({
-                success: false,
-                message: `Failed to get page. Error: ${err}`
-            })
-        } else if (page) {
-            res.json(page);
-        } else {
-            res.status(404).json({
-                success: false,
-                message: `Page "${req.params.title}" does not exist.`
-            })
-        }
-    })
+
+    if (query !== {}) {
+        Page.findOne(query, 'title content parent', (err, page) => {
+            if (err) {
+                res.status(500).json({
+                    success: false,
+                    message: `Failed to get page. Error: ${err}`
+                })
+            } else if (page) {
+                res.json(page);
+            } else {
+                res.status(404).json({
+                    success: false,
+                    message: `Page "${req.query.title}" does not exist.`
+                })
+            }
+        })
+    } else {
+        Page.getAllPages((err, pages) => {
+            if (err) {
+                res.status(500).json({
+                    success: false, message: `Failed to get all pages. Error: ${err}`
+                })
+            } else {
+                res.json(pages)
+            }
+        })
+    }
 });
 
 PageRouter.post('/', Auth.VerifyAdmin, (req, res, next) => {

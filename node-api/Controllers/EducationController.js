@@ -1,6 +1,6 @@
 const express = require('express');
 const EducationRouter = express.Router();
-const Education = require('../models/Education');
+const Education = require('../Models/Education');
 const Auth = require('../Config/AuthController');
 
 // Get all education
