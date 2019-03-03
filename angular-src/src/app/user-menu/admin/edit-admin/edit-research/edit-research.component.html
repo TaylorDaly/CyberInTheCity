@@ -7,6 +7,7 @@
   </div>
 </div>
 <div [hidden]="!editResearch">
+  {{createResearch.value | json}}
   <form [formGroup]="createResearch">
     <div class="form-group">
       <label>Research Title:</label>
@@ -33,6 +34,23 @@
         </div>
       </div>
     </div>
+
+    <div class="form-group">
+      <label>Researcher(s):</label>
+      <div formArrayName="ownerID" *ngFor="let owner of ownerID.controls; let i=index">
+                <select class="form-control" [class.is-invalid]="ownerID.invalid && ownerID.touched"
+                        [formControlName]="i">
+                  <option value="" disabled>Select One</option>
+                  <option *ngFor="let person of personList">{{person.name}}</option>
+                </select>
+        </div>
+      <small class="text-danger" [class.d-none]="ownerID.valid || ownerID.untouched" style="padding-right: 5px;">
+        At least one researcher is required.
+      </small>
+      <button type="button" class="btn btn-default btn-md" (click)="addResearcher()">
+        <span class="fa fa-plus"></span> Add </button>
+    </div>
+
     <div class="form-group">
       <label>Start Date:</label>
       <input type="date" [class.is-invalid]="startDate.invalid && startDate.touched"

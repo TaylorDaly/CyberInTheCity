@@ -1,7 +1,9 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {ResearchService} from "../../../../Services/research.service";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, Validators} from "@angular/forms";
 import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
+import {PersonService} from "../../../../Services/person.service";
+import {Person} from "../../../../person/person";
 
 @Component({
   selector: 'app-edit-research',
@@ -16,6 +18,7 @@ export class EditResearchComponent implements OnInit {
 
   researchList = [];
   researchFields = ['title', 'type', 'start_date', 'end_date'];
+  personList: Person[];
 
   errMsg = "";
 
@@ -24,7 +27,7 @@ export class EditResearchComponent implements OnInit {
 
   createResearch = this.fb.group({
     title: ['', Validators.required],
-    ownerID: [''],
+    ownerID: this.fb.array([this.fb.control('', Validators.required)]),
     type: ['', Validators.required],
     startDate: ['', Validators.required],
     endDate: ['', Validators.required],
@@ -43,13 +46,18 @@ export class EditResearchComponent implements OnInit {
   get endDate() {
     return this.createResearch.get('endDate');
   }
+  get ownerID() {
+    return this.createResearch.get('ownerID') as FormArray;
+  }
 
   constructor(private researchService: ResearchService,
+              private personService: PersonService,
               private fb: FormBuilder,
               private resolver: ComponentFactoryResolver,) { }
 
   ngOnInit() {
     this.getAllResearch();
+    this.getAllPeople();
   }
 
   getAllResearch(){
@@ -78,6 +86,25 @@ export class EditResearchComponent implements OnInit {
         end_date: new Date(data[i].endDate).toLocaleDateString()});
     }
   }
+
+  getAllPeople() {
+    this.personService.getAllPeople()
+      .subscribe(
+        res => {
+          this.personList = res;
+        },
+        err => {
+          //window.alert(`Error ${err.code}: ${err.message}`);
+          this.errMsg = err.message;
+          //console.log(err);
+        }
+      )
+  }
+
+  addResearcher() {
+    this.ownerID.push(this.fb.control(''));
+  }
+
   createTable() {
     this.table.clear();
     this.factory = this.resolver.resolveComponentFactory(ListDataComponent);
