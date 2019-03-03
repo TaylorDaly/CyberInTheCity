@@ -1,6 +1,10 @@
 <div class="container">
+  <h1 align="center">Cybersecurity News</h1>
+  <hr>
   <div class="row">
     <div infiniteScroll
+         [infiniteScrollDistance]="scrollDistance"
+         [infiniteScrollThrottle]="throttle"
          (scrolled)="onScrollDown()">
       <div class="col" *ngFor="let news of newsItem">
         <app-card-news

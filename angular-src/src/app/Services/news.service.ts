@@ -12,6 +12,7 @@ export class NewsService {
   constructor(private httpClient: HttpClient) { }
 
   getNews(date): Observable<NewsItem[]> {
+    console.log(environment.apiUrl + '/news?createdOnBefore=' + date.toString());
     return this.httpClient.get<NewsItem[]>(environment.apiUrl + '/news?createdOnBefore=' + date.toString());
   }
 }

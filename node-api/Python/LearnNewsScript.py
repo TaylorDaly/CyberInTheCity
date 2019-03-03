@@ -2,11 +2,18 @@
 
 # MUST pip install -U nltk
 # pip install sklearn
+
 import nltk
 from nltk.corpus import stopwords
-# If can't find stopwords or punkt, uncomment these.
+
+# If can't find stopwords or punkt, put this in command line.
+
+# python
+# import nltk
 # nltk.download('stopwords')
 # nltk.download('punkt')
+# exit()
+
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 import json
