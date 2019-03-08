@@ -7,95 +7,103 @@ var schedule = require('node-schedule');
 
 //a scheduler for removing the on campus posting
 //only allowing for the posting to be active for 30 days
-schedule.scheduleJob('0 0 * * *', function(){
+schedule.scheduleJob('0 0 * * *', function () {
     let eraseMonth = new Date(new Date().setDate(new Date().getDate() - 30));//.getMonth() + 1;
     Careers.getAllCareers((err, careers) => {
+        let careerID;
+        let careerDate;
         if (err) {
             next(err)
         } else {
-            var i;
-            for (i = 0; i < careers.length; i++) {
+            for (let i = 0; i < careers.length; i++) {
                 careerID = careers[i]._id;
                 careerDate = careers[i].postedDate;
-                    if (careerDate <= eraseMonth) {
-                        Careers.deleteCareer(careers[i], (err) => {
-                            if (err) {
-                                console.log(`[${new Date()}] : ${err}`)
-                            } else {
-                                console.log(`[${new Date()}] : Successfully removed expired Career`);
-                            }
-                        });
-                    }
+                if (careerDate <= eraseMonth) {
+                    Careers.deleteCareer(careers[i], (err) => {
+                        if (err) {
+                            console.log(`[${new Date()}] : ${err}`)
+                        } else {
+                            console.log(`[${new Date()}] : Successfully removed expired Career.`);
+                        }
+                    });
+                }
             }
         }
     })
 
 });
+
 // Get all careers
 CareersRouter.get('/', (req, res, next) => {
     Careers.find({}).sort({postedDate: 'asc'}).exec((err, careers) => {
         if (err) {
             next(err)
         } else {
-            var final = {};
-            var temp = {};
-            var total = [];
-            var fullTime = [];
-            var internship = [];
-            request(process.env.IndeedFullTimeCall, function (error, response, body) {
-                var data = JSON.parse(body);
-                if (response.statusCode === 200 && !(data.hasOwnProperty('error'))){
-                    temp['indeed'] = data.results;
-                    for (const posting of temp.indeed) {
-                        let newCareers = new Careers({
-                            jobtitle: posting.jobtitle,
-                            company: posting.company,
-                            jobType: 'FullTime',
-                            url: posting.url,
-                            location: posting.formattedLocation,
-                            postedDate: posting.date,
-                            description: posting.snippet
-                        });
-                        fullTime.push(newCareers);
-                        total.push(newCareers);
-                    }
-                    request(process.env.IndeedInternshipCall, function (error, response, body) {
-                        var data = JSON.parse(body);
-                        if (response.statusCode === 200 && !(data.hasOwnProperty('error'))){
-                            temp['indeed'] = data.results;
-                            for (const posting of temp.indeed) {
-                                //async function or use a callback
-                                let newCareers = new Careers({
-                                    jobtitle: posting.jobtitle,
-                                    company: posting.company,
-                                    jobType: 'Internship',
-                                    url: posting.url,
-                                    location: posting.formattedLocation,
-                                    postedDate: posting.date,
-                                    description: posting.snippet
-                                });
-                                internship.push(newCareers);
-                                total.push(newCareers);
-                            }
-                            final['internship'] = internship;
-                            final['total'] = total;
-                            res.json(final);
-                        } else{
-                            res.json({
-                                success: false,
-                                message: `Attempt to get internship indeed postings. Error: ${err}`
-                            })
-                        }
-                    });
-                    final['fullTime'] = fullTime;
-                } else{
-                    res.json({
-                        success: false,
-                        message: `Attempt to get fullTime indeed postings. Error: ${err}`
-                    })
-                }
-            });
+            let final = {};
             final['ourCareers'] = careers;
+            // If query specifies only our careers, skip the indeed call.
+            if (req.query.ourCareers && req.query.ourCareers === 'true') {
+                res.json(final);
+            } else {
+                let temp = {};
+                let total = [];
+                let fullTime = [];
+                let internship = [];
+                request(process.env.IndeedFullTimeCall, function (error, response, body) {
+                    let data = JSON.parse(body);
+                    if (response.statusCode === 200 && !(data.hasOwnProperty('error'))) {
+                        temp['indeed'] = data.results;
+                        for (const posting of temp.indeed) {
+                            let newCareers = new Careers({
+                                jobtitle: posting.jobtitle,
+                                company: posting.company,
+                                jobType: 'FullTime',
+                                url: posting.url,
+                                location: posting.formattedLocation,
+                                postedDate: posting.date,
+                                description: posting.snippet
+                            });
+                            fullTime.push(newCareers);
+                            total.push(newCareers);
+                        }
+
+                        request(process.env.IndeedInternshipCall, function (error, response, body) {
+                            var data = JSON.parse(body);
+                            if (response.statusCode === 200 && !(data.hasOwnProperty('error'))) {
+                                temp['indeed'] = data.results;
+                                for (const posting of temp.indeed) {
+                                    //async function or use a callback
+                                    let newCareers = new Careers({
+                                        jobtitle: posting.jobtitle,
+                                        company: posting.company,
+                                        jobType: 'Internship',
+                                        url: posting.url,
+                                        location: posting.formattedLocation,
+                                        postedDate: posting.date,
+                                        description: posting.snippet
+                                    });
+                                    internship.push(newCareers);
+                                    total.push(newCareers);
+                                }
+                                final['internship'] = internship;
+                                final['total'] = total;
+                                res.json(final);
+                            } else {
+                                res.json({
+                                    success: false,
+                                    message: `Attempt to get internship indeed postings. Error: ${err}`
+                                })
+                            }
+                        });
+                        final['fullTime'] = fullTime;
+                    } else {
+                        res.json({
+                            success: false,
+                            message: `Attempt to get fullTime indeed postings. Error: ${err}`
+                        })
+                    }
+                });
+            }
         }
     })
 });
