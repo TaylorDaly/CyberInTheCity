@@ -17,10 +17,10 @@ export class EditResearchComponent implements OnInit {
   componentRef: any;
   factory: any;
 
+  researchFull: ResearchItem[];
   researchList = [];
   researchFields = ['title', 'type', 'start_date', 'end_date'];
 
-  researchFull: ResearchItem[];
   personList: Person[];
   researchTypeList = ['Faculty Project', 'Faculty Funding', 'Student Project'];
 
@@ -33,7 +33,6 @@ export class EditResearchComponent implements OnInit {
   };
 
   selectLength = 'col-md-12';
-
   createResearch: FormGroup;
 
   get title() {

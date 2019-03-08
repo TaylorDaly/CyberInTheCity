@@ -9,7 +9,6 @@ import {CareersItem} from "./careers";
 })
 export class CareersComponent implements OnInit {
 
-
   careers: CareersItem[];
   displayF: boolean = false;
   displayI: boolean = false;
