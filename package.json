@@ -6,7 +6,7 @@
   "scripts": {
     "startDev": "nodemon app.js",
     "start": "npm run buildAng && nodemon app.js",
-    "buildAng" : "pushd angular-src && npm install && ng build --prod && popd"
+    "buildAng" : "cd ./angular-src && npm install && ng build --prod && cd .."
   },
   "repository": {
     "type": "git",
