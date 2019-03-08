@@ -26,6 +26,7 @@
     "@auth0/angular-jwt": "^2.1.0",
     "@angular/cli": "^7.3.5",
     "@angular/compiler-cli": "^7.2.8",
+    "@angular-devkit/build-angular": "^0.13.5",
     "braces": "^2.3.2",
     "core-js": "^2.6.3",
     "jquery": "^3.3.1",
@@ -35,7 +36,8 @@
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
     "ts-helpers": "^1.1.1",
-    "zone.js": "^0.8.29"
+    "zone.js": "^0.8.29",
+    "typescript": "^3.2.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.13.5",
