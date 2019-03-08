@@ -27,7 +27,7 @@ app.use(helmet())
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.static(path.join(__dirname, '../angular-src/dist')))
+app.use(express.static(path.join(__dirname, './angular-src/dist')))
 
 // Routes
 app.use('/api/Person', require('./Controllers/PersonController'))
@@ -46,7 +46,7 @@ app.use('/api/Events', require('./Controllers/EventController'))
 
 // re-route bad requests back to home page.
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../angular-src/dist/index.html'))
+    res.sendFile(path.join(__dirname, './angular-src/dist/index.html'))
 })
 
 // Custom Error handler
