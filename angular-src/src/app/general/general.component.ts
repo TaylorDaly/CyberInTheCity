@@ -32,8 +32,8 @@ export class GeneralComponent implements OnInit {
     this.pageService.getStaticPageByTitle(title)
       .subscribe(
         response => {
-          //console.log(response);
-          this.content = this.sanitizer.bypassSecurityTrustHtml(response[0]['content']);
+          console.log(response);
+          this.content = this.sanitizer.bypassSecurityTrustHtml(response['content']);
         },
         error => {this.errMsg = error.message}
       );

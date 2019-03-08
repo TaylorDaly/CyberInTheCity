@@ -28,7 +28,7 @@ export class EditEducationComponent implements OnInit {
   };
 
   createCourse: FormGroup;
-  currentYear = new Date().getFullYear();
+  yearList = [new Date().getFullYear()];
 
   get courseNumber() {
     return this.createCourse.get('courseNumber');
@@ -53,6 +53,10 @@ export class EditEducationComponent implements OnInit {
   ngOnInit() {
     this.resetForm();
     this.getAllCourses();
+
+    for(let i = 1; i < 5; ++i) {
+      this.yearList[i] = this.yearList[i-1] + 1;
+    }
     //console.log(this.currentYear);
   }
 
@@ -101,7 +105,7 @@ export class EditEducationComponent implements OnInit {
         _id: data[i]._id,
         course: data[i].courseNumber,
         name: data[i].courseName,
-        term: data[i].termYear});
+        term: `${data[i].termSemester} ${data[i].termYear}`});
     }
   }
 

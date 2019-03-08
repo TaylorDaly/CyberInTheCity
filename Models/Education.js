@@ -12,6 +12,7 @@ const EducationSchema = new mongoose.Schema({
     description: String,
     category: String,
     department: String,
+    termSemester: String,
     termYear: String,
     content: String,
     syllabus: String,

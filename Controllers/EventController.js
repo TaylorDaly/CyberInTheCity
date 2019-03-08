@@ -47,7 +47,8 @@ EventRouter.post('/', Auth.VerifyAdmin, (req, res, next) => {
     // let today = new Date();
     let newEvent = new Event({
         title: req.body.title,
-        timeFrame: req.body.timeFrame,
+        timeTo: req.body.timeTo,
+        timeFrom: req.body.timeFrom,
         url: req.body.url,
         location: req.body.location,
         eventDate: req.body.eventDate,
@@ -77,7 +78,8 @@ EventRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
             })
         } else if (event) {
             if (req.body.title) event.title = req.body.title;
-            if (req.body.timeFrame) event.timeFrame = req.body.timeFrame;
+            if (req.body.timeTo) event.timeTo = req.body.timeTo;
+            if (req.body.timeFrom) event.timeFrom = req.body.timeFrom;
             if (req.body.url) event.url = req.body.url;
             if (req.body.location) event.location = req.body.location;
             if (req.body.eventDate) event.eventDate = req.body.eventDate;

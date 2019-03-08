@@ -5,7 +5,8 @@
     [config]="{removeButtons: removeButtons, extraAllowedContent: '*(*)'}"
     [readonly]="false"
     debounce="500"
-    (change)="getDirtyHTML()" required>
+    required>
+    <!--(change)="getDirtyHTML()" -->
   </ckeditor>
   <button [disabled]="disabled" type="button" class="btn btn-color mt-3 float-right" (click)="passHtmlString()">Save</button>
 

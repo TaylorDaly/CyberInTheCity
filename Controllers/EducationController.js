@@ -28,6 +28,7 @@ EducationRouter.post('/', Auth.Verify, (req, res, next) => {
         description: req.body.description,
         category: req.body.category,
         department: req.body.department,
+        termSemester: req.body.termSemester,
         termYear: req.body.termYear,
         content: req.body.content,
         syllabus: req.body.syllabus
@@ -62,6 +63,7 @@ EducationRouter.put('/', Auth.Verify, (req, res, next) => {
             if (req.body.description) education.description = req.body.description;
             if (req.body.category) education.category = req.body.category;
             if (req.body.department) education.department = req.body.department;
+            if (req.body.termSemester) education.termSemester = req.body.termSemester;
             if (req.body.termYear) education.termYear = req.body.termYear;
             if (req.body.content) education.content = req.body.content;
             if (req.body.syllabus) education.syllabus = req.body.syllabus;

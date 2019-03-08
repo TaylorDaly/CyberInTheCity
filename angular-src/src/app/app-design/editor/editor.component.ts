@@ -9,9 +9,10 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 export class EditorComponent implements OnInit {
 
   @Input() disabled: boolean;
+  @Input() htmlContent: string;
   @Output() htmlString = new EventEmitter<string>();
 
-  htmlContent = "<p>Enter text here...</p>";
+  //htmlContent = "<p>Enter text here...</p>";
   html: SafeHtml;
 
   removeButtons ='Source,Form,Checkbox,Radio,TextField,Textarea,Select,' +

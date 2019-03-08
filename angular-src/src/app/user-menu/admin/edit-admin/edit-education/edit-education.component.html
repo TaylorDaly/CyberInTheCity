@@ -7,7 +7,7 @@
   </div>
 </div>
 <div [hidden]="!editCourse">
-  {{createCourse.value | json}}
+  <!--{{createCourse.value | json}}-->
   <form [formGroup]="createCourse" (ngSubmit)="saveCourse()">
     <div class="form-group">
       <label><span class="text-danger">*</span>Course Number:</label>
@@ -31,7 +31,7 @@
         <div class="col">
           <select class="form-control" [class.is-invalid]="termSemester.invalid && termSemester.touched"
                   formControlName="termSemester">
-            <option value="" disabled>Select One</option>
+            <option value="" disabled>Select Semester</option>
             <option *ngFor="let term of terms">{{term}}</option>
           </select>
           <small class="text-danger" [class.d-none]="termSemester.valid || termSemester.untouched">
@@ -39,10 +39,13 @@
           </small>
         </div>
         <div class="col">
-          <input type="text" maxlength="4" [class.is-invalid]="termYear.invalid && termYear.touched"
-                 class="form-control" formControlName="termYear" placeholder="Enter term year"/>
+          <select class="form-control" [class.is-invalid]="termYear.invalid && termYear.touched"
+                  formControlName="termYear">
+            <option value="" disabled>Select Year</option>
+            <option *ngFor="let year of yearList">{{year}}</option>
+          </select>
           <small class="text-danger" [class.d-none]="termYear.valid || termYear.untouched">
-            Term year is required. Enter numbers only in yyyy format.
+            Term year is required
           </small>
         </div>
       </div>

@@ -1,8 +1,9 @@
 <p class="text-danger">{{errMsg}}</p>
 <div [hidden]="editPage">
-    <app-list-data *ngIf="loadTable" [listItems]="pageList" [listFields]="pageFields"
-    (edit)="editTable($event)"></app-list-data>
-    <button type="button" class="btn btn-color btn-md btn-add" (click)="editPage=true">
+  <template #dataTable></template>
+    <!--<app-list-data *ngIf="loadTable" [listItems]="pageList" [listFields]="pageFields"-->
+    <!--(edit)="editTable($event)"></app-list-data>-->
+    <button type="button" class="btn btn-color btn-md btn-add" (click)="addNewPage()">
       <span class="fa fa-plus"></span> Add</button>
 </div>
 
@@ -36,7 +37,8 @@
         </div>
       </div>
     </div>
-    <app-editor [disabled]="!createPage.valid" (htmlString)="addStaticPage($event)"></app-editor>
+    <app-editor [disabled]="!createPage.valid" (htmlString)="savePage($event)"
+    [htmlContent]="content.value"></app-editor>
   </form>
   <p class="text-danger">* Required Fields</p>
 </div>

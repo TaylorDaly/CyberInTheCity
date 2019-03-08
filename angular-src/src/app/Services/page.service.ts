@@ -37,8 +37,9 @@ export class PageService {
   //   return this.httpClient.put(environment.apiUrl + '/page', page);
   // }
 
-  deletePage(page) {
-    return this.httpClient.request('delete',environment.apiUrl + '/page', {body: page});
+  deletePage(_id) {
+    return this.httpClient.delete(environment.apiUrl + `/page/${_id}`);
+    //return this.httpClient.request('delete',environment.apiUrl + '/page', {body: page});
   }
 
   // deletePage(id) {

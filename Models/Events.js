@@ -6,7 +6,8 @@ const EventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    timeFrame: String,
+    timeTo: String,
+    timeFrom: String,
     url: String,
     location: String,
     eventDate: Date,

@@ -1,8 +1,10 @@
 export interface EventItem {
-  title: String,
-  timeFrame: String,
-  url: String,
-  location: String,
-  eventDate: String,
-  description: String,
+  _id: string,
+  title: string,
+  timeTo: string,
+  timeFrom: string,
+  url: string,
+  location: string,
+  eventDate: string,
+  description: string,
 }

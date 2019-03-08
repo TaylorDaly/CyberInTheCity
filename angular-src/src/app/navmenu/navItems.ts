@@ -1,4 +1,5 @@
 export interface StaticPage {
+  _id: string,
   title: string,
   content: string,
   route: string,
