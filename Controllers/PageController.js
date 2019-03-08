@@ -80,8 +80,8 @@ PageRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
     });
 });
 
-PageRouter.delete('/', Auth.VerifyAdmin, (req, res) => {
-    Page.getOne({ _id: req.body._id }, (err, page) => {
+PageRouter.delete('/:id', Auth.VerifyAdmin, (req, res) => {
+    Page.getOne({ _id: req.params.id }, (err, page) => {
         if (err) {
             res.status(500).json({
                 success: false,
