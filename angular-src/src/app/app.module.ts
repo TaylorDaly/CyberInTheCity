@@ -12,12 +12,12 @@ import {AppComponent} from './app.component';
 import {NavmenuComponent} from './navmenu/navmenu.component';
 import {ErrorComponent} from './error/error.component';
 import {FooterComponent} from './footer/footer.component';
-import {ImageCropperComponent} from "ngx-img-cropper";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthInterceptor} from "./Authentication/auth.interceptor";
 import {EditAdminModule} from "./user-menu/admin/edit-admin/edit-admin.module";
 import {AdminComponent} from './user-menu/admin/admin.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
+import {ImageCropperModule} from "ngx-img-cropper";
 
 @NgModule({
   declarations: [
@@ -26,7 +26,6 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     RoutingComponents,
     ErrorComponent,
     FooterComponent,
-    ImageCropperComponent,
     AdminComponent,
   ],
   imports: [
@@ -40,7 +39,8 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     MatTooltipModule,
     BrowserAnimationsModule,
     EditAdminModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    ImageCropperModule
   ],
   providers: [
     {

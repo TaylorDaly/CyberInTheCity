@@ -46,7 +46,7 @@ CareersRouter.get('/', (req, res, next) => {
                 res.json(final);
             } else {
                 let temp = {};
-                let total = [];
+                //let total = [];
                 let fullTime = [];
                 let internship = [];
                 request(process.env.IndeedFullTimeCall, function (error, response, body) {
@@ -64,7 +64,7 @@ CareersRouter.get('/', (req, res, next) => {
                                 description: posting.snippet
                             });
                             fullTime.push(newCareers);
-                            total.push(newCareers);
+                            //total.push(newCareers);
                         }
 
                         request(process.env.IndeedInternshipCall, function (error, response, body) {
@@ -83,10 +83,10 @@ CareersRouter.get('/', (req, res, next) => {
                                         description: posting.snippet
                                     });
                                     internship.push(newCareers);
-                                    total.push(newCareers);
+                                    //total.push(newCareers);
                                 }
                                 final['internship'] = internship;
-                                final['total'] = total;
+                                //final['total'] = total;
                                 res.json(final);
                             } else {
                                 res.json({

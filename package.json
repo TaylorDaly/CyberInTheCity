@@ -4,7 +4,8 @@
   "description": "MEAN application for a new Cyber Security portal for CU Denver.",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "startDev": "nodemon app.js",
+    "start": "npm install && cd ./angular-src && npm install && ng build --prod && cd .. && nodemon app.js"
   },
   "repository": {
     "type": "git",
