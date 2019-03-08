@@ -8,6 +8,8 @@ import {EditEducationComponent} from "./edit-admin/edit-education/edit-education
 import {EditCareersComponent} from "./edit-admin/edit-careers/edit-careers.component";
 import {EditEventsComponent} from "./edit-admin/edit-events/edit-events.component";
 import {EditContactComponent} from "./edit-admin/edit-contact/edit-contact.component";
+import {ResearchService} from "../../Services/research.service";
+import {ListDataComponent} from "../../app-design/list-data/list-data.component";
 
 @Component({
   selector: 'app-admin',

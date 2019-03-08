@@ -14,4 +14,16 @@ export class ResearchService {
   getAllResearch(): Observable<ResearchItem[]>{
     return this.httpClient.get<ResearchItem[]>(environment.apiUrl + '/research');
   }
+
+  addResearch(research): Observable<any> {
+    return this.httpClient.post<any>(environment.apiUrl + '/research', research);
+  }
+
+  updateResearch(research): Observable<any> {
+    return this.httpClient.put<any>(environment.apiUrl + '/research', research);
+  }
+
+  deleteResearch(_id): Observable<any> {
+    return this.httpClient.delete<any>(environment.apiUrl + `/research/${_id}`);
+  }
 }

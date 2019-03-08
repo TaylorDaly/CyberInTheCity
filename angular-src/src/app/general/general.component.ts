@@ -13,6 +13,8 @@ export class GeneralComponent implements OnInit {
 
   content: SafeHtml;
 
+  errMsg = "";
+
   constructor(private activeRoute: ActivatedRoute,
               private pageService: PageService,
               private location: Location,
@@ -26,10 +28,14 @@ export class GeneralComponent implements OnInit {
   }
 
   getPageTitle(title: string) {
+    //console.log(title);
     this.pageService.getStaticPageByTitle(title)
       .subscribe(
-        response => this.content = this.sanitizer.bypassSecurityTrustHtml(response['content']),
-        error => this.content = error
+        response => {
+          //console.log(response);
+          this.content = this.sanitizer.bypassSecurityTrustHtml(response[0]['content']);
+        },
+        error => {this.errMsg = error.message}
       );
   }
 }

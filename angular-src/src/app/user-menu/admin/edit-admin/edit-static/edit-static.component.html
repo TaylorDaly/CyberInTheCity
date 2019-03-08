@@ -9,7 +9,7 @@
 <div [hidden]="!editPage">
   <form [formGroup]="createPage">
     <div class="form-group">
-      <label>Page Title:</label>
+      <label><span class="text-danger">*</span>Page Title:</label>
       <input type="text" [class.is-invalid]="title.invalid && title.touched"
              class="form-control" placeholder="Enter title"
              formControlName="title" />
@@ -20,7 +20,7 @@
     <div class="form-group">
       <div class="form-row">
         <div class="col-md-2">
-          <label style="padding-top: 5px;">Navigation Parent:</label>
+          <label style="padding-top: 5px;"><span class="text-danger">*</span>Navigation Parent:</label>
         </div>
         <div class="col-md-10">
           <select class="form-control" [class.is-invalid]="parent.invalid && parent.touched"
@@ -38,5 +38,6 @@
     </div>
     <app-editor [disabled]="!createPage.valid" (htmlString)="addStaticPage($event)"></app-editor>
   </form>
+  <p class="text-danger">* Required Fields</p>
 </div>
 

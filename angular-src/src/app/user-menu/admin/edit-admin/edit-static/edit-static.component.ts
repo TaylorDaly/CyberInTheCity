@@ -58,7 +58,7 @@ export class EditStaticComponent implements OnInit {
         res => {
           this.errMsg = "";
           this.setPageList(res);
-          console.log(res);
+          //console.log(res);
           //this.createTable();
         },
         err => {
@@ -75,7 +75,7 @@ export class EditStaticComponent implements OnInit {
       this.pageList.push({_id: data[i]._id, title: data[i].title, parent: data[i].parent});
     }
     this.loadTable = true;
-    console.log(this.pageList);
+    //console.log(this.pageList);
   }
 
   addStaticPage(html) {

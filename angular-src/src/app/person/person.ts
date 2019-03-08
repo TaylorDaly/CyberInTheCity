@@ -29,6 +29,7 @@ export class Link {
 }
 
 export class Person {
+  _id: string;
   name: string;
   photo: Image;
   role: string;

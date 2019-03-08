@@ -22,8 +22,6 @@ export class SignupComponent implements OnInit {
   roles = ['Graduate Student', 'Undergraduate Student', 'Assistant Professor', 'Teacher\'s Assistant', 'Professor'];
   passwordLength = 8;
   linkLength = "col-md-9";  // SM Link URL input box length //
-  linksLimit = false;  // Limit of SM Link inputs //
-  smLinksLimit = 5;
 
   imgSrc = {image: ""};  // Cropped image source //
   cropSettings = new CropperSettings();
@@ -100,15 +98,12 @@ export class SignupComponent implements OnInit {
 
   addSMLinks() {
     this.linkLength = 'col-md-8';
-    if(this.smLinks.length < this.smLinksLimit) {
+    if(this.smLinks.length < 5) {
       this.smLinks.push(this.smLink());
-    } else {
-      this.linksLimit = true;
     }
   }
 
   deleteSMLinks(index: number) {
-    this.linksLimit = false;
     this.smLinks.removeAt(index);
     if(this.smLinks.length <= 1)
       this.linkLength = 'col-md-9';

@@ -2,15 +2,15 @@
 <div [hidden]="editResearch">
   <template #dataTable></template>
   <div>
-    <button type="button" class="btn btn-color btn-md btn-add" (click)="editResearch=true">
+    <button type="button" class="btn btn-color btn-md btn-add" (click)="addNewResearch()">
       <span class="fa fa-plus"></span> Add</button>
   </div>
 </div>
 <div [hidden]="!editResearch">
   {{createResearch.value | json}}
-  <form [formGroup]="createResearch">
+  <form [formGroup]="createResearch" (ngSubmit)="saveResearch()">
     <div class="form-group">
-      <label>Research Title:</label>
+      <label><span class="text-danger">*</span>Research Title:</label>
       <input type="text" [class.is-invalid]="title.invalid && title.touched"
              class="form-control" placeholder="Enter a research title" formControlName="title" />
       <small class="text-danger" [class.d-none]="title.valid || title.untouched">
@@ -20,7 +20,7 @@
     <div class="form-group">
       <div class="form-row">
         <div class="col-md-2">
-          <label style="padding-top: 5px;">Research Type:</label>
+          <label style="padding-top: 5px;"><span class="text-danger">*</span>Research Type:</label>
         </div>
         <div class="col-md-10">
           <select class="form-control" [class.is-invalid]="type.invalid && type.touched"
@@ -36,23 +36,33 @@
     </div>
 
     <div class="form-group">
-      <label>Researcher(s):</label>
+      <label><span class="text-danger">*</span>Researcher(s):</label>
       <div formArrayName="ownerID" *ngFor="let owner of ownerID.controls; let i=index">
-                <select class="form-control" [class.is-invalid]="ownerID.invalid && ownerID.touched"
-                        [formControlName]="i">
-                  <option value="" disabled>Select One</option>
-                  <option *ngFor="let person of personList">{{person.name}}</option>
-                </select>
+        <div class="form-row">
+          <div [className]="selectLength">
+            <select class="form-control" [class.is-invalid]="ownerID.invalid && ownerID.touched"
+                    [formControlName]="i">
+              <option value="" disabled>Select One</option>
+              <option *ngFor="let person of personList" [value]="person._id">{{person.name}}</option>
+            </select>
+          </div>
+          <div class="col-md-1" [hidden]="ownerID.length <= 1">
+            <button type="button" class="btn btn-color" (click)="deleteResearcher(i)">
+              Delete
+            </button>
+          </div>
         </div>
-      <small class="text-danger" [class.d-none]="ownerID.valid || ownerID.untouched" style="padding-right: 5px;">
-        At least one researcher is required.
-      </small>
-      <button type="button" class="btn btn-default btn-md" (click)="addResearcher()">
+        </div>
+      <button type="button" class="btn btn-default btn-md" (click)="addResearcher('')"
+      [disabled]="ownerID.length >= 5">
         <span class="fa fa-plus"></span> Add </button>
+      <small class="text-danger" [class.d-none]="ownerID.valid || ownerID.untouched" style="padding-left: 5px;">
+        At least one researcher is required. Delete any empty field(s).
+      </small>
     </div>
 
     <div class="form-group">
-      <label>Start Date:</label>
+      <label><span class="text-danger">*</span>Start Date:</label>
       <input type="date" [class.is-invalid]="startDate.invalid && startDate.touched"
              class="form-control" placeholder="Enter a start date" formControlName="startDate" />
       <small class="text-danger" [class.d-none]="startDate.valid || startDate.untouched">
@@ -60,7 +70,7 @@
       </small>
     </div>
     <div class="form-group">
-      <label>End Date:</label>
+      <label><span class="text-danger">*</span>End Date:</label>
       <input type="date" [class.is-invalid]="endDate.invalid && endDate.touched"
              class="form-control" placeholder="Enter a end date" formControlName="endDate" />
       <small class="text-danger" [class.d-none]="endDate.valid || endDate.untouched">
@@ -74,5 +84,6 @@
     </div>
     <button class="btn btn-color" style="float: right;" [disabled]="createResearch.invalid">Save</button>
   </form>
+  <p class="text-danger">* Required fields</p>
 </div>
 
