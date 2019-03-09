@@ -49,7 +49,8 @@ export class EditStaticComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private pageService: PageService,
-              private resolver: ComponentFactoryResolver) { }
+              private resolver: ComponentFactoryResolver)
+  {}
 
   ngOnInit() {
     this.resetForm();
@@ -71,6 +72,16 @@ export class EditStaticComponent implements OnInit {
     this.editPage = false;
     this.resetForm();
   }
+
+  // removePages() {
+  //   let index1 = this.pageList.map(function(page) {return page.title; }).indexOf("About Us");
+  //   let index2 = this.pageList.map(function(page) {return page.title; }).indexOf("Contact Us");
+  //
+  //   if(index1 != -1 && index2 != -1) {
+  //     this.pageList.splice(index1, 1);  // Remove About Us from static pages //
+  //     this.pageList.splice(index2, 1);  // Remove Contact Us from static pages //
+  //   }
+  // }
 
   getAllPages(){
     this.pageService.getAllStaticPages()
@@ -185,8 +196,9 @@ export class EditStaticComponent implements OnInit {
         .subscribe(
           res => {
             window.alert(res['message']);
-            this.resetSettings();
-            this.resetTable();
+            //this.resetSettings();
+            //this.resetTable();
+            location.reload();
           },
           err => {
             this.errMsg = err.message;
@@ -198,8 +210,9 @@ export class EditStaticComponent implements OnInit {
         .subscribe(
           res => {
             window.alert(res['message']);
-            this.resetSettings();
-            this.resetTable();
+            //this.resetSettings();
+            //this.resetTable();
+            location.reload();
           },
           err => {
             this.errMsg = err.message;

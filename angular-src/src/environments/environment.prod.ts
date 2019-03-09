@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: `http://${location.host}/api`,
+  apiUrl: `https://${location.host}/api`,
 };
 
 export const regex = {

@@ -15,4 +15,20 @@ export class CareersService {
   getAllCareers(): Observable<any> {
     return this.httpClient.get<any>(environment.apiUrl + '/careers');
   }
+
+  getOurCareers(): Observable<CareersItem[]> {
+    return this.httpClient.get<CareersItem[]>(environment.apiUrl + '/careers?ourCareers=true');
+  }
+
+  addCareer(career): Observable<any> {
+    return this.httpClient.post<any>(environment.apiUrl + '/careers', career);
+  }
+
+  updateCareer(career): Observable<any> {
+    return this.httpClient.put<any>(environment.apiUrl + '/careers', career);
+  }
+
+  deleteCareer(_id): Observable<any> {
+    return this.httpClient.delete<any>(environment.apiUrl + `/careers/${_id}`);
+  }
 }

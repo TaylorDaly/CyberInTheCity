@@ -1,7 +1,8 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {CareersService} from "../../../../Services/careers.service";
 import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {CareersItem} from "../../../../careers/careers";
 
 @Component({
   selector: 'app-edit-careers',
@@ -14,21 +15,18 @@ export class EditCareersComponent implements OnInit {
   componentRef: any;
   factory: any;
 
+  careersFull: CareersItem[];
   careerList = [];
   careerFields = ['job_title', 'type', 'company', 'post_date'];
 
   editCareers = false;
   errMsg = "";
+  edit = {
+    _id: "",
+    option: "add"
+  };
 
-  createCareer = this.fb.group({
-    jobtitle: ['', Validators.required],
-    company: ['', Validators.required],
-    jobType: ['', Validators.required],
-    url: [''],
-    location: ['', Validators.required],
-    postedDate: [''],
-    description: [''],
-  });
+  createCareer: FormGroup;
 
   jobTypeList = ['Full Time', 'Part Time', 'Internship'];
 
@@ -53,13 +51,34 @@ export class EditCareersComponent implements OnInit {
               private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.resetForm();
     this.getAllCareers();
   }
 
+  resetForm() {
+    this.createCareer = this.fb.group({
+      jobtitle: ['', Validators.required],
+      company: ['', Validators.required],
+      jobType: ['', Validators.required],
+      url: [''],
+      location: ['', Validators.required],
+      postedDate: [''],
+      description: [''],
+    });
+  }
+
+  resetSettings() {
+    this.errMsg = "";
+    this.edit.option = "add";
+    this.editCareers = false;
+    this.resetForm();
+  }
+
   getAllCareers() {
-    this.careerService.getAllCareers()
+    this.careerService.getOurCareers()
       .subscribe(
         res => {
+          this.careersFull = res['ourCareers'];
           this.setCareers(res['ourCareers']);
           this.createTable();
           //console.log(res);
@@ -77,9 +96,14 @@ export class EditCareersComponent implements OnInit {
         job_title: data[i].jobtitle,
       type: data[i].jobType,
       company: data[i].company,
-      post_date: new Date(data[i].postedDate).toLocaleDateString()});
+      post_date: new Date(data[i].postedDate).toISOString().substr(0,10)});
     }
     //this.loadTable = true;
+  }
+
+  addNewCareer() {
+    this.resetForm();
+    this.editCareers = true;
   }
 
   createTable() {
@@ -90,7 +114,7 @@ export class EditCareersComponent implements OnInit {
     this.componentRef.instance.listFields = this.careerFields;
     this.componentRef.instance.edit.subscribe(
       edit => {
-        //this.editTable(edit);
+        this.editTable(edit);
       }
     )
   }
@@ -109,46 +133,67 @@ export class EditCareersComponent implements OnInit {
     this.createTable();
   }
 
-    // editTable(editObj) {
-    //   this.createPage.patchValue({
-    //     _id: editObj._id
-    //   });
-    //
-    //   //console.log(this.createPage.value);
-    //
-    //   if(editObj.option == "update") {
-    //     this.editPage = true;
-    //     this.pageService.getStaticPageById(editObj._id)
-    //       .subscribe(
-    //         res => {},
-    //         err => {}
-    //       )
-    //     // this.pageService.updatePage(this.createPage.value)
-    //     //   .subscribe(
-    //     //     res => {
-    //     //       window.alert(res['message']);
-    //     //     },
-    //     //     err => {
-    //     //       this.errMsg = err.message;
-    //     //     }
-    //     //   )
-    //   } else  {  // Delete table item //
-    //     //console.log(this.createPage.value);
-    //     if(window.confirm('Are you sure you want to delete this page?')) {
-    //       this.pageService.deletePage(this.createPage.value)
-    //         .subscribe(
-    //           res => {
-    //             window.alert(res['message']);
-    //             location.reload();
-    //             //this.resetTable();
-    //             //location.reload();
-    //           },
-    //           err => {
-    //             this.errMsg = err.message;
-    //           }
-    //         )
-    //     }
-    //   }
-    // }
+  editTable(editObj) {  // Returns id and option in object //
+    this.edit = editObj;
+
+    if (editObj.option == "update") {
+      let career = this.careersFull.find(x => x._id === editObj._id);
+      this.createCareer.patchValue({
+        _id: editObj._id,
+        jobtitle: career.jobtitle,
+        company: career.company,
+        jobType: career.jobType,
+        url: career.url,
+        location: career.location,
+        postedDate: career.postedDate,
+        description: career.description,
+      });
+      this.editCareers = true;
+    } else  {  // Delete table item //
+      if (window.confirm('Are you sure you want to delete this job?')) {
+        this.careerService.deleteCareer(editObj._id)
+          .subscribe(
+            res => {
+              window.alert(res['message']);
+              this.resetSettings();
+              this.resetTable();
+            },
+            err => {
+              this.errMsg = err.message;
+            }
+          )
+      }
+    }
+  }
+
+  saveCareer() {
+    //console.log(this.createResearch.value);
+    if (this.edit.option === "add") {
+      this.careerService.addCareer(this.createCareer.value)
+        .subscribe(
+          res => {
+            window.alert(res['message']);
+            this.resetSettings();
+            this.resetTable();
+          },
+          err => {
+            this.errMsg = err.message;
+          }
+        )
+
+    } else { // Update research //
+      this.careerService.updateCareer(this.createCareer.value)
+        .subscribe(
+          res => {
+            window.alert(res['message']);
+            this.resetSettings();
+            this.resetTable();
+          },
+          err => {
+            this.errMsg = err.message;
+          }
+        )
+    }
+  }
 }
 

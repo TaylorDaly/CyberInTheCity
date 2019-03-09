@@ -22,6 +22,12 @@
          exit()
          ```
 ---
+#### Deploying ####
+
+Currently set up to redeploy when pushes happen. You can check the build with
+ 
+ ```heroku logs -a cyberincity --tail ``` 
+
 #### Troubleshooting ####
 * Problem: project will not start after getting latest.
 

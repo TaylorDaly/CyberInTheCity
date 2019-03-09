@@ -1,7 +1,6 @@
 ### Angular ###
 
 # compiled output
-dist
 tmp
 
 # dependencies

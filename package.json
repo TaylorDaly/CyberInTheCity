@@ -4,14 +4,13 @@
   "description": "MEAN application for a new Cyber Security portal for CU Denver.",
   "main": "app.js",
   "scripts": {
-    "startDev": "nodemon app.js",
-    "start": "npm install && cd ./angular-src && npm install && ng build --prod && cd .. && nodemon app.js"
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/TaylorDaly/CyberInTheCity"
   },
-  "author": "Serin, Taylor, Chris",
+  "author": "Serin Yu, Taylor Daly, Chris Corona",
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
@@ -29,7 +28,10 @@
     "nodemailer": "^2.7.2",
     "nodemon": "^1.18.10",
     "pluralize": "^7.0.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "@angular/cli": "^7.3.5",
+    "@angular/compiler-cli": "^7.2.8",
+    "@angular/compiler": "^7.2.8"
   },
   "devDependencies": {
     "@types/express": "^4.16.1",

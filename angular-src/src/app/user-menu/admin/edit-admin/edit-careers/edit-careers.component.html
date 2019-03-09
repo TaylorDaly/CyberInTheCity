@@ -2,12 +2,12 @@
 <div [hidden]="editCareers">
   <template #dataTable></template>
   <div>
-    <button type="button" class="btn btn-color btn-md btn-add" (click)="editCareers=true">
+    <button type="button" class="btn btn-color btn-md btn-add" (click)="addNewCareer()">
       <span class="fa fa-plus"></span> Add</button>
   </div>
 </div>
 <div [hidden]="!editCareers">
-  <form [formGroup]="createCareer">
+  <form [formGroup]="createCareer" (ngSubmit)="saveCareer()">
     <div class="form-group">
     <label>Job Title:</label>
     <input type="text" [class.is-invalid]="jobtitle.invalid && jobtitle.touched"

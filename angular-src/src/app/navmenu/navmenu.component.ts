@@ -23,7 +23,9 @@ export class NavmenuComponent implements OnInit {
     this.pageService.getAllStaticPages()
       .subscribe(
         response => {
-          this.sortNavItems(response)
+          console.log(response);
+          this.sortNavItems(response);
+          console.log(this.parents);
         },
       );
   }
@@ -34,5 +36,4 @@ export class NavmenuComponent implements OnInit {
       this.parents.find(x => x.name == staticNavItems[i].parent).child.push(staticNavItems[i]);
     }
   }
-
 }

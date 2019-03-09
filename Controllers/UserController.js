@@ -5,7 +5,7 @@ const Person = require('../Models/Person');
 const bcrypt = require('bcryptjs');
 const regex = require('../Config/Regex.js');
 const jwt = require('jsonwebtoken');
-const dbConfig = require('../Config/database');
+const dbConfig = require('../Config/Database');
 const Image = require('../Models/Image');
 
 // Authenticate token from register page before letting user access sign up page since token may have expired since
