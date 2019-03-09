@@ -5,13 +5,34 @@
   <div >
     <div class="row">
       <div class="col" *ngFor="let person of personList">
-        <app-card-business [image]="person.photo"
-                           [name]="person.name"
-                           [role]="person.role"
-                           [email]="person.email"
-                           [myWebsite]="person.my_website_link"
-                           [socialLinks]="person.links">
-        </app-card-business>
+        <div *ngIf="displayAll">
+          <app-card-business [image]="person.photo"
+                             [_id] = "person._id"
+                             [name]="person.name"
+                             [role]="person.role"
+                             [email]="person.email"
+                             [myWebsite]="person.my_website_link"
+                             [socialLinks]="person.links"
+                             (personId)="getPerson($event)">
+          </app-card-business>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div >
+    <div class="row">
+      <div class="col" >
+        <div *ngIf="displayPerson">
+          <app-profile [image]="person.photo"
+                       [_id] = "person._id"
+                       [name]="person.name"
+                       [role]="person.role"
+                       [email]="person.email"
+                       [myWebsite]="person.my_website_link"
+                       [socialLinks]="person.links">
+
+          </app-profile>
+        </div>
       </div>
     </div>
   </div>

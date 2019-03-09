@@ -1,0 +1,69 @@
+<body>
+<table border="0" cellspacing="0" cellpadding="4" width="690">
+  <tbody><tr>
+    <div>
+      <a>
+        <ng-template [ngIf]="image != null" [ngIfElse]="defaultImage">
+          <img class="card-horiz-img" src="data:{{image.content_type}};base64,{{image.buffer}}">
+        </ng-template>
+        <ng-template #defaultImage>
+          <img class="card-horiz-img" src="assets/images/defaultPhoto.png" alt="No image available">
+        </ng-template>
+      </a>
+    </div>
+    <td>
+      <h1 style="line-height: 100%; margin-top: 0; margin-bottom: 0">{{name}}</h1>
+      <h3 style="margin-top: 0; margin-bottom: 0"> <i> University of Colorado</i></h3>
+      <p> <i><u> Bio: </u><br>
+      </i> {{name}} is a Professor in the Department of Computer Science
+        at University of Colorado, where he has been since 1990.
+        From 2013 to 2018 he served as Department Chair.
+        During 2003-2004 I was a Visiting Associate Professor
+        MIT. Now i work here.
+      </p>
+    </td>
+  </tr>
+  </tbody></table>
+
+<div>
+  <hr size="2" width="100%" align="center">
+</div>
+
+<h2>Research</h2>
+Needs a table
+
+<h2>Other Links</h2>
+<br/><a *ngIf="myWebsite != '' && myWebsite != null" href="{{myWebsite}}">My Website</a>
+
+<h2>Social Media</h2>
+<div *ngFor="let link of socialLinks" style="display: inline;">
+  <a class="fa fa-{{link.description}}" href="{{link.URL}}"></a>
+</div>
+
+<div>
+  <hr size="2" width="100%" align="center">
+</div>
+
+<table border="0" cellspacing="0" cellpadding="0" width="590">
+  <tbody><tr>
+    <td>
+      <p><i>{{name}}<br></i>
+        Department of Computer Science<br>
+        1200 Larimer Street<br>
+        Suite 3034<br>
+        Denver, CO 80204<br>
+        </p>
+    </td>
+    <td>
+      <p> Phone: (303) 315-1408 <br>
+        Fax: 303-315-1410 </p>
+      <a href="mailto: {{email}}">{{email}}</a>
+    </td>
+  </tr>
+  </tbody></table>
+
+<div>
+  <hr size="2" width="100%" align="center">
+</div>
+
+</body>

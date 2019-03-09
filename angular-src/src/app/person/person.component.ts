@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import {PersonService} from "../Services/person.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-person',
@@ -10,10 +11,14 @@ import {PersonService} from "../Services/person.service";
 export class PersonComponent implements OnInit {
 
   personList = [];
+  person = [];
   error = '';
+  displayAll: boolean = true;
+  displayPerson: boolean = false;
 
   constructor(private http: HttpClient,
-              private personService: PersonService) { }
+              private personService: PersonService,
+              private router: Router) { }
 
   ngOnInit() {
     this.getAllPeople();
@@ -25,6 +30,20 @@ export class PersonComponent implements OnInit {
         response => {
           this.personList = response;
           console.log(response)
+        },
+        error => this.error = error
+      );
+  }
+
+  getPerson(_id) {
+    this.displayAll = false;
+    this.displayPerson = true;
+    this.personService.getPerson(_id)
+      .subscribe(
+        response => {
+          this.person = response;
+          // console.log(response)
+          // this.router.navigateByUrl('/profile');
         },
         error => this.error = error
       );

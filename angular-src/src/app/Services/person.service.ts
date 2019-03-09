@@ -23,5 +23,9 @@ export class PersonService {
   loginPerson(loginUser): Observable<any> {
     return this.httpClient.post<any>(environment.apiUrl + '/user/login', loginUser);
   }
+
+  getPerson(_id): Observable<any> {
+    return this.httpClient.get<any>(environment.apiUrl + `/person/${_id}`);
+  }
 }
 

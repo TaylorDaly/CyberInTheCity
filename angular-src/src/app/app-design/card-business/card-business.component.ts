@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import {Image, Link} from "../../person/person";
 
 @Component({
@@ -8,16 +8,24 @@ import {Image, Link} from "../../person/person";
 })
 export class CardBusinessComponent implements OnInit {
 
+  @Input() _id: string;
   @Input() image: Image;
   @Input() name: string;
   @Input() role: string;
   @Input() email: string;
   @Input() myWebsite: string;
   @Input() socialLinks: Link[];
+  @Output() personId = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+
+  getPerson(val: any) {
+    console.log(val);
+    this.personId.emit(val);
   }
 
 }
