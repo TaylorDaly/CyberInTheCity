@@ -41,6 +41,10 @@ const PersonSchema = mongoose.Schema({
         type: String,
         required: false
     },
+    biography: {
+        type: String,
+        required: false
+    },
     office_location: {
         type: String,
         required: false

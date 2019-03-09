@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
   @Input() name: string;
   @Input() role: string;
   @Input() email: string;
+  @Input() biography; string;
   @Input() myWebsite: string;
   @Input() socialLinks: Link[];
   ngOnInit() {

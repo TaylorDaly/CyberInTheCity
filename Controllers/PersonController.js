@@ -129,6 +129,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     }
                     if (req.body.email) person.email = req.body.email;
                     if (req.body.phone_number) person.phone_number = req.body.phone_number;
+                    if (req.body.biography) person.biography = req.body.biography;
                     if (req.body.office_location) person.office_location = req.body.office_location;
                     if (req.body.links) person.links = req.body.links;
                     if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;

@@ -51,6 +51,7 @@ UserRouter.post('/signup/:token', (req, res) => {
                 role: req.body.role,
                 email: decoded.email,
                 phone_number: req.body.phone_number,
+                biography: req.body.biography,
                 office_location: req.body.office_location,
                 links: req.body.links,
                 my_website_link: req.body.my_website_link,
