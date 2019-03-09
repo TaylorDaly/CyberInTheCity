@@ -23,9 +23,7 @@ export class NavmenuComponent implements OnInit {
     this.pageService.getAllStaticPages()
       .subscribe(
         response => {
-          console.log(response);
           this.sortNavItems(response);
-          console.log(this.parents);
         },
       );
   }

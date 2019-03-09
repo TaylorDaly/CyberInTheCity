@@ -57,6 +57,7 @@ export class EditCareersComponent implements OnInit {
 
   resetForm() {
     this.createCareer = this.fb.group({
+      _id: [''],
       jobtitle: ['', Validators.required],
       company: ['', Validators.required],
       jobType: ['', Validators.required],
@@ -182,6 +183,7 @@ export class EditCareersComponent implements OnInit {
         )
 
     } else { // Update research //
+      console.log(this.createCareer.get('_id').value);
       this.careerService.updateCareer(this.createCareer.value)
         .subscribe(
           res => {

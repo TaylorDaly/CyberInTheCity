@@ -9,7 +9,7 @@
 <div [hidden]="!editCareers">
   <form [formGroup]="createCareer" (ngSubmit)="saveCareer()">
     <div class="form-group">
-    <label>Job Title:</label>
+      <label><span class="text-danger">*</span>Job Title:</label>
     <input type="text" [class.is-invalid]="jobtitle.invalid && jobtitle.touched"
            class="form-control" placeholder="Enter a job title" formControlName="jobtitle" />
     <small class="text-danger" [class.d-none]="jobtitle.valid || jobtitle.untouched">
@@ -17,7 +17,7 @@
     </small>
   </div>
     <div class="form-group">
-      <label>Company:</label>
+      <label><span class="text-danger">*</span>Company:</label>
       <input type="text" [class.is-invalid]="company.invalid && company.touched"
              class="form-control" placeholder="Enter a company" formControlName="company" />
       <small class="text-danger" [class.d-none]="company.valid || company.untouched">
@@ -25,7 +25,7 @@
       </small>
     </div>
     <div class="form-group">
-      <label>Location:</label>
+      <label><span class="text-danger">*</span>Location:</label>
       <input type="text" [class.is-invalid]="location.invalid && location.touched"
              class="form-control" placeholder="Enter a location" formControlName="location" />
       <small class="text-danger" [class.d-none]="location.valid || location.untouched">
@@ -35,7 +35,7 @@
     <div class="form-group">
       <div class="form-row">
         <div class="col-md-2">
-          <label style="padding-top: 5px;">Job Type:</label>
+          <label style="padding-top: 5px;"><span class="text-danger">*</span>Job Type:</label>
         </div>
         <div class="col-md-10">
           <select class="form-control" [class.is-invalid]="jobType.invalid && jobType.touched"
@@ -60,5 +60,6 @@
     </div>
     <button class="btn btn-color" style="float: right;" [disabled]="createCareer.invalid">Save</button>
   </form>
+  <p class="text-danger">* Required Fields</p>
 </div>
 
