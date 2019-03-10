@@ -19,11 +19,12 @@ schedule.scheduleJob('0 0 * * *', function () {
                 careerID = careers[i]._id;
                 careerDate = careers[i].postedDate;
                 if (careerDate <= eraseMonth) {
+                    jobtitle = careers[i].jobtitle;
                     Careers.deleteCareer(careers[i], (err) => {
                         if (err) {
                             console.log(`[${new Date()}] : ${err}`)
                         } else {
-                            console.log(`[${new Date()}] : Successfully removed expired Career.`);
+                            console.log(`[${new Date()}] : Successfully removed expired Career.` + jobtitle);
                         }
                     });
                 }
