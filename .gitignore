@@ -3,6 +3,7 @@
 # compiled output
 tmp
 dist
+angular-src/dist
 
 # dependencies
 node_modules

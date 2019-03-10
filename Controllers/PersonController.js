@@ -102,7 +102,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
             })
         } else if (person) {
             // The ID from the token must match the person to update, unless the user is an admin.
-            if (person._id !== req.decoded._id && req.decoded.sys_role !== `Admin`) {
+            if (person._id !== req.decoded._id && req.decoded.sys_role !== `Sys_Admin`) {
                 res.status(401).json({success: false, message: 'You do not have access to update this person.'})
             } else {
                 // Admin may use this route to update a sys_role, but that is all they are allowed to update on
@@ -113,7 +113,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     }
                     if (req.body.verified) person.verified = req.body.verified;
                 }
-                if (req.decoded._id === person._id) {
+                if (req.decoded._id === person._id || req.decoded.sys_role === 'Sys_Admin') {
                     if (req.body.name) person.name = req.body.name;
                     if (req.body.role) person.role = req.body.role;
                     if (req.body.password) person.password = req.body.password;
@@ -134,6 +134,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     if (req.body.links) person.links = req.body.links;
                     if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
                     if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
+                    if (req.body.google_drive_link) person.google_drive_link = req.body.google_drive_link;
                 }
                 Person.updatePerson(req.body._id, person, (err) => {
                     if (err) {
@@ -184,7 +185,6 @@ const deleteImage = async (_idRemove) => {
     });
 };
 
-// TODO: Add in secure paths that include sys_role and passwords
 // https://github.com/Automattic/mongoose/issues/1596
 // https://stackoverflow.com/questions/12096262/how-to-protect-the-password-field-in-mongoose-mongodb-so-it-wont-return-in-a-qu
 module.exports = PeopleRouter;

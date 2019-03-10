@@ -5,14 +5,13 @@ const PersonSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minlength: 2
+        minlength: 3
     },
-    // TODO: consider security on this: who can change a sys_role and when
     sys_role: {
         type: String,
         required: true,
         enum: ['Sys_Admin', 'Admin', 'User'],
-        default: 'None',
+        default: 'User',
         select: false
     },
     password: {
@@ -39,7 +38,8 @@ const PersonSchema = mongoose.Schema({
     },
     phone_number: {
         type: String,
-        required: false
+        required: false,
+        minlength: 10,
     },
     biography: {
         type: String,
@@ -59,6 +59,10 @@ const PersonSchema = mongoose.Schema({
     },
     my_website_link: {
         type: mongoose.Schema.Types.Object,
+        ref: 'Link'
+    },
+    google_drive_link: {
+        type: String,
         ref: 'Link'
     },
     verified: {
