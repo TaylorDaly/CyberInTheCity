@@ -27,7 +27,7 @@ app.use(helmet())
 app.use(cors())
 app.use(bodyParser.json({extended: true, limit: '10mb'}))
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.static(path.join(__dirname, './angular-src/dist')))
+app.use(express.static(path.join(__dirname, './angular-src/dist/')))
 
 // Routes
 app.use('/api/Person', require('./Controllers/PersonController'))
