@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {Image, Link} from "../../person/person";
-
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -8,14 +8,15 @@ import {Image, Link} from "../../person/person";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  constructor() { }
+  constructor(public sanitizer: DomSanitizer){ }
   @Input() _id: string;
   @Input() image: Image;
   @Input() name: string;
   @Input() role: string;
   @Input() email: string;
-  @Input() biography; string;
+  @Input() biography: string;
   @Input() myWebsite: string;
+  @Input() google_drive_link: string;
   @Input() socialLinks: Link[];
   ngOnInit() {
   }

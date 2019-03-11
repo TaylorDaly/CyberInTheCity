@@ -36,6 +36,7 @@ export class Person {
   email: string;
   biography: string;
   my_website_link: string;
+  google_drive_link: string;
   links: Array<Link>;
   password: string;
   sys_role: string;
