@@ -34,6 +34,7 @@ export class Person {
   photo: Image;
   role: string;
   email: string;
+  biography: string;
   my_website_link: string;
   links: Array<Link>;
   password: string;

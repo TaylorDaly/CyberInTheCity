@@ -18,11 +18,12 @@ schedule.scheduleJob('0 0 * * *', function(){
                 eID = event[i]._id;
                 eDate = event[i].eventDate;
                 if (eDate < eraseDay) {
+                    title = event[i].title;
                     Event.deleteEvent(event[i], (err) => {
                         if (err) {
                             console.log(`[${new Date()}] : ${err}`)
                         } else {
-                            console.log(`[${new Date()}] : Successfully removed expired Events`);
+                            console.log(`[${new Date()}] : Successfully removed expired Events. ` + title);
                         }
                     });
                 }

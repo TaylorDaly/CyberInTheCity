@@ -12,19 +12,19 @@ const Image = require('../Models/Image');
 // accessing the register form.
 UserRouter.post('/verify', (req, res) => {
     let token = req.body.token;
-    if (!token) return res.status(403).json({ auth: false, message: 'No token provided.' });
+    if (!token) return res.status(403).json({auth: false, message: 'No token provided.'});
 
     jwt.verify(token, dbConfig.registerSecret, function (err, decoded) {
         if (err) {
-            return res.status(403).json({ auth: false, message: 'Failed to authenticate token.' })
+            return res.status(403).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
-            Person.findOne({ email: decoded.email }, 'email', (err, person) => {
+            Person.findOne({email: decoded.email}, 'email', (err, person) => {
                 if (err) {
                     return res.status(500).json({
                         auth: false, message: `Something broke when attempting to find user. Error: ${err}`
                     })
                 } else if (person) {
-                    return res.status(409).json({ auth: false, message: `Email already exists.` })
+                    return res.status(409).json({auth: false, message: `Email already exists.`})
                 } else {
                     return res.json({
                         email: decoded.email,
@@ -40,21 +40,23 @@ UserRouter.post('/verify', (req, res) => {
 // Sign up using token from register email.
 UserRouter.post('/signup/:token', (req, res) => {
     let token = req.params.token;
-    if (!token) return res.status(400).json({ auth: false, message: 'No token provided.' });
+    if (!token) return res.status(400).json({auth: false, message: 'No token provided.'});
 
     jwt.verify(token, dbConfig.registerSecret, function (err, decoded) {
         if (err) {
-            return res.status(401).json({ auth: false, message: 'Failed to authenticate token.' })
+            return res.status(401).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
             let newPerson = new Person({
                 name: req.body.name,
                 role: req.body.role,
                 email: decoded.email,
                 phone_number: req.body.phone_number,
+                biography: req.body.biography,
                 office_location: req.body.office_location,
                 links: req.body.links,
                 my_website_link: req.body.my_website_link,
-                google_scholar_link: req.body.google_scholar_link
+                google_scholar_link: req.body.google_scholar_link,
+                google_drive_link: req.body.google_drive_link
             });
 
             // Verify password requirements and does not contain other characters
@@ -68,30 +70,42 @@ UserRouter.post('/signup/:token', (req, res) => {
                     } else {
                         newPerson.password = hash;
 
-                        let newPic = new Image({
-                            buffer: req.body.photo.buffer,
-                            content_type: req.body.photo.content_type
-                        });
+                        if (req.body.photo) {
+                            let newPic = new Image({
+                                buffer: req.body.photo.buffer,
+                                content_type: req.body.photo.content_type
+                            });
 
-                        Image.saveImage(newPic, (err, img) => {
-                            if (err) {
-                                res.status(500).json({
-                                    success: false,
-                                    message: `Failed to save image. Error: ${err}`
-                                })
-                            } else {
-                                newPerson.photo = img._id;
-                                Person.addPerson(newPerson, (err) => {
-                                    if (err) {
-                                        res.status(500).json({
-                                            success: false, message: `Failed to add new user. Error: ${err}`
-                                        })
-                                    } else {
-                                        res.json({ success: true, message: 'Successfully added person.' });
-                                    }
-                                })
-                            }
-                        });
+                            Image.saveImage(newPic, (err, img) => {
+                                if (err) {
+                                    res.status(500).json({
+                                        success: false,
+                                        message: `Failed to save image. Error: ${err}`
+                                    })
+                                } else {
+                                    newPerson.photo = img._id;
+                                    Person.addPerson(newPerson, (err) => {
+                                        if (err) {
+                                            res.status(500).json({
+                                                success: false, message: `Failed to add new user. Error: ${err}`
+                                            })
+                                        } else {
+                                            res.json({success: true, message: 'Successfully added person.'});
+                                        }
+                                    })
+                                }
+                            });
+                        } else {
+                            Person.addPerson(newPerson, (err) => {
+                                if (err) {
+                                    res.status(500).json({
+                                        success: false, message: `Failed to add new user. Error: ${err}`
+                                    })
+                                } else {
+                                    res.json({success: true, message: 'Successfully added person.'});
+                                }
+                            });
+                        }
                     }
                 });
             } else {
@@ -112,7 +126,7 @@ UserRouter.post('/signup/:token', (req, res) => {
 UserRouter.post('/login', (req, res) => {
     let password = req.body.password;
     let email = req.body.email;
-    Person.findOne({ email: email }, 'email password _id', (err, person) => {
+    Person.findOne({email: email}, 'email password _id sys_role', (err, person) => {
         if (err) {
             return res.status(500).json({
                 success: false, message: `Something broke when attempting to find user. Error: ${err}`
@@ -126,22 +140,24 @@ UserRouter.post('/login', (req, res) => {
                     });
                 } else if (result) {
                     const jwtToken = jwt.sign({
-                        email: person.email,
-                        _id: person._id,
-                        sys_role: person.sys_role
-                    },
-                    dbConfig.secret,
-                    {
-                        expiresIn: '24h'
-                    });
+                            email: person.email,
+                            _id: person._id,
+                            sys_role: person.sys_role
+                        },
+                        dbConfig.secret,
+                        {
+                            expiresIn: '24h'
+                        });
 
                     return res.status(200).json({
                         success: true,
                         message: 'Login successful.',
-                        role: person.sys_role,
+                        sys_role: person.sys_role,
                         token: jwtToken
                     });
-                } else { return res.status(401).json({ success: false, message: 'Password incorrect.' }) }
+                } else {
+                    return res.status(401).json({success: false, message: 'Password incorrect.'})
+                }
             });
         } else {
             return res.status(400).json({
@@ -155,7 +171,7 @@ UserRouter.post('/login', (req, res) => {
 // Beginning of registration process, user must enter email and click link in email.
 UserRouter.post('/signup', (req, res) => {
     let email = req.body.email;
-    Person.findOne({ email: email }, 'email', (err, person) => {
+    Person.findOne({email: email}, 'email', (err, person) => {
         if (err) {
             res.status(500).json({
                 success: false,
@@ -179,7 +195,7 @@ UserRouter.post('/signup', (req, res) => {
                     }
                 });
 
-                let token = jwt.sign({ email: req.body.email }, dbConfig.registerSecret, {
+                let token = jwt.sign({email: req.body.email}, dbConfig.registerSecret, {
                     expiresIn: 7200 // expires in 2 hours
                 });
 

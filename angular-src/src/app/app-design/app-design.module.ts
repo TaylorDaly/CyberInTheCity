@@ -7,6 +7,8 @@ import { CardInfoComponent } from './card-info/card-info.component';
 import { CardBusinessComponent } from './card-business/card-business.component';
 import { CardCareersComponent } from './card-careers/card-careers.component';
 import { CardNewsComponent} from "./card-news/card-news.component";
+import { ProfileComponent} from "./profile/profile.component";
+
 import { EditorComponent } from './editor/editor.component';
 
 import {CKEditorModule} from "ng2-ckeditor";
@@ -20,6 +22,7 @@ import { ListDataComponent } from './list-data/list-data.component';
     EditorComponent,
     ListDataComponent,
     CardNewsComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +39,7 @@ import { ListDataComponent } from './list-data/list-data.component';
     EditorComponent,
     ListDataComponent,
     MatTableModule,
+    ProfileComponent
   ],
   entryComponents: [
     ListDataComponent

@@ -61,9 +61,9 @@ PageRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
                 message: `Failed to get all pages. Error: ${err}`
             })
         } else if (page) {
-            page.title = req.body.title;
-            page.content = req.body.content;
-            page.parent = req.body.parent;
+            if (req.body.title) page.title = req.body.title;
+            if (req.body.content) page.content = req.body.content;
+            if (req.body.parent) page.parent = req.body.parent;
             Page.updatePage(page._id, page, (err) => {
                 if (err) {
                     res.status(500).json({ success: false, message: `Failed to update page. Error: ${err}` })

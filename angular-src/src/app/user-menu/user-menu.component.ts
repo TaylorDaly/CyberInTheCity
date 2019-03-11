@@ -5,10 +5,15 @@ import {Component, OnInit} from '@angular/core';
   templateUrl: './user-menu.component.html',
   styleUrls: ['./user-menu.component.css']
 })
+
 export class UserMenuComponent implements OnInit {
 
-  constructor() { }
+  admin: boolean;
+
+  constructor() {
+  }
 
   ngOnInit() {
+    this.admin = localStorage.getItem('sys_role') === 'Sys_Admin' || localStorage.getItem('sys_role') === 'Admin';
   }
 }

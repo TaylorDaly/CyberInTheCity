@@ -25,9 +25,10 @@ mongoose.connect(dbConfig.uri, require('./Config/MongooseConnectOptions'))
 // app setup
 app.use(helmet())
 app.use(cors())
-app.use(bodyParser.json())
+app.use(bodyParser.json({extended: true, limit: '10mb'}))
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(express.static(path.join(__dirname, './angular-src/dist')))
+// Points to the build artifacts from angular.
+app.use(express.static(path.join(__dirname, './angular-src/dist/')))
 
 // Routes
 app.use('/api/Person', require('./Controllers/PersonController'))
@@ -57,6 +58,7 @@ app.listen(port, () => {
 })
 
 // TODO: for TLS, get cert and key
+// Currently heroku is handling SSL for us.
 const options = {
     // key: fs.readFileSync("key.pem"),
     // cert: fs.readFileSync("cert.pem")
