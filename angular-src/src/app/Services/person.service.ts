@@ -23,5 +23,16 @@ export class PersonService {
   loginPerson(loginUser): Observable<any> {
     return this.httpClient.post<any>(environment.apiUrl + '/user/login', loginUser);
   }
-}
 
+  addPerson(person): Observable<any> {
+    return this.httpClient.post<any>(environment.apiUrl + '/person', person);
+  }
+
+  updatePerson(person): Observable<any> {
+    return this.httpClient.put<any>(environment.apiUrl + '/person', person);
+  }
+
+  deletePerson(_id): Observable<any> {
+    return this.httpClient.delete<any>(environment.apiUrl + `/person/${_id}`);
+  }
+}

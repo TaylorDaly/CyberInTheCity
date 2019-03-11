@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
+import {PageService} from "../Services/page.service";
 
 @Component({
   selector: 'app-contact-us',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactUsComponent implements OnInit {
 
-  constructor() { }
+  content: SafeHtml;
+  errMsg = "";
+
+  constructor(private pageService: PageService,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.getContactPage();
   }
 
+  getContactPage() {
+    //console.log(title);
+    this.pageService.getStaticPageByTitle("Contact Us")
+      .subscribe(
+        response => {
+          //console.log(response);
+          this.content = this.sanitizer.bypassSecurityTrustHtml(response['content']);
+        },
+        error => {this.errMsg = error.message}
+      );
+  }
 }

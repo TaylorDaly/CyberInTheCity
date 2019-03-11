@@ -11,6 +11,7 @@ import { EditEducationComponent } from './edit-education/edit-education.componen
 import { EditCareersComponent } from './edit-careers/edit-careers.component';
 import { EditEventsComponent } from './edit-events/edit-events.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
+import {ImageCropperModule} from "ngx-img-cropper";
 
 const editList = [
   EditStaticComponent,
@@ -32,6 +33,7 @@ const editList = [
     FormsModule,
     ReactiveFormsModule,
     AppDesignModule,
+    ImageCropperModule,
   ],
   exports: [
     editList

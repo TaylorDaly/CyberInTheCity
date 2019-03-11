@@ -38,6 +38,9 @@ export class Person {
   links: Array<Link>;
   password: string;
   sys_role: string;
+  verified: boolean;
+  phone_number: string;
+  office_location: string;
 
   constructor() {
     this.photo = new Image();

@@ -149,7 +149,7 @@ export class EditEventsComponent implements OnInit {
         description: event.description,
       });
       this.editEvent = true;
-    } else  {  // Delete table item //
+    } else  {  // Delete loadComp item //
       if (window.confirm('Are you sure you want to delete this event?')) {
         this.eventService.deleteEvent(editObj._id)
           .subscribe(

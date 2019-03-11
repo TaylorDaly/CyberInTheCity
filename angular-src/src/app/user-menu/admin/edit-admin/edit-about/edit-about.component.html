@@ -1,3 +1,4 @@
-<p>
-  edit-about works!
-</p>
+<div>
+  <app-editor *ngIf="loaded" [disabled]="false" (htmlString)="savePage($event)"
+              [htmlContent]="aboutUs.content"></app-editor>
+</div>

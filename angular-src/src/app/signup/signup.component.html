@@ -104,7 +104,8 @@
         </div>
       </div>
       <button [disabled]="smLinks.length >= 5" type="button" class="btn btn-default btn-md" (click)="addSMLinks()">
-        <span class="fa fa-plus"></span> Add </button>
+        <span class="fa fa-plus"></span> Add
+      </button>
     </div>
 
     <div class="form-group">
@@ -112,7 +113,7 @@
       <div class="form-row">
         <div class="col">
           <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
-      </div>
+        </div>
         <div class="col">
           <div *ngIf="imgSrc.image" style="padding-left: 10px;">
             <label>Preview:</label>
@@ -124,8 +125,8 @@
       </div>
     </div>
 
-      <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
-      <p class="text-danger">{{errMsg}}</p>
+    <button [disabled]="!signupForm.valid" class="btn btn-color" type="submit">Submit</button>
+    <p class="text-danger">{{errMsg}}</p>
   </form>
   <p class="text-danger">* Required Fields</p>
 </div>

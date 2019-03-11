@@ -160,7 +160,7 @@ export class EditEducationComponent implements OnInit {
       });
 
       this.editCourse = true;
-    } else  {  // Delete table item //
+    } else  {  // Delete loadComp item //
       if (window.confirm('Are you sure you want to delete this course?')) {
         this.eduService.deleteCourse(editObj._id)
           .subscribe(

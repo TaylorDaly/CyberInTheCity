@@ -150,7 +150,7 @@ export class EditCareersComponent implements OnInit {
         description: career.description,
       });
       this.editCareers = true;
-    } else  {  // Delete table item //
+    } else  {  // Delete loadComp item //
       if (window.confirm('Are you sure you want to delete this job?')) {
         this.careerService.deleteCareer(editObj._id)
           .subscribe(

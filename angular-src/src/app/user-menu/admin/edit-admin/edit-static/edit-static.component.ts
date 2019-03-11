@@ -168,7 +168,7 @@ export class EditStaticComponent implements OnInit {
             this.errMsg = err.message;
           }
         );
-    } else  {  // Delete table item //
+    } else  {  // Delete loadComp item //
       if (window.confirm('Are you sure you want to delete this page?')) {
         this.pageService.deletePage(editObj._id)
           .subscribe(

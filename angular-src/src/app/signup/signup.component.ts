@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Input, Component, OnInit} from '@angular/core';
 import {SignupService} from "../Services/signup.service";
 import {FormBuilder, FormArray, Validators, FormGroup} from "@angular/forms";
 import {PasswordValidator} from "../shared/password.validator";

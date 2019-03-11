@@ -1,11 +1,133 @@
 <p class="text-danger">{{errMsg}}</p>
 <div [hidden]="editPerson">
-  <template #dataTable></template>
-  <!--<div *ngIf="loadTable">-->
-    <!--<app-list-data [listItems]="personList" [listFields]="personFields"></app-list-data>-->
-  <!--</div>-->
-    <button type="button" class="btn btn-color btn-md btn-add" (click)="editPerson=true">
-      <span class="fa fa-plus"></span> Add</button>
+  <template #loadComp></template>
+  <button type="button" class="btn btn-color btn-md btn-add" (click)="addNewPerson()">
+    <span class="fa fa-plus"></span> Add
+  </button>
 </div>
+
 <div [hidden]="!editPerson">
+  <form [formGroup]="createPerson" (ngSubmit)="savePerson()">
+    <!--{{createPerson.value | json}}-->
+    <div class="form-group">
+      <label><span class="text-danger">*</span>School Email:</label>
+      <input type="email" [class.is-invalid]="email.invalid && email.touched"
+             class="form-control" placeholder="Enter a school email" formControlName="email" />
+      <small class="text-danger" [class.d-none]="email.valid || email.untouched">
+        Email is required.
+      </small>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col-md-8">
+          <label><span class="text-danger">*</span>Name:</label>
+          <input type="text" class="form-control" placeholder="Full name" formControlName="name"
+                 [class.is-invalid]="name.invalid && name.touched"/>
+          <small [class.d-none]="name.valid || name.untouched" class="text-danger">
+            Full name is required.
+          </small>
+        </div>
+        <div class="col-md-4">
+          <label><span class="text-danger">*</span>Role:</label>
+          <select class="form-control" formControlName="role" [class.is-invalid]="role.invalid && role.touched">
+            <option value="" disabled>Select your role</option>
+            <option *ngFor="let r of roles">
+              {{r}}
+            </option>
+          </select>
+          <small *ngIf="role.invalid && role.touched" class="text-danger">
+            Role is required.
+          </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col">
+          <label><span class="text-danger">*</span>System Role:</label>
+          <select class="form-control no-min-width" formControlName="sys_role">
+            <option *ngFor="let role of sysRoles">{{role}}</option>
+          </select>
+        </div>
+        <div class="col">
+          <label><span class="text-danger">*</span>Verified:</label>
+          <select class="form-control no-min-width" formControlName="verified">
+            <option value="false">False</option>
+            <option value="true">True</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Phone Number:</label>
+      <input type="tel" class="form-control" placeholder="(123)-456-7890" formControlName="phone_number">
+    </div>
+
+    <div class="form-group">
+      <label>Office Location:</label>
+      <input type="text" class="form-control" placeholder="Enter office location" formControlName="office_location">
+    </div>
+
+    <div class="form-group">
+      <label>My Website:</label>
+      <input type="url" class="form-control" placeholder="Enter your website URL" formControlName="my_website_link"/>
+    </div>
+
+    <div class="form-group">
+      <label>Social Media:</label>
+      <div formArrayName="links" *ngFor="let smLink of links.controls; let i=index">
+        <div [formGroupName]="i">
+          <div class="form-row">
+            <div class="col-md-3">
+              <select class="form-control no-min-width" formControlName="description"
+                      [class.is-invalid]="smLink.get('description').invalid">
+                <option value="" disabled>Select One</option>
+                <option *ngFor="let link of smList" value="{{link.toLocaleLowerCase()}}">
+                {{link}}
+              </option>
+              </select>
+              <div hidden *ngIf="descRequired(i)"></div>
+              <small *ngIf="smLink.get('description').invalid" class="text-danger">
+                Must select one for URL or erase URL.
+              </small>
+            </div>
+            <div [className]="linkLength">
+              <input type="url" class="form-control" placeholder="Link URL" formControlName="URL">
+            </div>
+            <div class="col-md-1" [hidden]="links.length <= 1">
+              <button type="button" class="btn btn-color" (click)="deleteSMLinks(i)">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button [disabled]="links.length >= 5" type="button" class="btn btn-default btn-md" (click)="addSMLinks()">
+        <span class="fa fa-plus"></span> Add
+      </button>
+    </div>
+
+    <div class="form-group">
+      <label>Profile Image:</label>
+      <div class="form-row">
+        <div class="col">
+          <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
+        </div>
+        <div class="col">
+          <div *ngIf="imgSrc.image" style="padding-left: 10px;">
+            <label>Preview:</label>
+            <br/><img [src]="imgSrc.image" [width]="cropSettings.croppedWidth"
+                      [height]="cropSettings.croppedHeight"/>
+          </div>
+        </div>
+        <!--{{imgSrc | json}}-->
+      </div>
+    </div>
+
+    <button class="btn btn-color" style="float: right;" [disabled]="createPerson.invalid">Save</button>
+  </form>
+  <p class="text-danger">* Required fields</p>
 </div>
