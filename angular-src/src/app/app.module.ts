@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {MatButtonModule, MatTooltipModule} from '@angular/material'
+import {MatButtonModule, MatTooltipModule, MatTabsModule} from '@angular/material'
 import {HttpErrorInterceptor} from "./error/http-error.interceptor";
 
 import {AppRoutingModule, RoutingComponents} from "./app-routing.module";
@@ -18,6 +18,7 @@ import {EditAdminModule} from "./user-menu/admin/edit-admin/edit-admin.module";
 import {AdminComponent} from './user-menu/admin/admin.component';
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {ImageCropperModule} from "ngx-img-cropper";
+import { UserComponent } from './user-menu/user/user.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {ImageCropperModule} from "ngx-img-cropper";
     ErrorComponent,
     FooterComponent,
     AdminComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,7 @@ import {ImageCropperModule} from "ngx-img-cropper";
     ReactiveFormsModule,
     MatButtonModule,
     MatTooltipModule,
+    MatTabsModule,
     BrowserAnimationsModule,
     EditAdminModule,
     InfiniteScrollModule,

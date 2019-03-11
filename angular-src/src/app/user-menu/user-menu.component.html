@@ -1,3 +1,23 @@
 <div class="container">
-  <app-admin></app-admin>
+  <mat-tab-group>
+    <mat-tab label="Welcome">
+      <h2><br>Welcome to Cyber in the City!</h2>
+      <p><br><br>Click the user tab above to begin editing your profile.</p>
+      <div *ngIf="admin">
+        <p>Click the admin tab if you would like to add or edit anything else on the site.</p>
+      </div>
+    </mat-tab>
+    <mat-tab label="User">
+      <ng-template matTabContent>
+        <app-user></app-user>
+      </ng-template>
+    </mat-tab>
+    <div *ngIf="admin">
+      <mat-tab label="Admin">
+        <ng-template matTabContent>
+          <app-admin></app-admin>
+        </ng-template>
+      </mat-tab>
+    </div>
+  </mat-tab-group>
 </div>

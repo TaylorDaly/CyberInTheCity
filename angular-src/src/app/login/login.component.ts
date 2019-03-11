@@ -38,7 +38,8 @@ export class LoginComponent implements OnInit {
       .subscribe(
         res => {
           localStorage.setItem('jwtToken', res['token']);
-          this.router.navigateByUrl('/user-menu');
+          localStorage.setItem('sys_role', res['sys_role']);
+          this.router.navigateByUrl('/user-menu').catch((err) => this.errMsg = err.message);
         },
         err => {
           //window.alert(`Error ${err.code}: ${err.message}`);

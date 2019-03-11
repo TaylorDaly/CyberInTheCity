@@ -126,7 +126,7 @@ UserRouter.post('/signup/:token', (req, res) => {
 UserRouter.post('/login', (req, res) => {
     let password = req.body.password;
     let email = req.body.email;
-    Person.findOne({email: email}, 'email password _id', (err, person) => {
+    Person.findOne({email: email}, 'email password _id sys_role', (err, person) => {
         if (err) {
             return res.status(500).json({
                 success: false, message: `Something broke when attempting to find user. Error: ${err}`
@@ -152,7 +152,7 @@ UserRouter.post('/login', (req, res) => {
                     return res.status(200).json({
                         success: true,
                         message: 'Login successful.',
-                        role: person.sys_role,
+                        sys_role: person.sys_role,
                         token: jwtToken
                     });
                 } else {
