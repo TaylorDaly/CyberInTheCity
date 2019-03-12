@@ -6,12 +6,14 @@ const LinkSchema = new mongoose.Schema({
     URL: {
         type: String,
         required: true,
-        match: regex.link
+        match: regex.link,
+        minlength: 4
     },
     // If we want display text to be different from the actual link.
     description: {
         type: String,
-        required: true
+        required: true,
+        minlength: 4
     },
 });
 

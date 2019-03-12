@@ -166,7 +166,6 @@ export class SignupComponent implements OnInit {
           this.router.navigateByUrl('/login');
       }, err => {
           this.errMsg = err.message;
-        //console.log("ERR");
       });
   }
 }

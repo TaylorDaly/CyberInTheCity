@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const regex = require('../Config/Regex.js');
+const Link = require('../Models/Link.js');
 
 const PersonSchema = mongoose.Schema({
     name: {
@@ -24,7 +25,8 @@ const PersonSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        match: regex.email
+        match: regex.email,
+        minlength: 14
     },
     role: {
         type: String,
@@ -51,19 +53,19 @@ const PersonSchema = mongoose.Schema({
     },
     links: {
         type: [mongoose.Schema.Types.Object],
-        ref: 'Link'
+        ref: Link
     },
     google_scholar_link: {
         type: mongoose.Schema.Types.Object,
-        ref: 'Link'
+        ref: Link
     },
     my_website_link: {
         type: mongoose.Schema.Types.Object,
-        ref: 'Link'
+        ref: Link
     },
     google_drive_link: {
         type: String,
-        ref: 'Link'
+        ref: Link
     },
     verified: {
         type: Boolean,
@@ -105,7 +107,7 @@ module.exports.getPerson = (query, callback) => {
         .populate('photo')
 };
 
-module.exports.updatePerson = (id, update, callback) => {
-    person.findByIdAndUpdate(id, update, callback)
+module.exports.updatePerson = (update, callback) => {
+    update.save(update, callback)
 };
 

@@ -40,6 +40,25 @@ PeopleRouter.get('/', (req, res) => {
     })
 });
 
+// Get the current user from token
+PeopleRouter.get('/self', Auth.Verify, (req, res) => {
+    Person.getPerson({_id: req.decoded._id}, (err, person) => {
+        if (err) {
+            res.status(500).json({
+                success: false,
+                message: `Attempt to get person failed. Error: ${err}`
+            })
+        } else if (person) {
+            res.json(person)
+        } else {
+            res.status(404).json({
+                success: false,
+                message: `Person does not exist.`
+            })
+        }
+    })
+});
+
 PeopleRouter.get('/:id', (req, res) => {
     Person.getPerson({_id: req.params.id}, (err, person) => {
         if (err) {
@@ -136,7 +155,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
                     if (req.body.google_drive_link) person.google_drive_link = req.body.google_drive_link;
                 }
-                Person.updatePerson(req.body._id, person, (err) => {
+                Person.updatePerson(person, (err) => {
                     if (err) {
                         res.json({
                             success: false,
