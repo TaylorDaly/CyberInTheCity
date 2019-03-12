@@ -135,7 +135,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                 if (req.decoded._id === person._id || req.decoded.sys_role === 'Sys_Admin') {
                     if (req.body.name) person.name = req.body.name;
                     if (req.body.role) person.role = req.body.role;
-                    if (req.body.password) person.password = req.body.password;
+                    // if (req.body.password) person.password = req.body.password;
                     // If person has a photo, need to wait for photo to delete and new photo to upload before doing
                     // save on person object, so async is required here.
                     if (req.body.photo) {
@@ -146,7 +146,8 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                             next(err)
                         });
                     }
-                    if (req.body.email) person.email = req.body.email;
+                    // not allowing email updates
+                    // if (req.body.email) person.email = req.body.email;
                     if (req.body.phone_number) person.phone_number = req.body.phone_number;
                     if (req.body.biography) person.biography = req.body.biography;
                     if (req.body.office_location) person.office_location = req.body.office_location;
