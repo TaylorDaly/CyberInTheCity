@@ -56,16 +56,16 @@ const PersonSchema = mongoose.Schema({
         ref: Link
     },
     google_scholar_link: {
-        type: mongoose.Schema.Types.Object,
-        ref: Link
+        type: String,
+        minlength: 4
     },
     my_website_link: {
-        type: mongoose.Schema.Types.Object,
-        ref: Link
+        type: String,
+        minlength: 4
     },
     google_drive_link: {
         type: String,
-        ref: Link
+        minlength: 4
     },
     verified: {
         type: Boolean,

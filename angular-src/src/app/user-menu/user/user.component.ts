@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PageService} from "../../Services/page.service";
 import {PersonService} from "../../Services/person.service";
-import {Person} from "../../person/person";
+import {Image, Person} from "../../person/person";
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CropperSettings} from "ngx-img-cropper";
 import {regex} from "../../../environments/environment";
@@ -115,14 +115,13 @@ export class UserComponent implements OnInit {
   }
 
   initForm() {
-    if (this.editUser.photo) this.imgSrc.image = this.editUser.photo.content_type.split('/')[1] + ',' + this.editUser.photo.buffer;
+    if (this.editUser.photo) this.imgSrc.image = "data:" + this.editUser.photo.content_type + ';base64,' + this.editUser.photo.buffer;
     this.editProfileForm = new FormGroup({
       email: new FormControl(this.editUser.email),
       firstName: new FormControl(this.editUser.name.split(' ')[0], [Validators.required]),
       lastName: new FormControl(this.editUser.name.split(' ')[1], [Validators.required]),
       role: new FormControl(this.editUser.role, [Validators.required]),
       myWebsite: new FormControl(this.editUser.my_website_link),
-      // add links
       smLinks: new FormControl(this.fb.array([this.editUser.links])),
       image: new FormControl(this.imgSrc.image)
     })
@@ -130,7 +129,6 @@ export class UserComponent implements OnInit {
 
   submitUserEdits() {
     this.editUser.name = this.firstName.value + " " + this.lastName.value;
-    this.editUser.email = this.editProfileForm.get('email').value;
     this.editUser.my_website_link = this.editProfileForm.get('myWebsite').value;
     this.editUser.links = this.smLinks.value['value'];
     this.editUser.role = this.role.value;
@@ -139,7 +137,15 @@ export class UserComponent implements OnInit {
     //------------------------//
     // Separate image buffer from content type in image string //
     if(this.imgSrc.image != "") {
+      this.editUser.photo = new Image();
+
       let img = this.imgSrc.image.split(',');
+
+      if(img[1].length > 0) {
+        this.editUser.photo.buffer = img[1];
+      } else {
+        this.editUser.photo = null;
+      }
 
       // Set image file type //
       if(img[0].search('jpeg' || 'jpg') != -1) {
@@ -149,14 +155,10 @@ export class UserComponent implements OnInit {
       } else {
         this.editUser.photo = null;
       }
-
-      if(img[1].length > 0) {
-        this.editUser.photo.buffer = img[1];
-      } else {
-        this.editUser.photo = null;
-      }
     }
-    console.log(this.editUser);
+
+    // do not send email in the request, it can't be edited anyway.
+    delete this.editUser.email;
     this.personService.updatePerson(this.editUser)
       .subscribe(
         res => {

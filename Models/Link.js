@@ -12,7 +12,6 @@ const LinkSchema = new mongoose.Schema({
     // If we want display text to be different from the actual link.
     description: {
         type: String,
-        required: true,
         minlength: 4
     },
 });

@@ -124,8 +124,8 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
             if (person._id !== req.decoded._id && req.decoded.sys_role !== `Sys_Admin`) {
                 res.status(401).json({success: false, message: 'You do not have access to update this person.'})
             } else {
-                // Admin may use this route to update a sys_role, but that is all they are allowed to update on
-                // other people since _id's must match.
+                // Admin may use this route to update a sys_role. Sys_Admin is the only one that can change roles
+                // and they can't change the role of another Sys_Admin.
                 if (req.decoded.sys_role === 'Sys_Admin') {
                     if (person.sys_role !== 'Sys_Admin') {
                         if (req.body.sys_role) person.sys_role = req.body.sys_role;
@@ -155,21 +155,27 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
                     if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
                     if (req.body.google_drive_link) person.google_drive_link = req.body.google_drive_link;
+
+                    Person.updatePerson(person, (err) => {
+                        if (err) {
+                            res.json({
+                                success: false,
+                                message: `Attempt to update person failed. Error: ${err}`
+                            })
+                        } else {
+                            res.json({
+                                success: true,
+                                message: `Update Successful.`,
+                                person: person
+                            })
+                        }
+                    });
+                } else {
+                    res.status(401).json({
+                        success: false,
+                        message: "You do not have permission to edit this person."
+                    })
                 }
-                Person.updatePerson(person, (err) => {
-                    if (err) {
-                        res.json({
-                            success: false,
-                            message: `Attempt to update person failed. Error: ${err}`
-                        })
-                    } else {
-                        res.json({
-                            success: true,
-                            message: `Update Successful.`,
-                            person: person
-                        })
-                    }
-                });
             }
         } else {
             res.status(404).send({
@@ -181,27 +187,31 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
 });
 
 const updateImage = async (req) => {
-    let newPic = new Image({
-        buffer: req.body.photo.buffer,
-        content_type: req.body.photo.content_type
-    });
-
-    Image.saveImage(newPic, async (err, img) => {
-        if (err) {
-            return Promise.reject(err);
-        } else {
-            return img._id;
-        }
+    return new Promise((resolve, reject) => {
+        let newPic = new Image({
+            buffer: req.body.photo.buffer,
+            content_type: req.body.photo.content_type
+        });
+        Image.saveImage(newPic, async (err, img) => {
+            if (err) {
+                return reject(err);
+            } else {
+                return resolve(img._id);
+            }
+        });
     });
 };
 
 const deleteImage = async (_idRemove) => {
-    Image.deleteImage(_idRemove, (err) => {
-        if (err) {
-            return Promise.reject(err)
-        } else {
-            // Do nothing, delete was successful.
-        }
+    return new Promise((resolve, reject) => {
+        Image.deleteImage(_idRemove, (err) => {
+            if (err) {
+                return reject(err)
+            } else {
+                // Do nothing, delete was successful.
+                return resolve()
+            }
+        });
     });
 };
 
