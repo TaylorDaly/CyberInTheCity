@@ -4,6 +4,7 @@ const express = require('express');
 const PeopleRouter = express.Router();
 const Person = require('../Models/Person');
 const Image = require('../Models/Image');
+const request = require('request');
 
 PeopleRouter.get('/Admin', Auth.VerifyAdmin, (req, res) => {
     Person.find(req.query, 'email _id sys_role name verified', (err, people) => {
@@ -154,7 +155,17 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     if (req.body.links) person.links = req.body.links;
                     if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
                     if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
-                    if (req.body.google_drive_link) person.google_drive_link = req.body.google_drive_link;
+                    if (req.body.google_drive_link) {
+                        first = "https://drive.google.com/embeddedfolderview?id=";
+                        second = "#grid";
+                            request(first + req.body.google_drive_link + second, function (error, response) {
+                                if (response.statusCode === 200) {
+                                    person.google_drive_link = first + req.body.google_drive_link + second;
+                                } else {
+                                    next(err);
+                                }
+                            });
+                    }
 
                     Person.updatePerson(person, (err) => {
                         if (err) {
