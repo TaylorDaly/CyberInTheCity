@@ -17,11 +17,13 @@ export class CardBusinessComponent implements OnInit {
   @Input() socialLinks: Link[];
   @Output() personId = new EventEmitter();
 
+  passEmail = [];
+
   constructor() { }
 
   ngOnInit() {
+    this.passEmail = this.email.split('@');
   }
-
 
   getPerson(val: any) {
     console.log(val);

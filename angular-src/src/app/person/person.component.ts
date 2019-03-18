@@ -12,14 +12,13 @@ export class PersonComponent implements OnInit {
 
   personList = [];
   person = [];
-  personResearch = [];
+  //personResearch = [];
   error = '';
-  displayAll: boolean = true;
-  displayPerson: boolean = false;
+  // displayAll: boolean = true;
+  // displayPerson: boolean = false;
 
   constructor(private http: HttpClient,
-              private personService: PersonService,
-              private router: Router) { }
+              private personService: PersonService,) { }
 
   ngOnInit() {
     this.getAllPeople();
@@ -30,32 +29,32 @@ export class PersonComponent implements OnInit {
       .subscribe(
         response => {
           this.personList = response;
-          console.log(response)
+          //console.log(response)
         },
         error => this.error = error
       );
   }
 
-  getPerson(_id) {
-    this.displayAll = false;
-    this.displayPerson = true;
-    this.personService.getPerson(_id)
-      .subscribe(
-        response => {
-          this.person = response;
-          // console.log(response)
-          // this.router.navigateByUrl('/profile');
-        },
-        error => this.error = error
-      );
-    this.personService.getPersonResearch(_id)
-      .subscribe(
-        res => {
-          this.personResearch = res;
-          console.log(res);
-        },
-        error => this.error = error
-      )
-  }
+  // getPerson(_id) {
+  //   // this.displayAll = false;
+  //   // this.displayPerson = true;
+  //   this.personService.getPerson(_id)
+  //     .subscribe(
+  //       response => {
+  //         this.person = response;
+  //         // console.log(response)
+  //         // this.router.navigateByUrl('/profile');
+  //       },
+  //       error => this.error = error
+  //     );
+  //   this.personService.getPersonResearch(_id)
+  //     .subscribe(
+  //       res => {
+  //         this.personResearch = res;
+  //         console.log(res);
+  //       },
+  //       error => this.error = error
+  //     )
+  // }
 
 }
