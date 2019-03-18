@@ -66,7 +66,7 @@ const PersonSchema = mongoose.Schema({
     },
     google_drive_link: {
         type: String,
-        minlength: 4
+        minlength: 33
     },
     verified: {
         type: Boolean,
