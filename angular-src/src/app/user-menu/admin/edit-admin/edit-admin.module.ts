@@ -12,6 +12,8 @@ import { EditCareersComponent } from './edit-careers/edit-careers.component';
 import { EditEventsComponent } from './edit-events/edit-events.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
 import {ImageCropperModule} from "ngx-img-cropper";
+import {MatFormFieldModule} from "@angular/material";
+import {MatInputModule} from "@angular/material";
 
 const editList = [
   EditStaticComponent,
@@ -34,6 +36,8 @@ const editList = [
     ReactiveFormsModule,
     AppDesignModule,
     ImageCropperModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   exports: [
     editList

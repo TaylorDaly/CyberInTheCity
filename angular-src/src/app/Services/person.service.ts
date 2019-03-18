@@ -17,7 +17,7 @@ export class PersonService {
   }
 
   getAllPeople(): Observable<Person[]> {
-    return this.httpClient.get<Person[]>(environment.apiUrl + '/person/admin');
+    return this.httpClient.get<Person[]>(environment.apiUrl + '/person/Admin');
   }
 
   loginPerson(loginUser): Observable<any> {

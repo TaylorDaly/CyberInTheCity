@@ -6,7 +6,9 @@ const Person = require('../Models/Person');
 const Image = require('../Models/Image');
 
 PeopleRouter.get('/Admin', Auth.VerifyAdmin, (req, res) => {
-    Person.find(req.query, 'email _id sys_role name verified', (err, people) => {
+    Person.find(req.query,
+        'email _id sys_role name verified role links photo phone_number office_location',
+        (err, people) => {
         if (err) {
             res.json({
                 success: false, message: `Failed to get people. Error: ${err}`
