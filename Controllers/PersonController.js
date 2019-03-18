@@ -4,6 +4,7 @@ const express = require('express');
 const PeopleRouter = express.Router();
 const Person = require('../Models/Person');
 const Image = require('../Models/Image');
+const request = require('request');
 
 PeopleRouter.get('/Admin', Auth.VerifyAdmin, (req, res) => {
     Person.find(req.query,
@@ -37,6 +38,25 @@ PeopleRouter.get('/', (req, res) => {
             res.status(404).send({
                 success: false,
                 message: `Unable to find people. Please try again.`
+            })
+        }
+    })
+});
+
+// Get the current user from token
+PeopleRouter.get('/self', Auth.Verify, (req, res) => {
+    Person.getPerson({_id: req.decoded._id}, (err, person) => {
+        if (err) {
+            res.status(500).json({
+                success: false,
+                message: `Attempt to get person failed. Error: ${err}`
+            })
+        } else if (person) {
+            res.json(person)
+        } else {
+            res.status(404).json({
+                success: false,
+                message: `Person does not exist.`
             })
         }
     })
@@ -107,8 +127,8 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
             if (person._id !== req.decoded._id && req.decoded.sys_role !== `Sys_Admin`) {
                 res.status(401).json({success: false, message: 'You do not have access to update this person.'})
             } else {
-                // Admin may use this route to update a sys_role, but that is all they are allowed to update on
-                // other people since _id's must match.
+                // Admin may use this route to update a sys_role. Sys_Admin is the only one that can change roles
+                // and they can't change the role of another Sys_Admin.
                 if (req.decoded.sys_role === 'Sys_Admin') {
                     if (person.sys_role !== 'Sys_Admin') {
                         if (req.body.sys_role) person.sys_role = req.body.sys_role;
@@ -118,40 +138,66 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                 if (req.decoded._id === person._id || req.decoded.sys_role === 'Sys_Admin') {
                     if (req.body.name) person.name = req.body.name;
                     if (req.body.role) person.role = req.body.role;
-                    if (req.body.password) person.password = req.body.password;
-                    // If person has a photo, need to wait for photo to delete and new photo to upload before doing
-                    // save on person object, so async is required here.
-                    if (req.body.photo) {
-                        if (person.photo) await deleteImage(person.photo).catch(err => {
-                            next(err)
-                        });
-                        person.photo = await updateImage(req).catch(err => {
-                            next(err)
-                        });
-                    }
-                    if (req.body.email) person.email = req.body.email;
+
+                    // TODO: update password possibly. Need to verify old password before updating.
+                    // if (req.body.password) person.password = req.body.password;
+
+                    // not allowing email updates
+                    // if (req.body.email) person.email = req.body.email;
+
+                    // else undefined will remove the key, without this one cannot remove a field.
                     if (req.body.phone_number) person.phone_number = req.body.phone_number;
+                    else person.phone_number = undefined;
                     if (req.body.biography) person.biography = req.body.biography;
+                    else person.biography = undefined;
                     if (req.body.office_location) person.office_location = req.body.office_location;
+                    else person.office_location = undefined;
                     if (req.body.links) person.links = req.body.links;
                     if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
+                    else person.google_scholar_linkg = undefined;
                     if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
-                    if (req.body.google_drive_link) person.google_drive_link = req.body.google_drive_link;
-                }
-                Person.updatePerson(req.body._id, person, (err) => {
-                    if (err) {
-                        res.json({
+                    else person.my_website_link = undefined;
+                    // Checks the google drive link returns status 200 (OK)
+                    await checkDriveLink(req.body.google_drive_link)
+                        .then(async link => {
+                            person.google_drive_link = link;
+
+                            // If person has a photo, need to wait for photo to delete and new photo to upload before doing
+                            // save on person object, so async is required here.
+                            if (req.body.photo) {
+                                if (person.photo) await deleteImage(person.photo).catch(err => {
+                                    next(err)
+                                });
+                                person.photo = await updateImage(req).catch(err => {
+                                    next(err)
+                                });
+                            }
+
+                            Person.updatePerson(person, (err) => {
+                                if (err) {
+                                    res.json({
+                                        success: false,
+                                        message: `Attempt to update person failed. Error: ${err}`
+                                    })
+                                } else {
+                                    res.json({
+                                        success: true,
+                                        message: `Update Successful.`,
+                                        person: person
+                                    })
+                                }
+                            });
+                        })
+                        .catch(err => res.status(500).json({
                             success: false,
-                            message: `Attempt to update person failed. Error: ${err}`
-                        })
-                    } else {
-                        res.json({
-                            success: true,
-                            message: `Update Successful.`,
-                            person: person
-                        })
-                    }
-                });
+                            message: err.message
+                        }));
+                } else {
+                    res.status(401).json({
+                        success: false,
+                        message: "You do not have permission to edit this person."
+                    })
+                }
             }
         } else {
             res.status(404).send({
@@ -163,28 +209,90 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
 });
 
 const updateImage = async (req) => {
-    let newPic = new Image({
-        buffer: req.body.photo.buffer,
-        content_type: req.body.photo.content_type
-    });
-
-    Image.saveImage(newPic, async (err, img) => {
-        if (err) {
-            return Promise.reject(err);
-        } else {
-            return img._id;
-        }
+    return new Promise((resolve, reject) => {
+        let newPic = new Image({
+            buffer: req.body.photo.buffer,
+            content_type: req.body.photo.content_type
+        });
+        Image.saveImage(newPic, async (err, img) => {
+            if (err) {
+                return reject(err);
+            } else {
+                return resolve(img._id);
+            }
+        });
     });
 };
 
 const deleteImage = async (_idRemove) => {
-    Image.deleteImage(_idRemove, (err) => {
-        if (err) {
-            return Promise.reject(err)
-        } else {
-            // Do nothing, delete was successful.
-        }
+    return new Promise((resolve, reject) => {
+        Image.deleteImage(_idRemove, (err) => {
+            if (err) {
+                return reject(err)
+            } else {
+                // Do nothing, delete was successful.
+                return resolve()
+            }
+        });
     });
+};
+
+const checkDriveLink = async (link) => {
+    return new Promise(async (resolve, reject) => {
+        if (!link) return resolve(undefined);
+        try {
+            // If this passes drive link is already in correct format.
+            if (link.includes('https://drive.google.com/embeddedfolderview?id=') && link.includes('#grid')) {
+                // Drive link already in correct format, try to get it and make sure it's active.
+                request(link, (error, response) => {
+                    if (error) {
+                        return reject(error)
+                    } else if (response.statusCode === 200) {
+                        return resolve(link);
+                    } else {
+                        return reject(new Error("Request to access google drive link failed. Please double check the URL make sure it is a public folder and update the URL."));
+                    }
+                });
+            } else if (link.includes('open?id=')) {
+                try {
+                    let folderId = link.split('open?id=')[1];
+                    let first = "https://drive.google.com/embeddedfolderview?id=";
+                    let second = "#grid";
+                    request(first + folderId + second, (error, response) => {
+                        if (error) {
+                            return reject(error)
+                        } else if (response.statusCode === 200) {
+                            return resolve(first + folderId + second);
+                        } else {
+                            return reject(new Error("Request to get google drive link failed. Please double check the URL make sure it is a public folder."));
+                        }
+                    });
+                } catch {
+                    return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
+                }
+            } else {
+                try {
+                    let driveTokens = link.split("/");
+                    let folderId = driveTokens[driveTokens.length].split('?')[0];
+                    let first = "https://drive.google.com/embeddedfolderview?id=";
+                    let second = "#grid";
+                    request(first + folderId + second, (error, response) => {
+                        if (error) {
+                            return reject(error)
+                        } else if (response.statusCode === 200) {
+                            return resolve(first + folderId + second);
+                        } else {
+                            return reject(new Error("Request to get google drive link failed. Please double check the URL make sure it is a public folder."));
+                        }
+                    });
+                } catch {
+                    return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
+                }
+            }
+        } catch (err) {
+            return reject(err);
+        }
+    })
 };
 
 // https://github.com/Automattic/mongoose/issues/1596

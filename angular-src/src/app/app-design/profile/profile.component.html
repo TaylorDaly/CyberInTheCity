@@ -25,11 +25,13 @@
   <hr size="2" width="100%" align="center">
 </div>
 
-<h2>Research</h2>
-Needs a table
 
-<h2>Other Links</h2>
-<br/><a *ngIf="myWebsite != '' && myWebsite != null" href="{{myWebsite}}">My Website</a>
+<!--<div *ngFor="let researchList of research" style="display: inline;">-->
+  <!--<h2>Research</h2>-->
+  <!--{{researchList}}-->
+<!--</div>-->
+<br/><a *ngIf="myWebsite != '' && myWebsite != null"><h2>Other Links</h2><br><a href="{{myWebsite}}">My Website</a></a>
+
 
 <h2>Social Media</h2>
 <div *ngFor="let link of socialLinks" style="display: inline;">
@@ -51,8 +53,7 @@ Needs a table
         </p>
     </td>
     <td>
-      <p> Phone: (303) 315-1408 <br>
-        Fax: 303-315-1410 </p>
+      <a *ngIf="phone_number != '' && phone_number != null">Phone: {{phone_number}}</a><br>
       <a href="mailto: {{email}}">{{email}}</a>
     </td>
   </tr>
@@ -61,5 +62,7 @@ Needs a table
 <div>
   <hr size="2" width="100%" align="center">
 </div>
-
+<br/><a *ngIf="google_drive_link != '' && google_drive_link != null"><h2>My Files</h2>
+  <!--For the google link -->
+  <iframe [src]=sanitizer.bypassSecurityTrustResourceUrl(google_drive_link) style="width:100%; height:300px; border:0;"></iframe></a>
 </body>

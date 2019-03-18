@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const regex = require('../Config/Regex.js');
+const Link = require('../Models/Link.js');
 
 const PersonSchema = mongoose.Schema({
     name: {
@@ -24,7 +25,8 @@ const PersonSchema = mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        match: regex.email
+        match: regex.email,
+        minlength: 14
     },
     role: {
         type: String,
@@ -40,6 +42,7 @@ const PersonSchema = mongoose.Schema({
         type: String,
         required: false,
         minlength: 10,
+        match: regex.phone
     },
     biography: {
         type: String,
@@ -51,19 +54,19 @@ const PersonSchema = mongoose.Schema({
     },
     links: {
         type: [mongoose.Schema.Types.Object],
-        ref: 'Link'
+        ref: Link
     },
     google_scholar_link: {
-        type: mongoose.Schema.Types.Object,
-        ref: 'Link'
+        type: String,
+        minlength: 4
     },
     my_website_link: {
-        type: mongoose.Schema.Types.Object,
-        ref: 'Link'
+        type: String,
+        minlength: 4
     },
     google_drive_link: {
         type: String,
-        ref: 'Link'
+        minlength: 33
     },
     verified: {
         type: Boolean,
@@ -74,7 +77,7 @@ const PersonSchema = mongoose.Schema({
 });
 
 // Remove photo before deleting person
-PersonSchema.pre('remove', function(next) {
+PersonSchema.pre('remove', function (next) {
     if (this.photo) {
         this.model('Image').remove({_id: this.photo._id}, (err) => {
             if (err) {
@@ -83,6 +86,14 @@ PersonSchema.pre('remove', function(next) {
         });
     }
     next();
+});
+
+// Put http in link before saving if it's not there.
+PersonSchema.pre('save', async function () {
+    if (this.links) this.links = await cleanLinks(this.links);
+    if (this.google_scholar_link) this.google_scholar_link = (this.google_scholar_link.indexOf('://') === -1) ? 'http://' + this.google_scholar_link : this.google_scholar_link;
+    if (this.google_drive_link) this.google_drive_link = (this.google_drive_link.indexOf('://') === -1) ? 'http://' + this.google_drive_link : this.google_drive_link;
+    if (this.my_website_link) this.my_website_link = (this.my_website_link.indexOf('://') === -1) ? 'http://' + this.my_website_link : this.my_website_link;
 });
 
 const person = module.exports = mongoose.model('Person', PersonSchema);
@@ -105,7 +116,18 @@ module.exports.getPerson = (query, callback) => {
         .populate('photo')
 };
 
-module.exports.updatePerson = (id, update, callback) => {
-    person.findByIdAndUpdate(id, update, callback)
+module.exports.updatePerson = (update, callback) => {
+    update.save(update, callback)
 };
 
+// async function to add http:// before links
+cleanLinks = async (links) => {
+    return new Promise(resolve => {
+        for (let i = 0; i < links.length; i++) {
+            links[i].URL = (links[i].URL.indexOf('://') === -1) ? 'http://' + links[i].URL : links[i].URL;
+            if (i+1 === links.length){
+                resolve(links);
+            }
+        }
+    })
+};
