@@ -122,7 +122,19 @@ export class SignupComponent implements OnInit {
     this.cropSettings.allowedFilesRegex = /.(jpe?g|png)$/i;
   }
 
+  cleanObject() {
+    for(let i = 0; i < this.smLinks.value.length; ++i) {
+      if(this.smLinks.value[i].description == '' || this.smLinks.value[i].URL == '') {
+        console.log(this.smLinks.value[i]);
+        this.smLinks.value.splice(i, 1);
+        i -= 1;
+      }
+    }
+  }
+
   addUser() {
+    this.cleanObject();
+
     this.newUser.name = this.firstName.value + " " + this.lastName.value;
     this.newUser.email = this.signupForm.get('email').value;
     this.newUser.my_website_link = this.signupForm.get('myWebsite').value;

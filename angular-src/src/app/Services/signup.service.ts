@@ -21,7 +21,7 @@ export class SignupService {
       {email: signupEmail});
   }
 
-  postNewUser(signupToken: string, newUser: Person): Observable<any> {
+  postNewUser(signupToken, newUser): Observable<any> {
     return this.httpClient.post(environment.apiUrl + `/user/signup/${signupToken}`,
       newUser);
   }

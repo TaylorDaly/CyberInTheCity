@@ -17,15 +17,15 @@ export class PersonService {
   }
 
   getAllPeople(): Observable<Person[]> {
-    return this.httpClient.get<Person[]>(environment.apiUrl + '/person/admin');
+    return this.httpClient.get<Person[]>(environment.apiUrl + '/person/Admin');
   }
 
   loginPerson(loginUser): Observable<any> {
     return this.httpClient.post<any>(environment.apiUrl + '/user/login', loginUser);
   }
 
-  getPerson(_id): Observable<any> {
-    return this.httpClient.get<any>(environment.apiUrl + `/person/${_id}`);
+  getPersonByEmail(email): Observable<any> {
+    return this.httpClient.get<any>(environment.apiUrl + `/person/email=${email}`);
   }
 
   addPerson(person): Observable<any> {

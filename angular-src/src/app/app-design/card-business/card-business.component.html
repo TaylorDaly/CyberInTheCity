@@ -1,6 +1,6 @@
 <div class="container">
   <div class="card-horiz shadow">
-    <a class="pointer" (click)="getPerson(_id)">
+    <a href="/profile/{{passEmail[0]}}">
       <ng-template [ngIf]="image != null" [ngIfElse]="defaultImage">
         <img class="card-horiz-img" src="data:{{image.content_type}};base64,{{image.buffer}}">
       </ng-template>

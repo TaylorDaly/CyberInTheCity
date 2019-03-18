@@ -1,0 +1,66 @@
+<div class="container">
+  <table border="0" cellspacing="0" cellpadding="4">
+    <tbody>
+    <tr>
+      <ng-template [ngIf]="person.photo != null" [ngIfElse]="defaultImage">
+        <img class="card-horiz-img" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}">
+      </ng-template>
+      <ng-template #defaultImage>
+        <img class="card-horiz-img" src="assets/images/defaultPhoto.png" alt="No image available">
+      </ng-template>
+      <td>
+        <h1 style="line-height: 100%; margin-top: 0; margin-bottom: 0">{{person.name}}</h1>
+        <h3 style="margin-top: 0; margin-bottom: 0"><i> University of Colorado</i></h3>
+        <p><i><u> Bio: </u><br>
+        </i> {{person.biography}}
+        </p>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <hr size="2" width="100%" align="center">
+  </div>
+
+  <br/><a *ngIf="person.my_website_link != '' && person.my_website_link != null"><h2>Other Links</h2><br>
+  <a href="{{person.my_website_link}}">My Website</a></a>
+
+
+  <h2>Social Media</h2>
+  <div *ngFor="let link of person.links" style="display: inline;">
+    <a class="fa fa-{{link.description}}" href="{{link.URL}}"></a>
+  </div>
+
+  <div>
+    <hr size="2" width="100%" align="center">
+  </div>
+
+  <table border="0" cellspacing="0" cellpadding="0" width="590">
+    <tbody>
+    <tr>
+      <td>
+        <p><i>{{person.name}}<br></i>
+          Department of Computer Science<br>
+          1200 Larimer Street<br>
+          Suite 3034<br>
+          Denver, CO 80204<br>
+        </p>
+      </td>
+      <td>
+        <a *ngIf="person.phone_number != '' && person.phone_number != null">Phone: {{person.phone_number}}</a><br>
+        <a href="mailto: {{person.email}}">{{person.email}}</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <hr size="2" width="100%" align="center">
+  </div>
+  <br/><a *ngIf="person.google_drive_link != '' && person.google_drive_link != null"><h2>My Files</h2>
+  <!--For the google link -->
+  <iframe [src]=sanitizer.bypassSecurityTrustResourceUrl(person.google_drive_link)
+          style="width:100%; height:300px; border:0;"></iframe>
+</a>
+</div>

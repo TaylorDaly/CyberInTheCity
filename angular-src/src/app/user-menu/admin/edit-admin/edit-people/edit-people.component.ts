@@ -4,6 +4,7 @@ import {ListDataComponent} from "../../../../app-design/list-data/list-data.comp
 import {Image, Link, Person} from "../../../../person/person";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CropperSettings} from "ngx-img-cropper";
+import {SignupService} from "../../../../Services/signup.service";
 
 @Component({
   selector: 'app-edit-people',
@@ -35,6 +36,7 @@ export class EditPeopleComponent implements OnInit {
   sysRoles = ['User', 'Admin', 'Sys_Admin'];
 
   imgSrc = {image: ""};  // Cropped image source //
+  emptyLink = {URL: '', description: ''};
 
   get name() {
     return this.createPerson.get('name');
@@ -54,8 +56,12 @@ export class EditPeopleComponent implements OnInit {
   get links() {
     return this.createPerson.get('links') as FormArray;
   }
+  get photo() {
+    return this.createPerson.get('photo');
+  }
 
   constructor(private personService: PersonService,
+              private signupService: SignupService,
               private fb: FormBuilder,
               private resolver: ComponentFactoryResolver) {
   }
@@ -69,22 +75,25 @@ export class EditPeopleComponent implements OnInit {
     this.createPerson = this.fb.group({
       _id: [''],
       name: ['', Validators.required],
-      photo: [''],
+      photo: this.fb.group({
+        content_type: [''],
+        buffer: ['']
+      }),
       role: ['', Validators.required],
       email: ['', Validators.required],
       my_website_link: [''],
-      links: this.fb.array([this.smLink()]),
+      links: this.fb.array([this.smLink(this.emptyLink)]),
       sys_role: ['User', Validators.required],
-      verified: ['false'],
+      verified: ['true'],
       phone_number: [''],
       office_location: ['']
     });
   }
 
-  smLink():FormGroup {
+  smLink(value):FormGroup {
     return this.fb.group({
-      URL:[''],
-      description:['']
+      URL:[value.URL],
+      description:[value.description]
     });
   }
 
@@ -102,10 +111,10 @@ export class EditPeopleComponent implements OnInit {
       });
   }
 
-  addSMLinks() {
+  addSMLinks(value) {
     this.linkLength = 'col-md-8';
     if(this.links.length < 5) {
-      this.links.push(this.smLink());
+      this.links.push(this.smLink(value));
     }
   }
 
@@ -126,6 +135,7 @@ export class EditPeopleComponent implements OnInit {
     this.personService.getAllPeople()
       .subscribe(
         res => {
+          //console.log(res);
           this.personFull = res;
           this.setPersonList(res);
           this.createTable();
@@ -193,11 +203,46 @@ export class EditPeopleComponent implements OnInit {
     this.createTable();
   }
 
+  cleanObject() {
+    for(let i = 0; i < this.links.value.length; ++i) {
+      if(this.links.value[i].description == '' || this.links.value[i].URL == '') {
+        //console.log(this.links.value[i]);
+        this.links.value.splice(i, 1);
+        i -= 1;
+      }
+    }
+  }
+
+  setPhotoData() {
+    if(this.imgSrc.image != "") {
+      let img = this.imgSrc.image.split(',');
+
+      // Set image file type //
+      if(img[0].search('jpeg' || 'jpg') != -1) {
+        this.photo.value.content_type = 'image/jpeg';
+      } else if (img[0].search('png') != -1) {
+        this.photo.value.content_type = 'image/png';
+      } else {
+        this.createPerson.patchValue({
+          photo: null
+        })
+      }
+
+      if(img[1].length > 0) {
+        this.photo.value.buffer = img[1];
+      } else {
+        this.createPerson.patchValue({
+          photo: null
+        })
+      }
+    }
+  }
+
   editTable(editObj) {  // Returns id and option in object //
     this.edit = editObj;
-
     if (editObj.option == "update") {
       let person = this.personFull.find(x => x._id === editObj._id);
+      //console.log(person);
       this.createPerson.patchValue({
         _id: editObj._id,
         name: person.name,
@@ -211,9 +256,13 @@ export class EditPeopleComponent implements OnInit {
         verified: person.verified
       });
 
+      // Push rest of links array //
+      for (let i = 1; i < person.links.length; ++i) {
+        this.addSMLinks(person.links[i]);
+      }
       this.editPerson = true;
     } else  {  // Delete loadComp item //
-      if (window.confirm('Are you sure you want to delete this research?')) {
+      if (window.confirm('Are you sure you want to delete this person?')) {
         this.personService.deletePerson(editObj._id)
           .subscribe(
             res => {
@@ -231,8 +280,12 @@ export class EditPeopleComponent implements OnInit {
 
   savePerson() {
     //console.log(this.createResearch.value);
+    this.cleanObject();
+    this.setPhotoData();
+
     if (this.edit.option === "add") {
-      this.personService.addPerson(this.createPerson.value)
+      //console.log(this.createPerson.value);
+      this.signupService.postNewUser(localStorage.getItem('jwtToken'), this.createPerson.value)
         .subscribe(
           res => {
             window.alert(res['message']);

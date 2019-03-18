@@ -43,7 +43,7 @@ import { UserComponent } from './user-menu/user/user.component';
     BrowserAnimationsModule,
     EditAdminModule,
     InfiniteScrollModule,
-    ImageCropperModule
+    ImageCropperModule,
   ],
   providers: [
     {

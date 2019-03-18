@@ -14,6 +14,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { CareersComponent } from './careers/careers.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { UserMenuComponent } from './user-menu/user-menu.component';
+import { ProfileComponent } from './profile/profile.component';
 
 import {SignupGuard} from "./Authentication/auth.guard";
 
@@ -32,6 +33,7 @@ const AppRoutes: Routes = [
   {path: 'general/:title', component: GeneralComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'user-menu', component: UserMenuComponent},
+  {path: 'profile/:name', component: ProfileComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: '**', redirectTo: '/home', pathMatch: 'full'},
 ];
@@ -58,5 +60,6 @@ export const RoutingComponents =
     CareersComponent,
     ContactUsComponent,
     UserMenuComponent,
+    ProfileComponent
   ];
 
