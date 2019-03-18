@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {Image, Link} from "../../person/person";
+import {ResearchItem} from "../../research/research";
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -18,6 +19,8 @@ export class ProfileComponent implements OnInit {
   @Input() myWebsite: string;
   @Input() google_drive_link: string;
   @Input() socialLinks: Link[];
+  @Input() phone_number: string;
+  // @Input() research: ResearchItem[];
   ngOnInit() {
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import {PersonService} from "../Services/person.service";
 import {Router} from "@angular/router";
@@ -12,6 +12,7 @@ export class PersonComponent implements OnInit {
 
   personList = [];
   person = [];
+  personResearch = [];
   error = '';
   displayAll: boolean = true;
   displayPerson: boolean = false;
@@ -47,5 +48,14 @@ export class PersonComponent implements OnInit {
         },
         error => this.error = error
       );
+    this.personService.getPersonResearch(_id)
+      .subscribe(
+        res => {
+          this.personResearch = res;
+          console.log(res);
+        },
+        error => this.error = error
+      )
   }
+
 }

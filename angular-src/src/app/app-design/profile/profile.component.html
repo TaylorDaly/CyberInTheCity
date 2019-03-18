@@ -25,9 +25,11 @@
   <hr size="2" width="100%" align="center">
 </div>
 
-<h2>Research</h2>
-Needs a table
 
+<!--<div *ngFor="let researchList of research" style="display: inline;">-->
+  <!--<h2>Research</h2>-->
+  <!--{{researchList}}-->
+<!--</div>-->
 <br/><a *ngIf="myWebsite != '' && myWebsite != null"><h2>Other Links</h2><br><a href="{{myWebsite}}">My Website</a></a>
 
 
@@ -51,7 +53,7 @@ Needs a table
         </p>
     </td>
     <td>
-      <p> Phone: (303) 315-1408 <br>
+      <a *ngIf="phone_number != '' && phone_number != null">Phone: {{phone_number}}</a><br>
       <a href="mailto: {{email}}">{{email}}</a>
     </td>
   </tr>
