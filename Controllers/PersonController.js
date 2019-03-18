@@ -136,18 +136,10 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                 if (req.decoded._id === person._id || req.decoded.sys_role === 'Sys_Admin') {
                     if (req.body.name) person.name = req.body.name;
                     if (req.body.role) person.role = req.body.role;
+
                     // TODO: update password possibly. Need to verify old password before updating.
                     // if (req.body.password) person.password = req.body.password;
-                    // If person has a photo, need to wait for photo to delete and new photo to upload before doing
-                    // save on person object, so async is required here.
-                    if (req.body.photo) {
-                        if (person.photo) await deleteImage(person.photo).catch(err => {
-                            next(err)
-                        });
-                        person.photo = await updateImage(req).catch(err => {
-                            next(err)
-                        });
-                    }
+
                     // not allowing email updates
                     // if (req.body.email) person.email = req.body.email;
 
@@ -163,33 +155,41 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     else person.google_scholar_linkg = undefined;
                     if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
                     else person.my_website_link = undefined;
+                    // Checks the google drive link returns status 200 (OK)
+                    await checkDriveLink(req.body.google_drive_link)
+                        .then(async link => {
+                            person.google_drive_link = link;
 
-                    if (req.body.google_drive_link) {
-                        first = "https://drive.google.com/embeddedfolderview?id=";
-                        second = "#grid";
-                            request(first + req.body.google_drive_link + second, function (error, response) {
-                                if (response.statusCode === 200) {
-                                    person.google_drive_link = first + req.body.google_drive_link + second;
+                            // If person has a photo, need to wait for photo to delete and new photo to upload before doing
+                            // save on person object, so async is required here.
+                            if (req.body.photo) {
+                                if (person.photo) await deleteImage(person.photo).catch(err => {
+                                    next(err)
+                                });
+                                person.photo = await updateImage(req).catch(err => {
+                                    next(err)
+                                });
+                            }
+
+                            Person.updatePerson(person, (err) => {
+                                if (err) {
+                                    res.json({
+                                        success: false,
+                                        message: `Attempt to update person failed. Error: ${err}`
+                                    })
                                 } else {
-                                    next("Could not access the google drive link");
+                                    res.json({
+                                        success: true,
+                                        message: `Update Successful.`,
+                                        person: person
+                                    })
                                 }
                             });
-                    } else person.google_drive_link = undefined;
-
-                    Person.updatePerson(person, (err) => {
-                        if (err) {
-                            res.json({
-                                success: false,
-                                message: `Attempt to update person failed. Error: ${err}`
-                            })
-                        } else {
-                            res.json({
-                                success: true,
-                                message: `Update Successful.`,
-                                person: person
-                            })
-                        }
-                    });
+                        })
+                        .catch(err => res.status(500).json({
+                            success: false,
+                            message: err.message
+                        }));
                 } else {
                     res.status(401).json({
                         success: false,
@@ -233,6 +233,64 @@ const deleteImage = async (_idRemove) => {
             }
         });
     });
+};
+
+const checkDriveLink = async (link) => {
+    return new Promise(async (resolve, reject) => {
+        if (!link) return resolve(undefined);
+        try {
+            // If this passes drive link is already in correct format.
+            if (link.includes('https://drive.google.com/embeddedfolderview?id=') && link.includes('#grid')) {
+                // Drive link already in correct format, try to get it and make sure it's active.
+                request(link, (error, response) => {
+                    if (error) {
+                        return reject(error)
+                    } else if (response.statusCode === 200) {
+                        return resolve(link);
+                    } else {
+                        return reject(new Error("Request to access google drive link failed. Please double check the URL make sure it is a public folder and update the URL."));
+                    }
+                });
+            } else if (link.includes('open?id=')) {
+                try {
+                    let folderId = link.split('open?id=')[1];
+                    let first = "https://drive.google.com/embeddedfolderview?id=";
+                    let second = "#grid";
+                    request(first + folderId + second, (error, response) => {
+                        if (error) {
+                            return reject(error)
+                        } else if (response.statusCode === 200) {
+                            return resolve(first + folderId + second);
+                        } else {
+                            return reject(new Error("Request to get google drive link failed. Please double check the URL make sure it is a public folder."));
+                        }
+                    });
+                } catch {
+                    return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
+                }
+            } else {
+                try {
+                    let driveTokens = link.split("/");
+                    let folderId = driveTokens[driveTokens.length].split('?')[0];
+                    let first = "https://drive.google.com/embeddedfolderview?id=";
+                    let second = "#grid";
+                    request(first + folderId + second, (error, response) => {
+                        if (error) {
+                            return reject(error)
+                        } else if (response.statusCode === 200) {
+                            return resolve(first + folderId + second);
+                        } else {
+                            return reject(new Error("Request to get google drive link failed. Please double check the URL make sure it is a public folder."));
+                        }
+                    });
+                } catch {
+                    return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
+                }
+            }
+        } catch (err) {
+            return reject(err);
+        }
+    })
 };
 
 // https://github.com/Automattic/mongoose/issues/1596

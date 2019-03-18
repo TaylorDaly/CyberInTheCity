@@ -84,7 +84,8 @@
 
     <div class="form-group">
       <label>Google Drive Folder</label>
-      <input class="form-control" placeholder="Enter a public folder URL from Google Drive" formControlName="googleDrive">
+      <input class="form-control" placeholder="Enter a public folder URL from Google Drive"
+             formControlName="googleDrive">
     </div>
 
     <div class="form-group">
@@ -122,7 +123,9 @@
     </div>
 
 
-    <button [disabled]="editProfileForm.untouched || editProfileForm.invalid" class="btn btn-color" type="submit">Submit</button>
+    <button [disabled]="editProfileForm.untouched || editProfileForm.invalid" class="btn btn-color" type="submit">
+      Submit
+    </button>
     <p class="text-danger">{{errMsg}}</p>
   </form>
   <p class="text-danger">* Required Fields</p>
