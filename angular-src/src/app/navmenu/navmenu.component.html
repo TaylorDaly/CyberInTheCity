@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark flex-column">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark">
   <a class="navbar-brand" routerLink="/home">
     <!--<img width="300" height="80" src=""/>-->
     <img width="300" height="75" src="../../assets/images/CU_logo_Banner.png"/>
@@ -11,7 +11,7 @@
     <ul class="navbar-nav">
       <div *ngFor="let navItem of parents">
         <ng-template [ngIf]="navItem.child.length > 0" [ngIfElse]="NoDropdown">
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
             <a class="nav-link" routerLink="{{navItem.route}}" role="button" aria-haspopup="true" aria-expanded="false">
               {{navItem.name}}
             </a>
@@ -23,24 +23,26 @@
           </li>
         </ng-template>
         <ng-template #NoDropdown>
-          <li class="nav-item">
+          <li class="nav-item" data-toggle="collapse" data-target=".navbar-collapse.show">
             <a class="nav-link" routerLink="{{navItem.route}}">{{navItem.name}}</a>
           </li>
         </ng-template>
       </div>
     </ul>
     <ul class="navbar-nav">
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!loggedIn" data-toggle="collapse" data-target=".navbar-collapse.show">
         <a class="nav-link" routerLink="/register">Sign Up</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!loggedIn" data-toggle="collapse" data-target=".navbar-collapse.show">
         <a class="nav-link" routerLink="/login">Login</a>
       </li>
+      <li class="nav-item" *ngIf="loggedIn" data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" routerLink="/user-menu">User Menu</a>
+      </li>
+      <li class="nav-item" *ngIf="loggedIn" data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" (click)="logout()">Logout</a>
+      </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-    </form>
   </div>
 </nav>
 
