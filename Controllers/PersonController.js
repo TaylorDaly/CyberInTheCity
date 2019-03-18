@@ -25,7 +25,9 @@ PeopleRouter.get('/Admin', Auth.VerifyAdmin, (req, res) => {
 
 PeopleRouter.get('/', (req, res) => {
     // Only return people that have been verified by an admin.
-    Person.getPeople({verified: true}, (err, people) => {
+    let query = {verified: true};
+    if (req.query.email) query['email'] = req.query.email;
+    Person.getPeople(query, (err, people) => {
         if (err) {
             res.status(500).json({
                 success: false, message: `Failed to get people. Error: ${err}`
@@ -121,6 +123,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                 message: `Attempt to get person failed. Error: ${err}`
             })
         } else if (person) {
+            delete req.body.__v;
             // The ID from the token must match the person to update, unless the user is an admin.
             if (person._id !== req.decoded._id && req.decoded.sys_role !== `Sys_Admin`) {
                 res.status(401).json({success: false, message: 'You do not have access to update this person.'})
@@ -160,15 +163,16 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                         .then(async link => {
                             person.google_drive_link = link;
 
-                            // If person has a photo, need to wait for photo to delete and new photo to upload before doing
-                            // save on person object, so async is required here.
-                            if (req.body.photo) {
-                                if (person.photo) await deleteImage(person.photo).catch(err => {
-                                    next(err)
-                                });
-                                person.photo = await updateImage(req).catch(err => {
-                                    next(err)
-                                });
+                            try {
+                                // Photo is in separate database so have to delete it separately.
+                                if (req.body.photo) {
+                                    person.photo = await updateImage(req);
+                                } else {
+                                    await deleteImage(person.photo._id);
+                                    person.photo = undefined;
+                                }
+                            } catch (err) {
+                                next(err)
                             }
 
                             Person.updatePerson(person, (err) => {
@@ -186,7 +190,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                                 }
                             });
                         })
-                        .catch(err => res.status(500).json({
+                        .catch(err => res.status(400).json({
                             success: false,
                             message: err.message
                         }));
@@ -208,15 +212,21 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
 
 const updateImage = async (req) => {
     return new Promise((resolve, reject) => {
-        let newPic = new Image({
-            buffer: req.body.photo.buffer,
-            content_type: req.body.photo.content_type
-        });
-        Image.saveImage(newPic, async (err, img) => {
-            if (err) {
-                return reject(err);
-            } else {
-                return resolve(img._id);
+        Image.findImage(req.body.photo._id, (img, err) => {
+            if (err) reject(err);
+            else {
+                // Either make a new image or update the old one.
+                if (!img) img = new Image();
+                img.buffer = req.body.photo.buffer;
+                img.content_type = req.body.photo.content_type;
+
+                img.save(img, async (err, img) => {
+                    if (err) {
+                        return reject(err);
+                    } else {
+                        return resolve(img._id);
+                    }
+                });
             }
         });
     });

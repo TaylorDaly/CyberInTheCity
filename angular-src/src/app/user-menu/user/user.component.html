@@ -123,7 +123,7 @@
     </div>
 
 
-    <button [disabled]="editProfileForm.untouched || editProfileForm.invalid" class="btn btn-color" type="submit">
+    <button [disabled]="editProfileForm.invalid" class="btn btn-color" type="submit">
       Submit
     </button>
     <p class="text-danger">{{errMsg}}</p>
