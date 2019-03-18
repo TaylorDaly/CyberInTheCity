@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef, Input} from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {navItems} from "../../navmenu/navItems";
 import {EditStaticComponent} from "./edit-admin/edit-static/edit-static.component";
 import {EditAboutComponent} from "./edit-admin/edit-about/edit-about.component";
@@ -8,8 +8,6 @@ import {EditEducationComponent} from "./edit-admin/edit-education/edit-education
 import {EditCareersComponent} from "./edit-admin/edit-careers/edit-careers.component";
 import {EditEventsComponent} from "./edit-admin/edit-events/edit-events.component";
 import {EditContactComponent} from "./edit-admin/edit-contact/edit-contact.component";
-import {ResearchService} from "../../Services/research.service";
-import {ListDataComponent} from "../../app-design/list-data/list-data.component";
 
 @Component({
   selector: 'app-admin',
@@ -27,9 +25,14 @@ export class AdminComponent implements OnInit {
   errMsg = "";
 
   constructor(private resolver: ComponentFactoryResolver) {
-    let index = this.parents.map(function(parent) {return parent.name; }).indexOf("News");
-    if(index != -1) {
-      this.parents.splice(index, 1);
+    this.parents.splice(this.parents.map((parent) => {
+      return parent.name;
+    }).indexOf("News"), 1);
+
+    if (localStorage.getItem('sys_role') == "Admin") {
+      this.parents.splice(this.parents.map((parent) => {
+        return parent.name;
+      }).indexOf("People"), 1);
     }
   }
 
@@ -77,7 +80,7 @@ export class AdminComponent implements OnInit {
   }
 
   destroyComponent() {
-    if(this.componentRef != null) {
+    if (this.componentRef != null) {
       this.componentRef.destroy();
     }
   }
