@@ -135,6 +135,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                 if (req.decoded._id === person._id || req.decoded.sys_role === 'Sys_Admin') {
                     if (req.body.name) person.name = req.body.name;
                     if (req.body.role) person.role = req.body.role;
+                    // TODO: update password possibly. Need to verify old password before updating.
                     // if (req.body.password) person.password = req.body.password;
                     // If person has a photo, need to wait for photo to delete and new photo to upload before doing
                     // save on person object, so async is required here.
@@ -148,13 +149,21 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                     }
                     // not allowing email updates
                     // if (req.body.email) person.email = req.body.email;
+
+                    // else undefined will remove the key, without this one cannot remove a field.
                     if (req.body.phone_number) person.phone_number = req.body.phone_number;
+                    else person.phone_number = undefined;
                     if (req.body.biography) person.biography = req.body.biography;
+                    else person.biography = undefined;
                     if (req.body.office_location) person.office_location = req.body.office_location;
+                    else person.office_location = undefined;
                     if (req.body.links) person.links = req.body.links;
                     if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
+                    else person.google_scholar_linkg = undefined;
                     if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
+                    else person.my_website_link = undefined;
                     if (req.body.google_drive_link) person.google_drive_link = req.body.google_drive_link;
+                    else person.google_drive_link = undefined;
 
                     Person.updatePerson(person, (err) => {
                         if (err) {

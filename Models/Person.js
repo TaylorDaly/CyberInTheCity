@@ -42,6 +42,7 @@ const PersonSchema = mongoose.Schema({
         type: String,
         required: false,
         minlength: 10,
+        match: regex.phone
     },
     biography: {
         type: String,
@@ -76,7 +77,7 @@ const PersonSchema = mongoose.Schema({
 });
 
 // Remove photo before deleting person
-PersonSchema.pre('remove', function(next) {
+PersonSchema.pre('remove', function (next) {
     if (this.photo) {
         this.model('Image').remove({_id: this.photo._id}, (err) => {
             if (err) {
@@ -85,6 +86,14 @@ PersonSchema.pre('remove', function(next) {
         });
     }
     next();
+});
+
+// Put http in link before saving if it's not there.
+PersonSchema.pre('save', async function () {
+    if (this.links) this.links = await cleanLinks(this.links);
+    if (this.google_scholar_link) this.google_scholar_link = (this.google_scholar_link.indexOf('://') === -1) ? 'http://' + this.google_scholar_link : this.google_scholar_link;
+    if (this.google_drive_link) this.google_drive_link = (this.google_drive_link.indexOf('://') === -1) ? 'http://' + this.google_drive_link : this.google_drive_link;
+    if (this.my_website_link) this.my_website_link = (this.my_website_link.indexOf('://') === -1) ? 'http://' + this.my_website_link : this.my_website_link;
 });
 
 const person = module.exports = mongoose.model('Person', PersonSchema);
@@ -111,3 +120,14 @@ module.exports.updatePerson = (update, callback) => {
     update.save(update, callback)
 };
 
+// async function to add http:// before links
+cleanLinks = async (links) => {
+    return new Promise(resolve => {
+        for (let i = 0; i < links.length; i++) {
+            links[i].URL = (links[i].URL.indexOf('://') === -1) ? 'http://' + links[i].URL : links[i].URL;
+            if (i+1 === links.length){
+                resolve(links);
+            }
+        }
+    })
+};

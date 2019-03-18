@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {PageService} from "../../Services/page.service";
 import {PersonService} from "../../Services/person.service";
 import {Image, Person} from "../../person/person";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CropperSettings} from "ngx-img-cropper";
 import {regex} from "../../../environments/environment";
 
@@ -16,7 +15,7 @@ export class UserComponent implements OnInit {
 
   constructor(
     private personService: PersonService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
   }
 
@@ -25,7 +24,7 @@ export class UserComponent implements OnInit {
   links = ['Facebook', 'Twitter', 'LinkedIn', 'Google', 'RSS'];
 
   roles = ['Graduate Student', 'Undergraduate Student', 'Assistant Professor', 'Teacher\'s Assistant', 'Professor'];
-  linkLength = "col-md-9";  // SM Link URL input box length //
+  linkLength = "col-md-8";  // SM Link URL input box length //
 
   imgSrc = {image: ""};  // Cropped image source //
   cropSettings = new CropperSettings();
@@ -67,6 +66,22 @@ export class UserComponent implements OnInit {
     return this.editProfileForm.get('smLinks') as FormArray;
   }
 
+  get phoneNumber() {
+    return this.editProfileForm.get('phoneNumber');
+  }
+
+  get googleDrive() {
+    return this.editProfileForm.get('googleDrive');
+  }
+
+  get bio() {
+    return this.editProfileForm.get('bio');
+  }
+
+  get office() {
+    return this.editProfileForm.get('office');
+  }
+
   setCropSettings() {
     this.cropSettings = new CropperSettings();
     this.cropSettings.width = 200;
@@ -97,7 +112,7 @@ export class UserComponent implements OnInit {
   deleteSMLinks(index: number) {
     this.smLinks.removeAt(index);
     if (this.smLinks.length <= 1)
-      this.linkLength = 'col-md-9';
+      this.linkLength = 'col-md-8';
   }
 
   descRequired(i) {
@@ -116,39 +131,59 @@ export class UserComponent implements OnInit {
 
   initForm() {
     if (this.editUser.photo) this.imgSrc.image = "data:" + this.editUser.photo.content_type + ';base64,' + this.editUser.photo.buffer;
-    this.editProfileForm = new FormGroup({
-      email: new FormControl(this.editUser.email),
-      firstName: new FormControl(this.editUser.name.split(' ')[0], [Validators.required]),
-      lastName: new FormControl(this.editUser.name.split(' ')[1], [Validators.required]),
-      role: new FormControl(this.editUser.role, [Validators.required]),
-      myWebsite: new FormControl(this.editUser.my_website_link),
-      smLinks: new FormControl(this.fb.array([this.editUser.links])),
-      image: new FormControl(this.imgSrc.image)
-    })
+
+    this.editProfileForm = this.fb.group({
+      email: [this.editUser.email],
+      firstName: [this.editUser.name.split(' ')[0], [Validators.required]],
+      lastName: [this.editUser.name.split(' ')[1], [Validators.required]],
+      role: [this.editUser.role, [Validators.required]],
+      myWebsite: [this.editUser.my_website_link],
+      smLinks: this.fb.array([this.smLink()]),
+      image: [this.imgSrc.image],
+      phoneNumber: [this.editUser.phone_number, [Validators.pattern(regex.phone)]],
+      googleDrive: [this.editUser.google_drive_link],
+      bio: [this.editUser.biography],
+      office: [this.editUser.office_location]
+    });
+
+    // Add user links if they already exist
+    if (this.editUser.links) {
+      this.deleteSMLinks(0);
+      for (let i = 0; i < this.editUser.links.length; i++) {
+        this.smLinks.push(this.fb.group({
+          URL: [`${this.editUser.links[i].URL}`],
+          description: [`${this.editUser.links[i].description}`]
+        }))
+      }
+    }
   }
 
   submitUserEdits() {
     this.editUser.name = this.firstName.value + " " + this.lastName.value;
     this.editUser.my_website_link = this.editProfileForm.get('myWebsite').value;
-    this.editUser.links = this.smLinks.value['value'];
+    this.editUser.links = this.smLinks.value;
     this.editUser.role = this.role.value;
+    this.editUser.phone_number = this.phoneNumber.value;
+    this.editUser.google_drive_link = this.googleDrive.value;
+    this.editUser.biography = this.bio.value;
+    this.editUser.office_location = this.office.value;
 
     // Prepare photo data: //
     //------------------------//
     // Separate image buffer from content type in image string //
-    if(this.imgSrc.image != "") {
+    if (this.imgSrc.image != "") {
       this.editUser.photo = new Image();
 
       let img = this.imgSrc.image.split(',');
 
-      if(img[1].length > 0) {
+      if (img[1].length > 0) {
         this.editUser.photo.buffer = img[1];
       } else {
         this.editUser.photo = null;
       }
 
       // Set image file type //
-      if(img[0].search('jpeg' || 'jpg') != -1) {
+      if (img[0].search('jpeg' || 'jpg') != -1) {
         this.editUser.photo.content_type = 'image/jpeg';
       } else if (img[0].search('png') != -1) {
         this.editUser.photo.content_type = 'image/png';
@@ -163,6 +198,7 @@ export class UserComponent implements OnInit {
       .subscribe(
         res => {
           window.alert(res['message']);
+          location.reload();
         }, err => {
           this.errMsg = err.message;
         }
