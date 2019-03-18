@@ -265,7 +265,7 @@ const checkDriveLink = async (link) => {
                             return reject(new Error("Request to get google drive link failed. Please double check the URL make sure it is a public folder."));
                         }
                     });
-                } catch {
+                } catch (err) {
                     return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
                 }
             } else {
@@ -283,7 +283,7 @@ const checkDriveLink = async (link) => {
                             return reject(new Error("Request to get google drive link failed. Please double check the URL make sure it is a public folder."));
                         }
                     });
-                } catch {
+                } catch (err) {
                     return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
                 }
             }
