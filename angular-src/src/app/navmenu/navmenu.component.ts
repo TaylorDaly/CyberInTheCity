@@ -3,6 +3,7 @@ import {PageService} from "../Services/page.service";
 import {HttpClient} from "@angular/common/http";
 import {navItems} from "./navItems";
 import {NavigationEnd, Router} from "@angular/router";
+import {PersonService} from "../Services/person.service";
 
 @Component({
   selector: 'app-navmenu',
@@ -17,7 +18,8 @@ export class NavmenuComponent implements OnInit {
 
   constructor(private http: HttpClient,
               private pageService: PageService,
-              private router: Router) {
+              private router: Router,
+              private personService: PersonService) {
   }
 
   ngOnInit() {
@@ -51,8 +53,20 @@ export class NavmenuComponent implements OnInit {
 
   detectLogin() {
     this.router.events.subscribe((val) => {
+      // When user tries to go to menu, check they are still logged in.
       if (val instanceof NavigationEnd && val.url === '/user-menu') {
-        this.loggedIn = true;
+        this.personService.getCurrentUser()
+          .subscribe(
+            res => {
+              this.loggedIn = true;
+            },
+            err => {
+              alert("Session Expired. Please login again.");
+              localStorage.clear();
+              this.loggedIn = false;
+              this.router.navigateByUrl('/login');
+            }
+          );
       }
     });
   }

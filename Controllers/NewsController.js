@@ -51,7 +51,7 @@ schedule.scheduleJob('0 0 * * *', () => {
                 //    b. get response and save it.
                 try {
                     await addArticleArray(JSON.parse(learnedNews));
-                    if ((JSON.parse(learnedNews).articles.length) !== 0) console.log(`[${new Date()}] : Successfully added ${(JSON.parse(learnedNews).articles.length)} news articles.`);
+                    if ((JSON.parse(learnedNews).articles.length) !== 0) console.log(`[${new Date()}] : Successfully added ${(JSON.parse(learnedNews).articles.length)} news article(s).`);
                     else console.log(`[${new Date()}] : Found 0 suitable articles.`)
                 } catch (err) {
                     console.log(`[${new Date()}] : ${err}`)

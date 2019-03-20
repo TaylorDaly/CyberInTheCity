@@ -5,7 +5,7 @@ const Person = require('../Models/Person');
 // Add to paths that require a user to have a token and any permission level.
 let Verify = (req, res, next) => {
     // TODO: delete dev token later (On all Verify calls).
-    let token = req.headers['x-access-token'] || req.headers['authorization'] || process.env.DEV_TOKEN;
+    let token = req.headers['x-access-token'] || req.headers['authorization']// || process.env.DEV_TOKEN;
 
     if (token) {
         if (token.startsWith('Bearer ')) {
@@ -48,7 +48,7 @@ let Verify = (req, res, next) => {
 
 // Add to paths that require Admin level access or higher
 let VerifyAdmin = (req, res, next) => {
-    let token = req.headers['x-access-token'] || req.headers['authorization'] || process.env.DEV_TOKEN;
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
 
     if (token) {
         if (token.startsWith('Bearer ')) {
@@ -98,7 +98,7 @@ let VerifyAdmin = (req, res, next) => {
 
 // Add to paths that require Sys_Admin level access.
 let VerifySysAdmin = (req, res, next) => {
-    let token = req.headers['x-access-token'] || req.headers['authorization'] || process.env.DEV_TOKEN;
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
 
     if (token) {
         if (token.startsWith('Bearer ')) {

@@ -37,7 +37,7 @@ PageRouter.get('/', (req, res) => {
     }
 });
 
-PageRouter.post('/', Auth.VerifyAdmin, (req, res, next) => {
+PageRouter.post('/', Auth.VerifySysAdmin, (req, res, next) => {
     let newPage = new Page({
         title: req.body.title,
         content: req.body.content,
@@ -53,7 +53,7 @@ PageRouter.post('/', Auth.VerifyAdmin, (req, res, next) => {
     });
 });
 
-PageRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
+PageRouter.put('/', Auth.VerifySysAdmin, (req, res, next) => {
     Page.getOne({ _id: req.body._id }, (err, page) => {
         if (err) {
             res.status(500).json({
@@ -80,7 +80,7 @@ PageRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
     });
 });
 
-PageRouter.delete('/:id', Auth.VerifyAdmin, (req, res) => {
+PageRouter.delete('/:id', Auth.VerifySysAdmin, (req, res) => {
     Page.getOne({ _id: req.params.id }, (err, page) => {
         if (err) {
             res.status(500).json({

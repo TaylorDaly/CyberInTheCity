@@ -216,19 +216,29 @@ const updateImage = async (req) => {
     return new Promise((resolve, reject) => {
         Image.findImage(req.body.photo._id, (img, err) => {
             if (err) reject(err);
-            else {
+            else if (img) {
                 // Either make a new image or update the old one.
-                if (!img) img = new Image();
                 img.buffer = req.body.photo.buffer;
                 img.content_type = req.body.photo.content_type;
 
                 img.save(img, async (err, img) => {
                     if (err) {
-                        return reject(err);
+                        return reject(err)
                     } else {
-                        return resolve(img._id);
+                        return resolve(img._id)
                     }
                 });
+            } else {
+                img = new Image();
+                img.buffer = req.body.photo.buffer;
+                img.content_type = req.body.photo.content_type;
+                img.save(img, async (err, img) => {
+                    if (err) {
+                        return reject (err)
+                    } else {
+                        return resolve(img._id)
+                    }
+                })
             }
         });
     });

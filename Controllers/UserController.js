@@ -146,7 +146,7 @@ UserRouter.post('/login', (req, res) => {
                         },
                         dbConfig.secret,
                         {
-                            expiresIn: '24h'
+                            expiresIn: '1h'
                         });
 
                     return res.status(200).json({
