@@ -4,8 +4,7 @@ const Person = require('../Models/Person');
 
 // Add to paths that require a user to have a token and any permission level.
 let Verify = (req, res, next) => {
-    // TODO: delete dev token later (On all Verify calls).
-    let token = req.headers['x-access-token'] || req.headers['authorization']// || process.env.DEV_TOKEN;
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
 
     if (token) {
         if (token.startsWith('Bearer ')) {
