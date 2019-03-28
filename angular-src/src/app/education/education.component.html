@@ -1,9 +1,9 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-4" *ngFor="let c of courses">
-      <app-card-info [header]="'CSCI ' + c.courseNumber + ': ' + c.courseName"
+    <div class="col" *ngFor="let c of courses">
+      <app-card-info [header]="c.courseNumber + ': ' + c.courseName"
                      [body]="c.description"
-                     [footer]="'Term year: ' + c.termYear + ' | Department: ' + c.department"></app-card-info>
+                     [footer]="'Term: ' + c.termSemester + ' ' + c.termYear"></app-card-info>
     </div>
   </div>
 </div>

@@ -50,6 +50,9 @@ export class EditResearchComponent implements OnInit {
   get ownerID() {
     return this.createResearch.get('ownerID') as FormArray;
   }
+  get ongoing() {
+    return this.createResearch.get('ongoing');
+  }
 
   constructor(private researchService: ResearchService,
               private personService: PersonService,
@@ -69,9 +72,20 @@ export class EditResearchComponent implements OnInit {
       ownerID: this.fb.array([this.fb.control('', Validators.required)]),
       type: ['', Validators.required],
       startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      endDate: [{value: '', disabled: false}, Validators.required],
+      ongoing: [false],
       description: [''],
     });
+  }
+
+  ongoingDate() {
+    if(this.ongoing.value == false) {  // When previously set to false //
+      this.endDate.clearValidators();
+      this.endDate.disable();
+    } else {
+      this.endDate.setValidators(Validators.required);
+      this.endDate.enable();
+    }
   }
 
   resetSettings() {

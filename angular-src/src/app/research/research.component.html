@@ -3,7 +3,9 @@
     <div class="col-md-6" *ngFor="let re of research">
       <app-card-info [header]="re.title"
                      [body]="re.description"
-                     [footer]="re.type + ' | Start Date: ' + (re.startDate | date) + ' | End Date: ' + (re.endDate | date)">
+                     [footer]="re.type + ' | Time Period: ' +
+                     (re.startDate | date: 'shortDate': 'GMT+1') + ' - ' +
+                     (re.endDate | date: 'shortDate': 'GMT+1')">
       </app-card-info>
     </div>
   </div>

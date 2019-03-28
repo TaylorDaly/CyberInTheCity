@@ -21,30 +21,49 @@ export class AdminComponent implements OnInit {
   componentRef: any;
   factory: any;
 
-  parents = new navItems().getParents();
+  parents: any[];
   errMsg = "";
 
   constructor(private resolver: ComponentFactoryResolver) {
-    this.parents.splice(this.parents.map((parent) => {
-      return parent.name;
-    }).indexOf("News"), 1);
-
-    if (localStorage.getItem('sys_role') == "Admin") {
-      this.parents.splice(this.parents.map((parent) => {
-        return parent.name;
-      }).indexOf("People"), 1);
+    switch(localStorage.getItem('sys_role')) {
+      case 'Sys_Admin':
+        this.parents =  new navItems().getParents();
+        this.parents[this.parents.length] = {name: 'Static Page'};
+        this.parents.splice(this.parents.map((parent) => {
+          return parent.name;
+        }).indexOf("News"), 1);
+        break;
+      case 'Admin':
+        this.parents = [
+          {name: 'Education'},
+          {name: 'Research'},
+          {name: 'Careers'}
+          ];
+        break;
+      default:
+        this.parents = [];
     }
+    // if(localStorage.getItem('sys_role'))
+    // this.parents =  new navItems().getParents();
+    // this.parents.splice(this.parents.map((parent) => {
+    //   return parent.name;
+    // }).indexOf("News"), 1);
+    //
+    // if (localStorage.getItem('sys_role') == "Admin") {
+    //   this.parents = ['Education', 'Research', 'Careers'];
+    // }
   }
 
   ngOnInit() {
-    this.editComp('Static');
+    //console.log(this.parents);
+    this.editComp(this.parents[0].name);
   }
 
   // Loading editing components for each Nav parent and static pages //
   editComp(edit: string) {
     this.destroyComponent();
     switch (edit) {
-      case "Static":
+      case "Static Page":
         this.createComponent(EditStaticComponent);
         break;
       case "About Us":

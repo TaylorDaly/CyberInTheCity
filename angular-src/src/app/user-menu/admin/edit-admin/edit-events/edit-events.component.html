@@ -19,20 +19,24 @@
       </small>
     </div>
     <div class="form-group">
-      <label><span class="text-danger">*</span>Event Date:</label>
-      <input type="date" [class.is-invalid]="eventDate.invalid && eventDate.touched"
-             class="form-control" placeholder="Enter a event date" formControlName="eventDate" />
-      <small class="text-danger" [class.d-none]="eventDate.valid || eventDate.untouched">
-        Course name is required.
-      </small>
-    </div>
-    <div class="form-group">
-      <label><span class="text-danger">*</span>Location:</label>
-      <input type="text" [class.is-invalid]="location.invalid && location.touched"
-             class="form-control" placeholder="Enter a location" formControlName="location" />
-      <small class="text-danger" [class.d-none]="location.valid || location.untouched">
-        Location is required.
-      </small>
+      <div class="form-row">
+        <div class="col">
+          <label><span class="text-danger">*</span>Event Date:</label>
+          <input type="date" [class.is-invalid]="eventDate.invalid && eventDate.touched"
+                 class="form-control" placeholder="Enter a event date" formControlName="eventDate" />
+          <small class="text-danger" [class.d-none]="eventDate.valid || eventDate.untouched">
+            Event date is required.
+          </small>
+        </div>
+        <div class="col">
+          <label><span class="text-danger">*</span>Location:</label>
+          <input type="text" [class.is-invalid]="location.invalid && location.touched"
+                 class="form-control" placeholder="Enter a location" formControlName="location" />
+          <small class="text-danger" [class.d-none]="location.valid || location.untouched">
+            Location is required.
+          </small>
+        </div>
+      </div>
     </div>
     <div class="form-group">
       <div class="form-row">

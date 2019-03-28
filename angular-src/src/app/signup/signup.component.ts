@@ -5,7 +5,7 @@ import {PasswordValidator} from "../shared/password.validator";
 import {CropperSettings} from "ngx-img-cropper";
 import {Person} from "../person/person";
 import {Router} from "@angular/router";
-import {regex} from "../../environments/environment";
+import {regex} from "../shared/regex";
 
 @Component({
   selector: 'app-signup',

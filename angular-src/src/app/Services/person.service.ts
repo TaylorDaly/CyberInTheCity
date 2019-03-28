@@ -25,7 +25,11 @@ export class PersonService {
   }
 
   getPersonByEmail(email): Observable<any> {
-    return this.httpClient.get<any>(environment.apiUrl + `/person/email=${email}`);
+    return this.httpClient.get<any>(environment.apiUrl + `/person?email=${email}`);
+  }
+
+  getPersonById(_id): Observable<any> {
+    return this.httpClient.get<any>(environment.apiUrl + `/person/${_id}`);
   }
 
   addPerson(person): Observable<any> {

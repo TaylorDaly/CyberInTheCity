@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SignupService} from "../Services/signup.service";
 import {FormBuilder, Validators} from "@angular/forms";
-import {regex} from "../../environments/environment";
+import {regex} from "../shared/regex";
 
 @Component({
   selector: 'app-register',

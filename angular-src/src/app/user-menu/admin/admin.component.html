@@ -6,11 +6,12 @@
           <li class="list-group-item menu-label"><strong>MENU</strong></li>
         </ul>
         <button type="button" class="list-group-item list-group-item-action active" data-toggle="list"
-                (click)="editComp('Static')">
-          Static Page
+                (click)="editComp(parents[0].name)">
+          {{parents[0].name}}
         </button>
-        <button type="button" class="list-group-item list-group-item-action" data-toggle="list" *ngFor="let p of parents"
-        (click)="editComp(p.name)">
+        <button type="button" class="list-group-item list-group-item-action"
+                data-toggle="list" *ngFor="let p of parents | slice: 1"
+                (click)="editComp(p.name)">
           {{p.name}}
         </button>
       </div>

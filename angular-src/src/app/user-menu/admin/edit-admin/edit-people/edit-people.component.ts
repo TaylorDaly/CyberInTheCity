@@ -5,6 +5,7 @@ import {Image, Link, Person} from "../../../../person/person";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CropperSettings} from "ngx-img-cropper";
 import {SignupService} from "../../../../Services/signup.service";
+import {regex} from "../../../../shared/regex";
 
 @Component({
   selector: 'app-edit-people',
@@ -35,7 +36,7 @@ export class EditPeopleComponent implements OnInit {
   smList = ['Facebook', 'Twitter', 'LinkedIn', 'Google', 'RSS'];
   sysRoles = ['User', 'Admin', 'Sys_Admin'];
 
-  imgSrc = {image: ""};  // Cropped image source //
+  imgSrc = {image: ''};  // Cropped image source //
   emptyLink = {URL: '', description: ''};
 
   get name() {
@@ -80,12 +81,12 @@ export class EditPeopleComponent implements OnInit {
         buffer: ['']
       }),
       role: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.pattern(regex.email)]],
       my_website_link: [''],
       links: this.fb.array([this.smLink(this.emptyLink)]),
       sys_role: ['User', Validators.required],
       verified: ['true'],
-      phone_number: [''],
+      phone_number: ['', Validators.pattern(regex.phone)],
       office_location: ['']
     });
   }
@@ -129,35 +130,30 @@ export class EditPeopleComponent implements OnInit {
     this.edit.option = "add";
     this.editPerson = false;
     this.resetForm();
+    this.imgSrc = {image: ""};
   }
 
   getAllPeople() {
     this.personService.getAllPeople()
       .subscribe(
         res => {
-          //console.log(res);
           this.personFull = res;
           this.setPersonList(res);
           this.createTable();
         },
         err => {
-          //window.alert(`Error ${err.code}: ${err.message}`);
           this.errMsg = err.message;
-          //console.log(err);
         }
       )
   }
 
   setPersonList(data) {
-    //console.log(data);
     for (let i = 0; i < data.length; ++i) {
       this.personList.push({
         _id: data[i]._id, name: data[i].name, email: data[i].email,
         role: data[i].sys_role, verified: data[i].verified.toString().charAt(0).toUpperCase()
       });
     }
-    //console.log(this.pageList);
-    //this.loadTable = true;
   }
 
   addNewPerson() {
@@ -238,11 +234,26 @@ export class EditPeopleComponent implements OnInit {
     }
   }
 
+  getPersonImage(_id) {
+    this.personService.getPersonById(_id)
+      .subscribe(
+        res => {
+          if(res.photo) {
+            this.imgSrc.image = "data:" + res.photo.content_type +
+              ';base64,' + res.photo.buffer;
+          }
+        },
+        err => {
+          this.errMsg = err.message;
+        }
+      );
+  }
+
   editTable(editObj) {  // Returns id and option in object //
     this.edit = editObj;
     if (editObj.option == "update") {
+      this.getPersonImage(editObj._id);
       let person = this.personFull.find(x => x._id === editObj._id);
-      //console.log(person);
       this.createPerson.patchValue({
         _id: editObj._id,
         name: person.name,
@@ -253,10 +264,10 @@ export class EditPeopleComponent implements OnInit {
         links: person.links,
         password: person.password,
         sys_role: person.sys_role,
-        verified: person.verified
+        verified: person.verified,
+        phone_number: person.phone_number,
+        office_location: person.office_location
       });
-
-      // Push rest of links array //
       for (let i = 1; i < person.links.length; ++i) {
         this.addSMLinks(person.links[i]);
       }

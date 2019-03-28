@@ -18,7 +18,7 @@ export class EditEducationComponent implements OnInit {
   courseFull: Course[];
   courseList = [];
   courseFields = ['course', 'name', 'term'];
-  terms = ['Fall', 'Spring', 'Summer'];
+  terms = ['Fall', 'Spring', 'Summer', 'TBD'];
 
   errMsg = "";
   editCourse = false;
@@ -28,7 +28,7 @@ export class EditEducationComponent implements OnInit {
   };
 
   createCourse: FormGroup;
-  yearList = [new Date().getFullYear()];
+  yearList = [];
 
   get courseNumber() {
     return this.createCourse.get('courseNumber');
@@ -48,15 +48,17 @@ export class EditEducationComponent implements OnInit {
 
   constructor(private eduService: EducationService,
               private resolver: ComponentFactoryResolver,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder) {
+    this.yearList[0] = new Date().getFullYear();
+    for(let i = 1; i < 4; ++i) {
+      this.yearList[i] = this.yearList[i-1] + 1;
+    }
+    this.yearList[4] = 'TBD';
+  }
 
   ngOnInit() {
     this.resetForm();
     this.getAllCourses();
-
-    for(let i = 1; i < 5; ++i) {
-      this.yearList[i] = this.yearList[i-1] + 1;
-    }
     //console.log(this.currentYear);
   }
 
@@ -69,7 +71,7 @@ export class EditEducationComponent implements OnInit {
       category: [''],
       department: ['', Validators.required],
       termSemester: ['', Validators.required],
-      termYear: ['', [Validators.required, Validators.minLength(4), Validators.pattern('^[0-9]+$')]],
+      termYear: ['', [Validators.required]],
       content: [''],
       syllabus: [''],
     });

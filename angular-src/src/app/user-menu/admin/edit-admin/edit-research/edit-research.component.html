@@ -62,20 +62,31 @@
     </div>
 
     <div class="form-group">
-      <label><span class="text-danger">*</span>Start Date:</label>
-      <input type="date" [class.is-invalid]="startDate.invalid && startDate.touched"
-             class="form-control" placeholder="Enter a start date" formControlName="startDate" />
-      <small class="text-danger" [class.d-none]="startDate.valid || startDate.untouched">
-        Start date is required.
-      </small>
-    </div>
-    <div class="form-group">
-      <label><span class="text-danger">*</span>End Date:</label>
-      <input type="date" [class.is-invalid]="endDate.invalid && endDate.touched"
-             class="form-control" placeholder="Enter a end date" formControlName="endDate" />
-      <small class="text-danger" [class.d-none]="endDate.valid || endDate.untouched">
-        End date is required.
-      </small>
+      <div class="form-row">
+        <div class="col">
+          <label><span class="text-danger">*</span>Start Date:</label>
+          <input type="date" [class.is-invalid]="startDate.invalid && startDate.touched"
+                 class="form-control" placeholder="Enter a start date" formControlName="startDate" />
+          <small class="text-danger" [class.d-none]="startDate.valid || startDate.untouched">
+            Start date is required.
+          </small>
+        </div>
+        <div class="col">
+          <label><span class="text-danger">*</span>End Date:</label>
+          <!--<input type="date" [class.is-invalid]="endDate.invalid && endDate.touched" id="endDate"-->
+                 <!--class="form-control" placeholder="Enter a end date" formControlName="endDate"/>-->
+          <input type="date" id="endDate" class="form-control" placeholder="Enter a end date"
+                 formControlName="endDate"/>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="ongoingCheck" formControlName="ongoing"
+            (click)="ongoingDate()">
+            <label class="form-check-label" for="ongoingCheck">Ongoing</label>
+          </div>
+        <small class="text-danger" [class.d-none]="ongoing.value == true || endDate.untouched || ongoing.untouched">
+          End date is required.
+        </small>
+        </div>
+      </div>
     </div>
     <div class="form-group">
       <label>Description:</label>

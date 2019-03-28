@@ -48,7 +48,7 @@ export class NavmenuComponent implements OnInit {
   logout() {
     localStorage.clear();
     this.loggedIn = false;
-    this.router.navigateByUrl('/Home');
+    //this.router.navigateByUrl('/Home');
   }
 
   detectLogin() {

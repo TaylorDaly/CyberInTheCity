@@ -3,7 +3,7 @@ import {PersonService} from "../../Services/person.service";
 import {Image, Person} from "../../person/person";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CropperSettings} from "ngx-img-cropper";
-import {regex} from "../../../environments/environment";
+import {regex} from "../../shared/regex";
 
 @Component({
   selector: 'app-user',
