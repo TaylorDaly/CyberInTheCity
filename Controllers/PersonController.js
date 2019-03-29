@@ -10,19 +10,19 @@ PeopleRouter.get('/Admin', Auth.VerifyAdmin, (req, res) => {
     Person.find(req.query,
         'email _id sys_role name verified role links photo phone_number office_location',
         (err, people) => {
-        if (err) {
-            res.json({
-                success: false, message: `Failed to get people. Error: ${err}`
-            })
-        } else if (people.length > 0) {
-            res.json(people)
-        } else {
-            res.status(404).send({
-                success: false,
-                message: `404: Could not find people with given parameters.`
-            })
-        }
-    })
+            if (err) {
+                res.json({
+                    success: false, message: `Failed to get people. Error: ${err}`
+                })
+            } else if (people.length > 0) {
+                res.json(people)
+            } else {
+                res.status(404).send({
+                    success: false,
+                    message: `404: Could not find people with given parameters.`
+                })
+            }
+        })
 });
 
 PeopleRouter.get('/', (req, res) => {
@@ -212,6 +212,60 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
     });
 });
 
+// Sys Admins can add new people
+PeopleRouter.post('/', Auth.VerifySysAdmin, (req, res) => {
+    let newPerson = new Person({
+        name: req.body.name,
+        role: req.body.role,
+        email: req.body.email,
+        phone_number: req.body.phone_number,
+        biography: req.body.biography,
+        office_location: req.body.office_location,
+        links: req.body.links,
+        my_website_link: req.body.my_website_link,
+        google_scholar_link: req.body.google_scholar_link,
+        google_drive_link: req.body.google_drive_link
+    });
+
+
+    if (req.body.photo) {
+        let newPic = new Image({
+            buffer: req.body.photo.buffer,
+            content_type: req.body.photo.content_type
+        });
+
+        Image.saveImage(newPic, (err, img) => {
+            if (err) {
+                res.status(500).json({
+                    success: false,
+                    message: `Failed to save image. Error: ${err}`
+                })
+            } else {
+                newPerson.photo = img._id;
+                Person.addPerson(newPerson, (err) => {
+                    if (err) {
+                        res.status(500).json({
+                            success: false, message: `Failed to add new person. Error: ${err}`
+                        })
+                    } else {
+                        res.json({success: true, message: 'Successfully added person.'});
+                    }
+                })
+            }
+        });
+    } else {
+        Person.addPerson(newPerson, (err) => {
+            if (err) {
+                res.status(500).json({
+                    success: false, message: `Failed to add new person. Error: ${err}`
+                })
+            } else {
+                res.json({success: true, message: 'Successfully added person.'});
+            }
+        });
+    }
+});
+
 const updateImage = async (req) => {
     return new Promise((resolve, reject) => {
         Image.findImage(req.body.photo._id, (img, err) => {
@@ -234,7 +288,7 @@ const updateImage = async (req) => {
                 img.content_type = req.body.photo.content_type;
                 img.save(img, async (err, img) => {
                     if (err) {
-                        return reject (err)
+                        return reject(err)
                     } else {
                         return resolve(img._id)
                     }
