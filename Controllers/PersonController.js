@@ -358,7 +358,7 @@ const checkDriveLink = async (link) => {
             } else {
                 try {
                     let driveTokens = link.split("/");
-                    let folderId = driveTokens[driveTokens.length].split('?')[0];
+                    let folderId = driveTokens[driveTokens.length-1].split('?')[0];
                     let first = "https://drive.google.com/embeddedfolderview?id=";
                     let second = "#grid";
                     request(first + folderId + second, (error, response) => {

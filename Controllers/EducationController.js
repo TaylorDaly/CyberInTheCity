@@ -41,7 +41,7 @@ EducationRouter.get('/:course', (req, res) => {
 });
 
 // Add
-EducationRouter.post('/', async (req, res, next) => {
+EducationRouter.post('/', Auth.VerifyAdmin, async (req, res, next) => {
     let newEducation = new Education({
         courseNumber: req.body.courseNumber,
         courseSection: req.body.courseSection,
@@ -72,7 +72,7 @@ EducationRouter.post('/', async (req, res, next) => {
 });
 
 // Update
-EducationRouter.put('/', (req, res, next) => {
+EducationRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
     Education.getEducation(req.body._id, (err, education) => {
         if (err) {
             res.json({
@@ -117,7 +117,7 @@ EducationRouter.put('/', (req, res, next) => {
     });
 });
 
-EducationRouter.delete('/:id', (req, res, next) => {
+EducationRouter.delete('/:id', Auth.VerifyAdmin, (req, res, next) => {
     Education.getEducation(req.params.id, (err, education) => {
         if (err) {
             res.json({
@@ -157,7 +157,6 @@ const checkDriveLink = async (link) => {
     return new Promise(async (resolve, reject) => {
         // If link was not passed in set the google_drive_link to undefined so it is not a part of the request.
         if (!link) return resolve(undefined);
-        link = link.toString().toLowerCase();
         try {
             // If this passes drive link is already in correct format.
             if (link.includes('https://drive.google.com/embeddedfolderview?id=') && link.includes('#grid')) {
@@ -193,7 +192,7 @@ const checkDriveLink = async (link) => {
             } else {
                 try {
                     let driveTokens = link.split("/");
-                    let folderId = driveTokens[driveTokens.length].split('?')[0];
+                    let folderId = driveTokens[driveTokens.length-1].split('?')[0];
                     let first = "https://drive.google.com/embeddedfolderview?id=";
                     let second = "#grid";
                     console.log(first + folderId + second);
@@ -207,6 +206,7 @@ const checkDriveLink = async (link) => {
                         }
                     });
                 } catch (err) {
+                    console.log(err)
                     return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
                 }
             }
