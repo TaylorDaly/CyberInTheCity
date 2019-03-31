@@ -23,10 +23,16 @@
     <hr size="2" width="100%" align="center">
   </div>
 
+  <br/><a *ngIf="personResearch != '' && personResearch != null">  <h2>Research</h2><br>
   <div *ngFor="let researchList of personResearch" style="display: inline;">
-  <h2>Research</h2>
-  {{researchList}}
+    {{researchList.title}}<br>
   </div>
+</a>
+
+
+
+
+
 
   <br/><a *ngIf="person.my_website_link != '' && person.my_website_link != null"><h2>Other Links</h2><br>
   <a href="{{person.my_website_link}}">My Website</a></a>
@@ -72,10 +78,11 @@
 
   <div class="container">
     <div class="row">
-      <div class="col" *ngFor="let c of courses">
+      <div *ngFor="let c of courses">
+        <br/><a *ngIf="c.teacherID == person._id">
         <app-card-info [header]="c.courseNumber + ': ' + c.courseName"
                        [body]="c.description"
-                       [footer]="'Term: ' + c.termSemester + ' ' + c.termYear"></app-card-info>
+                       [footer]="'Term: ' + c.termSemester + ' ' + c.termYear"></app-card-info></a>
       </div>
     </div>
   </div>

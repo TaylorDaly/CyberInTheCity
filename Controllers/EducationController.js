@@ -50,7 +50,8 @@ EducationRouter.post('/', async (req, res, next) => {
         department: req.body.department,
         termSemester: req.body.termSemester,
         termYear: req.body.termYear,
-        syllabus: req.body.syllabus
+        syllabus: req.body.syllabus,
+        teacherID: req.body.teacherID
     });
 
     await checkDriveLink(req.body.googleDriveLink).then(link => {
@@ -71,7 +72,7 @@ EducationRouter.post('/', async (req, res, next) => {
 });
 
 // Update
-EducationRouter.put('/', Auth.Verify, (req, res, next) => {
+EducationRouter.put('/', (req, res, next) => {
     Education.getEducation(req.body._id, (err, education) => {
         if (err) {
             res.json({
@@ -89,6 +90,7 @@ EducationRouter.put('/', Auth.Verify, (req, res, next) => {
             if (req.body.termYear) education.termYear = req.body.termYear;
             if (req.body.googleDriveLink) education.googleDriveLink = req.body.googleDriveLink;
             if (req.body.syllabus) education.syllabus = req.body.syllabus;
+            if (req.body.teacherID) education.teacherID = req.body.teacherID;
 
             Education.updateEducation(req.body._id, education, (err) => {
                 if (err) {
@@ -115,7 +117,7 @@ EducationRouter.put('/', Auth.Verify, (req, res, next) => {
     });
 });
 
-EducationRouter.delete('/:id', Auth.Verify, (req, res, next) => {
+EducationRouter.delete('/:id', (req, res, next) => {
     Education.getEducation(req.params.id, (err, education) => {
         if (err) {
             res.json({

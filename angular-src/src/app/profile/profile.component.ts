@@ -66,6 +66,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         res => {
           this.courses = res;
+          console.log(res);
         },
         err => {
           this.error = err['error'].message;
