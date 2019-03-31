@@ -215,18 +215,28 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
 // Sys Admins can add new people
 PeopleRouter.post('/', Auth.VerifySysAdmin, (req, res) => {
     let newPerson = new Person({
-        name: req.body.name,
-        role: req.body.role,
-        email: req.body.email,
-        phone_number: req.body.phone_number,
-        biography: req.body.biography,
-        office_location: req.body.office_location,
-        links: req.body.links,
-        my_website_link: req.body.my_website_link,
-        google_scholar_link: req.body.google_scholar_link,
-        google_drive_link: req.body.google_drive_link
+        // name: req.body.name,
+        // role: req.body.role,
+        // email: req.body.email,
+        // phone_number: req.body.phone_number,
+        // biography: req.body.biography,
+        // office_location: req.body.office_location,
+        // links: req.body.links,
+        // my_website_link: req.body.my_website_link,
+        // google_scholar_link: req.body.google_scholar_link,
+        // google_drive_link: req.body.google_drive_link
     });
 
+    if (req.body.name) newPerson.name = req.body.name;
+    if (req.body.role) newPerson.role = req.body.role;
+    if (req.body.email) newPerson.email = req.body.email;
+    if (req.body.phone_number) newPerson.phone_number = req.body.phone_number;
+    if (req.body.biography) newPerson.biography = req.body.biography;
+    if (req.body.office_location) newPerson.office_location = req.body.office_location;
+    if (req.body.links) newPerson.links = req.body.links;
+    if (req.body.my_website_link) newPerson.my_website_link = req.body.my_website_link;
+    if (req.body.google_scholar_link) newPerson.google_scholar_link = req.body.google_scholar_link;
+    if (req.body.google_drive_link) newPerson.google_drive_link = req.body.google_drive_link;
 
     if (req.body.photo) {
         let newPic = new Image({
@@ -313,6 +323,7 @@ const deleteImage = async (_idRemove) => {
 
 const checkDriveLink = async (link) => {
     return new Promise(async (resolve, reject) => {
+        // If link was not passed in set the google_drive_link to undefined so it is not a part of the request.
         if (!link) return resolve(undefined);
         try {
             // If this passes drive link is already in correct format.

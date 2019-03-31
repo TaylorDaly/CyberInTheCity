@@ -17,7 +17,7 @@ const PersonSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+//        required: true, // No longer required since an admin can add a person.
         minlength: 8,
         select: false
     },
