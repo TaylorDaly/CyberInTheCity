@@ -4,6 +4,9 @@ import {Person} from "../person/person";
 import {ResearchItem} from "../research/research";
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
+import {ResearchService} from "../Services/research.service";
+import {Course} from "../education/education";
+import {EducationService} from "../Services/education.service";
 
 @Component({
   selector: 'app-profile',
@@ -14,13 +17,17 @@ export class ProfileComponent implements OnInit {
 
   person: Person;
   error  = "";
+  courses: Course[];
   personResearch: ResearchItem[];
+
 
   constructor(private personService: PersonService,
               private activeRoute: ActivatedRoute,
-              public sanitizer: DomSanitizer) { }
+              public sanitizer: DomSanitizer,
+              private educationService: EducationService) { }
 
   ngOnInit() {
+    this.getAllCourses();
     this.activeRoute.params.subscribe(
       routeParams => {
         this.getPerson(routeParams.name + '@ucdenver.edu');
@@ -28,19 +35,20 @@ export class ProfileComponent implements OnInit {
   }
 
   getPerson(email) {
-    // this.displayAll = false;
-    // this.displayPerson = true;
     this.personService.getPersonByEmail(email)
       .subscribe(
         response => {
           this.person = response;
-          this.getResearch(response['_id']);
-          // console.log(response)
+          this.getResearch(response[0]['_id']);
+          console.log(response);
+          console.log(response[0]['_id']);
           // this.router.navigateByUrl('/profile');
         },
         error => this.error = error
       );
   }
+  number = this.person;
+
 
   getResearch(_id) {
     this.personService.getPersonResearch(_id)
@@ -50,6 +58,18 @@ export class ProfileComponent implements OnInit {
           console.log(res);
         },
         error => this.error = error
+      )
+  }
+
+  getAllCourses() {
+    this.educationService.getAllCourses()
+      .subscribe(
+        res => {
+          this.courses = res;
+        },
+        err => {
+          this.error = err['error'].message;
+        }
       )
   }
 }

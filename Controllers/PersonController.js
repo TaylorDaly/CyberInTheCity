@@ -29,7 +29,7 @@ PeopleRouter.get('/', (req, res) => {
     // Only return people that have been verified by an admin.
     let query = {verified: true};
     if (req.query.email) query['email'] = req.query.email;
-    Person.getPerson(query, (err, people) => {
+    Person.getPeople(query, (err, people) => {
         if (err) {
             res.status(500).json({
                 success: false, message: `Failed to get people. Error: ${err}`
