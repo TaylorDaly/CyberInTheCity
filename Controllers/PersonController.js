@@ -29,7 +29,7 @@ PeopleRouter.get('/', (req, res) => {
     // Only return people that have been verified by an admin.
     let query = {verified: true};
     if (req.query.email) query['email'] = req.query.email;
-    Person.getPeople(query, (err, people) => {
+    Person.getPerson(query, (err, people) => {
         if (err) {
             res.status(500).json({
                 success: false, message: `Failed to get people. Error: ${err}`
@@ -238,7 +238,7 @@ PeopleRouter.post('/', Auth.VerifySysAdmin, (req, res) => {
     if (req.body.google_scholar_link) newPerson.google_scholar_link = req.body.google_scholar_link;
     if (req.body.google_drive_link) newPerson.google_drive_link = req.body.google_drive_link;
 
-    if (req.body.photo) {
+    if (req.body.photo && req.body.photo.buffer) {
         let newPic = new Image({
             buffer: req.body.photo.buffer,
             content_type: req.body.photo.content_type

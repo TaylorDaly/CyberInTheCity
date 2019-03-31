@@ -70,7 +70,7 @@ UserRouter.post('/signup/:token', (req, res) => {
                     } else {
                         newPerson.password = hash;
 
-                        if (req.body.photo) {
+                        if (req.body.photo && req.body.photo.buffer) {
                             let newPic = new Image({
                                 buffer: req.body.photo.buffer,
                                 content_type: req.body.photo.content_type

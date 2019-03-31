@@ -64,9 +64,9 @@ EducationRouter.post('/', async (req, res, next) => {
                 res.json({success: true, message: "Successfully added education."})
             }
         })
-    }).catch(err => res.status(400).json({
+    }).catch(err => res.status(401).json({
         success: false,
-        error: err
+        message: `${err}`
     }))
 });
 
@@ -155,6 +155,7 @@ const checkDriveLink = async (link) => {
     return new Promise(async (resolve, reject) => {
         // If link was not passed in set the google_drive_link to undefined so it is not a part of the request.
         if (!link) return resolve(undefined);
+        link = link.toString().toLowerCase();
         try {
             // If this passes drive link is already in correct format.
             if (link.includes('https://drive.google.com/embeddedfolderview?id=') && link.includes('#grid')) {
@@ -183,6 +184,7 @@ const checkDriveLink = async (link) => {
                         }
                     });
                 } catch (err) {
+                    console.log(link);
                     return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
                 }
             } else {
