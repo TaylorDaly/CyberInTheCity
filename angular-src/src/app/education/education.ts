@@ -9,4 +9,5 @@ export interface Course {
   termYear: string,
   content: string,
   syllabus: string,
+  teacherID: string
 }

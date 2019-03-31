@@ -21,7 +21,8 @@ const EducationSchema = new mongoose.Schema({
     termYear: String,
     googleDriveLink: String,
     syllabus: String,
-    teacher: String
+    teacher: String,
+    teacherID: String
 });
 
 const education = module.exports = mongoose.model('Education', EducationSchema);
@@ -30,7 +31,8 @@ module.exports.getAllEducations = (callback) => {
     education.find(callback);
 };
 
-module.exports.getEducation = (query, callback) => {
+module.exports.getEducation = (id, callback) => {
+    let query = {_id: id};
     education.findOne(query, callback);
 };
 
