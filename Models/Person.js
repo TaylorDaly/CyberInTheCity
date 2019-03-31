@@ -108,7 +108,7 @@ module.exports.getPeople = (query, callback) => {
 };
 
 module.exports.addPerson = (newPerson, callback) => {
-    newPerson.save(callback);
+    newPerson.save(newPerson, callback);
 };
 
 module.exports.getPerson = (query, callback) => {
@@ -129,5 +129,6 @@ cleanLinks = async (links) => {
                 resolve(links);
             }
         }
+        resolve(links);
     })
 };

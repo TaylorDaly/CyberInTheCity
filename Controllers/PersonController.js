@@ -213,7 +213,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
 });
 
 // Sys Admins can add new people
-PeopleRouter.post('/', Auth.VerifySysAdmin, (req, res) => {
+PeopleRouter.post('/', (req, res) => {
     let newPerson = new Person({
         // name: req.body.name,
         // role: req.body.role,

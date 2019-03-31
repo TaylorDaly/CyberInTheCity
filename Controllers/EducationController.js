@@ -2,6 +2,7 @@ const express = require('express');
 const EducationRouter = express.Router();
 const Education = require('../Models/Education');
 const Auth = require('../Config/AuthController');
+const request = require('request');
 
 // Get all education
 EducationRouter.get('/', (req, res) => {
@@ -57,8 +58,7 @@ EducationRouter.post('/', async (req, res, next) => {
         Education.addEducation(newEducation, (err, callback) => {
             if (err) {
                 res.json({
-                    success: false, message: `Failed to add new education.\n
-            Error: ${err}`
+                    success: false, message: `Failed to add new education. Error: ${err}`
                 })
             } else {
                 res.json({success: true, message: "Successfully added education."})
@@ -180,11 +180,12 @@ const checkDriveLink = async (link) => {
                         } else if (response.statusCode === 200) {
                             return resolve(first + folderId + second);
                         } else {
-                            return reject(new Error("Request to get google drive link failed. Please double check the URL make sure it is a public folder."));
+                            return reject(new Error("Request to get google drive link failed with status" +
+                                ` ${response.statusCode}.` +
+                                " Please double check the URL make sure it is a public folder."));
                         }
                     });
                 } catch (err) {
-                    console.log(link);
                     return reject(new Error("Error parsing google drive link. Please double check the URL and make sure it is a public folder."))
                 }
             } else {

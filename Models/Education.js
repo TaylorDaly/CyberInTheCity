@@ -12,7 +12,10 @@ const EducationSchema = new mongoose.Schema({
     courseSection: {
         type: String
     },
-    description: String,
+    description: {
+        type: String,
+        maxLength: 4
+    },
     department: String,
     termSemester: String,
     termYear: String,
