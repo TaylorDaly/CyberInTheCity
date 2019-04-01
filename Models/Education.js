@@ -31,8 +31,7 @@ module.exports.getAllEducations = (callback) => {
     education.find(callback);
 };
 
-module.exports.getEducation = (id, callback) => {
-    let query = {_id: id};
+module.exports.getEducation = (query, callback) => {
     education.findOne(query, callback);
 };
 
