@@ -3,10 +3,10 @@
     <tbody>
     <tr>
       <ng-template [ngIf]="person.photo != null" [ngIfElse]="defaultImage">
-        <img class="card-horiz-img" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}">
+        <img class="card-horiz-img" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}" style="padding-right: 50px">
       </ng-template>
       <ng-template #defaultImage>
-        <img class="card-horiz-img" src="assets/images/defaultPhoto.png" alt="No image available">
+        <img class="card-horiz-img" src="assets/images/defaultPhoto.png" alt="No image available" style="padding-right: 50px">
       </ng-template>
       <td>
         <h1 style="line-height: 100%; margin-top: 0; margin-bottom: 0">{{person.name}}</h1>
@@ -87,7 +87,20 @@
     </div>
   </div>
 
+  <!--<div class="container">-->
+    <!--<div class="row">-->
+      <!--<div *ngFor="let c of courses">-->
+        <!--<br/><a *ngIf="c.teacherID == person._id">-->
+        <!--<app-card-education-->
+          <!--[courseNumber]="c.courseNumber"-->
+          <!--[courseName]="c.courseName"-->
+          <!--[courseSection]="c.courseSection"-->
+          <!--[termSemester]="c.termSemester"-->
+          <!--[termYear]="c.termYear"-->
+          <!--[description]="c.description">-->
+        <!--</app-card-education></a>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
 
 </div>
-
-
