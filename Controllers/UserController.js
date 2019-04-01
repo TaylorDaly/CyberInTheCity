@@ -56,7 +56,6 @@ UserRouter.post('/signup/:token', (req, res) => {
                 links: req.body.links,
                 my_website_link: req.body.my_website_link,
                 google_scholar_link: req.body.google_scholar_link,
-                google_drive_link: req.body.google_drive_link
             });
 
             // Verify password requirements and does not contain other characters
