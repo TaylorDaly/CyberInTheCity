@@ -76,31 +76,39 @@
 <!--</a>-->
 
 
-  <div class="container">
-    <div class="row">
-      <div *ngFor="let c of courses">
-        <br/><a *ngIf="c.teacherID == person._id">
-        <app-card-info [header]="c.courseNumber + ': ' + c.courseName"
-                       [body]="c.description"
-                       [footer]="'Term: ' + c.termSemester + ' ' + c.termYear"></app-card-info></a>
-      </div>
-    </div>
-  </div>
-
   <!--<div class="container">-->
     <!--<div class="row">-->
       <!--<div *ngFor="let c of courses">-->
-        <!--<br/><a *ngIf="c.teacherID == person._id">-->
-        <!--<app-card-education-->
-          <!--[courseNumber]="c.courseNumber"-->
-          <!--[courseName]="c.courseName"-->
-          <!--[courseSection]="c.courseSection"-->
-          <!--[termSemester]="c.termSemester"-->
-          <!--[termYear]="c.termYear"-->
-          <!--[description]="c.description">-->
-        <!--</app-card-education></a>-->
+        <!--<br/><a *ngIf="c.teacherEmail == person.email">-->
+        <!--<app-card-info [header]="c.courseNumber + ': ' + c.courseName"-->
+                       <!--[body]="c.description"-->
+                       <!--[footer]="'Term: ' + c.termSemester + ' ' + c.termYear"></app-card-info></a>-->
       <!--</div>-->
     <!--</div>-->
   <!--</div>-->
+
+  <div class="container">
+    <div class="row">
+  <div *ngFor="let c of courses">
+    <br/><a *ngIf="c.teacherEmail == person.email">
+    <!--<a class="course" routerLink="/course/{{c.courseNumber}}">-->
+    <div *ngIf="c.courseSection != '000'; else noSection">
+      <app-card-info [header]="c.department + ' ' + c.courseNumber + '-' + c.courseSection + ': ' + c.courseName"
+                     [body]="'Term: ' + c.termSemester + ' ' + c.termYear"
+                     [footer]=null
+                     [headerLink]="'/course/' + c.department + '-' + c.courseNumber + '-' + c.courseSection">
+      </app-card-info>
+    </div>
+    <ng-template #noSection>
+      <app-card-info [header]="c.department + ' ' + c.courseNumber + ': ' + c.courseName"
+                     [body]="'Term: ' + c.termSemester + ' ' + c.termYear"
+                     [footer]=null
+                     [headerLink]="'/course/' + c.department + '-' + c.courseNumber + '-' + c.courseSection">
+      </app-card-info>
+    </ng-template></a>
+    <!--</a>-->
+  </div>
+    </div>
+  </div>
 
 </div>
