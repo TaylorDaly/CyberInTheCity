@@ -51,7 +51,8 @@ EducationRouter.post('/', Auth.VerifyAdmin, async (req, res, next) => {
         termSemester: req.body.termSemester,
         termYear: req.body.termYear,
         syllabus: req.body.syllabus,
-        teacherID: req.body.teacherID
+        teacherName: req.body.teacherName,
+        teacherEmail: req.body.teacherEmail
     });
 
     await checkDriveLink(req.body.googleDriveLink).then(link => {
@@ -73,7 +74,7 @@ EducationRouter.post('/', Auth.VerifyAdmin, async (req, res, next) => {
 
 // Update
 EducationRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
-    Education.getEducation(req.body._id, (err, education) => {
+    Education.getEducation({_id : req.body._id}, async (err, education) => {
         if (err) {
             res.json({
                 success: false,
@@ -88,9 +89,14 @@ EducationRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
             if (req.body.department) education.department = req.body.department;
             if (req.body.termSemester) education.termSemester = req.body.termSemester;
             if (req.body.termYear) education.termYear = req.body.termYear;
-            if (req.body.googleDriveLink) education.googleDriveLink = req.body.googleDriveLink;
+            try {
+                if (req.body.googleDriveLink) education.googleDriveLink = await checkDriveLink(req.body.googleDriveLink);
+            } catch (err) {
+                return res.json(`${err}`)
+            }
             if (req.body.syllabus) education.syllabus = req.body.syllabus;
-            if (req.body.teacherID) education.teacherID = req.body.teacherID;
+            if (req.body.teacherName) education.teacherName = req.body.teacherName;
+            if (req.body.teacherEmail) education.teacherEmail = req.body.teacherEmail;
 
             Education.updateEducation(req.body._id, education, (err) => {
                 if (err) {
@@ -195,7 +201,7 @@ const checkDriveLink = async (link) => {
                     let folderId = driveTokens[driveTokens.length-1].split('?')[0];
                     let first = "https://drive.google.com/embeddedfolderview?id=";
                     let second = "#grid";
-                    console.log(first + folderId + second);
+                    //console.log(first + folderId + second);
                     request(first + folderId + second, (error, response) => {
                         if (error) {
                             return reject(error)

@@ -2,12 +2,13 @@ export interface Course {
   _id: string,
   courseNumber: string,
   courseName: string,
+  courseSection: string,
   description: string,
-  category: string,
   department: string,
   termSemester: string,
   termYear: string,
-  content: string,
+  googleDriveLink: string,
   syllabus: string,
-  teacherID: string
+  teacherName: string,
+  teacherEmail: string
 }

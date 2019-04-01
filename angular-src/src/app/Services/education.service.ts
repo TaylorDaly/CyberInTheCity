@@ -15,6 +15,10 @@ export class EducationService {
     return this.httpClient.get<Course[]>(environment.apiUrl + '/education');
   }
 
+  getCourse(course): Observable<Course> {
+    return this.httpClient.get<Course>(environment.apiUrl + `/education/${course}`);
+  }
+
   addCourse(course): Observable<any> {
     return this.httpClient.post<any>(environment.apiUrl + '/education', course);
   }

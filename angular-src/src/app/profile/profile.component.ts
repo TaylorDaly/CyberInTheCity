@@ -40,8 +40,8 @@ export class ProfileComponent implements OnInit {
         response => {
           this.person = response;
           this.getResearch(response[0]['_id']);
-          console.log(response);
-          console.log(response[0]['_id']);
+          //console.log(response);
+          //console.log(response[0]['_id']);
           // this.router.navigateByUrl('/profile');
         },
         error => this.error = error
@@ -55,7 +55,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         res => {
           this.personResearch = res;
-          console.log(res);
+          //console.log(res);
         },
         error => this.error = error
       )
@@ -66,7 +66,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         res => {
           this.courses = res;
-          console.log(res);
+          //console.log(res);
         },
         err => {
           this.error = err['error'].message;

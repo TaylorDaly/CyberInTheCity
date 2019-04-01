@@ -7,7 +7,7 @@
   </div>
 </div>
 <div [hidden]="!editResearch">
-  <!--{{createResearch.value | json}}-->
+  {{createResearch.value | json}}
   <form [formGroup]="createResearch" (ngSubmit)="saveResearch()">
     <div class="form-group">
       <label><span class="text-danger">*</span>Research Title:</label>
@@ -80,7 +80,7 @@
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" id="ongoingCheck" formControlName="ongoing"
             (click)="ongoingDate()">
-            <label class="form-check-label" for="ongoingCheck">Ongoing</label>
+            <label class="form-check-label" for="ongoingCheck">In Progress</label>
           </div>
         <small class="text-danger" [class.d-none]="ongoing.value == true || endDate.untouched || ongoing.untouched">
           End date is required.

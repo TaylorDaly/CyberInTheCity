@@ -21,8 +21,8 @@ const EducationSchema = new mongoose.Schema({
     termYear: String,
     googleDriveLink: String,
     syllabus: String,
-    teacher: String,
-    teacherID: String
+    teacherName: String,
+    teacherEmail: String
 });
 
 const education = module.exports = mongoose.model('Education', EducationSchema);

@@ -10,6 +10,7 @@ export class CardInfoComponent implements OnInit {
   @Input() header: string;
   @Input() body: string;
   @Input() footer: string;
+  @Input() headerLink: string;
 
   constructor() { }
 
