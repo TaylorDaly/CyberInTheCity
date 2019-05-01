@@ -227,7 +227,6 @@ PeopleRouter.post('/', Auth.VerifySysAdmin, (req, res) => {
         google_drive_link: req.body.google_drive_link
     });
 
-
     if (req.body.photo) {
         let newPic = new Image({
             buffer: req.body.photo.buffer,
