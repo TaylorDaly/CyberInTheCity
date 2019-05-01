@@ -9,10 +9,9 @@ body {
 }
 
 .glitch {
-  color: white;
   font-size: 100px;
   position: relative;
-  width: 800px;
+  width: 70%;
   margin: 0 auto;
   /* Make not selectable because it looks weird.*/
   -webkit-user-select: none; /* Safari */
@@ -93,7 +92,7 @@ body {
   left: 2px;
   text-shadow: -1px 0 goldenrod;
   top: 0;
-  color: white;
+  color: #CFB87C;
   background: none;
   overflow: hidden;
   clip: rect(0, 1200px, 0, 0);
@@ -172,7 +171,7 @@ body {
   left: -2px;
   text-shadow: 2px 0 gold;
   top: 0;
-  color: white;
+  color: #CFB87C;
   background: none;
   overflow: hidden;
   clip: rect(0, 1200px, 0, 0);
@@ -186,11 +185,12 @@ body {
 
 div.homePageBanner {
   height: 10em;
-  position: relative
+  position: relative;
+  color: #CFB87C;
 }
 
 div.homePageBanner p {
-  font-family: "Times New Roman", Times, serif;
+  font-family: sans-serif;
   color: white;
   margin: 0;
   font-size: 100px;
@@ -207,7 +207,7 @@ div.homePageBanner1 {
 }
 
 div.homePageBanner1 p {
-  font-family: "Times New Roman", Times, serif;
+  font-family: sans-serif;
   color: white;
   margin: 0;
   font-size: 35px;
