@@ -6,17 +6,38 @@
       <span class="fa fa-plus"></span> Add</button>
   </div>
 </div>
-<div [hidden]="!editCourse">
-  <!--{{createCourse.value | json}}-->
+<div class="container" [hidden]="!editCourse">
+  {{createCourse.value | json}}
   <form [formGroup]="createCourse" (ngSubmit)="saveCourse()">
     <div class="form-group">
-      <label><span class="text-danger">*</span>Course Number:</label>
-      <input type="text" [class.is-invalid]="courseNumber.invalid && courseNumber.touched"
-             class="form-control" placeholder="Enter a course number" formControlName="courseNumber" />
-      <small class="text-danger" [class.d-none]="courseNumber.valid || courseNumber.untouched">
-        Course number is required.
+      <label><span class="text-danger">*</span>Department:</label>
+      <input type="text" [class.is-invalid]="department.invalid && department.touched"
+             class="form-control" placeholder="Ex: CSCI for Computer Science" formControlName="department"
+             maxlength="4"/>
+      <small class="text-danger" [class.d-none]="department.valid || department.untouched">
+        Department is required.
       </small>
     </div>
+
+    <div class="form-group">
+      <div class="form-row">
+        <div class="col">
+          <label><span class="text-danger">*</span>Course Number:</label>
+          <input type="text" [class.is-invalid]="courseNumber.invalid && courseNumber.touched"
+                 class="form-control" placeholder="Ex: 4800"
+                 formControlName="courseNumber" maxlength="4"/>
+          <small class="text-danger" [class.d-none]="courseNumber.valid || courseNumber.untouched">
+            Course number is required.
+          </small>
+        </div>
+        <div class="col">
+          <label>Section:</label>
+          <input type="text" class="form-control" placeholder="Ex: 001" formControlName="courseSection"
+                 maxlength="3"/>
+        </div>
+      </div>
+    </div>
+
     <div class="form-group">
       <label><span class="text-danger">*</span>Course Name:</label>
       <input type="text" [class.is-invalid]="courseName.invalid && courseName.touched"
@@ -25,6 +46,7 @@
         Course name is required.
       </small>
     </div>
+
     <div class="form-group">
       <label><span class="text-danger">*</span>Term:</label>
       <div class="form-row">
@@ -50,17 +72,23 @@
         </div>
       </div>
     </div>
+
     <div class="form-group">
-      <label><span class="text-danger">*</span>Department:</label>
-      <input type="text" [class.is-invalid]="department.invalid && department.touched"
-             class="form-control" placeholder="Enter a department" formControlName="department" />
-      <small class="text-danger" [class.d-none]="department.valid || department.untouched">
-        Department is required.
+      <label><span class="text-danger">*</span>Professor:</label>
+      <select class="form-control" [class.is-invalid]="teacher.invalid && teacher.touched"
+              formControlName="teacherName">
+        <option value="" disabled>Select Professor/Instructor</option>
+        <option *ngFor="let p of professors">{{p.name}}</option>
+      </select>
+      <small class="text-danger" [class.d-none]="teacher.valid || teacher.untouched">
+        Professor is required.
       </small>
     </div>
+
     <div class="form-group">
-      <label>Category:</label>
-      <input type="text" class="form-control" placeholder="Enter a category" formControlName="category" />
+      <label>Content (Google Drive Link):</label>
+      <input type="url" class="form-control" formControlName="googleDriveLink"
+             placeholder="Enter a Google Drive link to the course content directory" />
     </div>
     <div class="form-group">
       <label>Description:</label>

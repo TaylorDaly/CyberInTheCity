@@ -6,6 +6,7 @@ const ResearchSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    // Array so we can have multiple people tied to this object.
     ownerID: {
         type: [String],
         required: true
@@ -14,7 +15,10 @@ const ResearchSchema = new mongoose.Schema({
         type: String,
         enum: ['Faculty Project', 'Faculty Funding', 'Student Project']
     },
-    startDate: Date,
+    startDate: {
+        type: Date,
+        required: true
+    },
     endDate: Date,
     description: String,
     // TODO: Photo

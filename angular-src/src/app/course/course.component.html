@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="card shadow" *ngIf="showCourse == true">
+    <div class="card-header">
+      {{course.department}} {{course.courseNumber}}-{{course.courseSection}}: {{course.courseName}}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Term: <i style="padding-left: 5px;">{{course.termSemester}} {{course.termYear}}</i></h5>
+
+      <h5 class="card-title">Professor: <a routerLink="/profile/{{course.teacherEmail.split('@ucdenver.edu')[0]}}">
+        <i style="padding-left: 5px;">{{course.teacherName}}</i></a></h5>
+      <hr>
+      <h5 class="card-title">Description:</h5>
+      <p class="card-text">{{course.description}}</p>
+
+      <a *ngIf="course.googleDriveLink != '' && course.googleDriveLink != null">
+        <hr>
+        <h5 class="card-title">Course Content:</h5>
+      <!--For the google link -->
+      <iframe [src]=sanitizer.bypassSecurityTrustResourceUrl(course.googleDriveLink)
+      style="width:100%; height:300px; border:0; padding:0;"></iframe>
+      </a>
+    </div>
+  </div>
+</div>

@@ -9,13 +9,20 @@ const EducationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: String,
-    category: String,
+    courseSection: {
+        type: String
+    },
+    description: {
+        type: String,
+        maxLength: 4
+    },
     department: String,
     termSemester: String,
     termYear: String,
-    content: String,
+    googleDriveLink: String,
     syllabus: String,
+    teacherName: String,
+    teacherEmail: String
 });
 
 const education = module.exports = mongoose.model('Education', EducationSchema);
@@ -24,8 +31,7 @@ module.exports.getAllEducations = (callback) => {
     education.find(callback);
 };
 
-module.exports.getEducation = (id, callback) => {
-    let query = {_id: id};
+module.exports.getEducation = (query, callback) => {
     education.findOne(query, callback);
 };
 

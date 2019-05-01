@@ -1,14 +1,14 @@
 <div class="container">
   <div class="card shadow" style="min-width: 18rem;">
-    <div class="card-header">
-      <strong>{{header}}</strong>
+    <div class="card-header" [hidden]="header == null">
+      <a class="headerLink" routerLink="{{headerLink}}">{{header}}</a>
     </div>
-    <div class="card-body">
+    <div class="card-body" [hidden]="body == null">
       <p class="card-text">
         {{body}}
       </p>
     </div>
-    <div class="card-footer text-muted">
+    <div class="card-footer text-muted" [hidden]="footer == null">
       {{footer}}
     </div>
   </div>

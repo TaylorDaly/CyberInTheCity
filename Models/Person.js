@@ -17,7 +17,7 @@ const PersonSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+//        required: true, // No longer required since an admin can add a person.
         minlength: 8,
         select: false
     },
@@ -108,7 +108,7 @@ module.exports.getPeople = (query, callback) => {
 };
 
 module.exports.addPerson = (newPerson, callback) => {
-    newPerson.save(callback);
+    newPerson.save(newPerson, callback);
 };
 
 module.exports.getPerson = (query, callback) => {
@@ -129,5 +129,6 @@ cleanLinks = async (links) => {
                 resolve(links);
             }
         }
+        resolve(links);
     })
 };

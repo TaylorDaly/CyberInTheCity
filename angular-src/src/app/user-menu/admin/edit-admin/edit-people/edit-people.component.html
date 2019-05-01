@@ -6,13 +6,13 @@
   </button>
 </div>
 
-<div [hidden]="!editPerson">
+<div class="container" [hidden]="!editPerson">
   <form [formGroup]="createPerson" (ngSubmit)="savePerson()">
-    <!--{{createPerson.value | json}}-->
+    {{createPerson.value | json}}
     <div class="form-group">
       <label><span class="text-danger">*</span>School Email:</label>
       <input type="email" [class.is-invalid]="email.invalid && email.touched"
-             class="form-control" placeholder="Enter a school email" formControlName="email" />
+             class="form-control" placeholder="Must be a @ucdenver.edu email" formControlName="email" />
       <small class="text-danger" [class.d-none]="email.valid || email.untouched">
         Email is required.
       </small>
@@ -21,8 +21,8 @@
     <div class="form-group">
       <div class="form-row">
         <div class="col-md-8">
-          <label><span class="text-danger">*</span>Name:</label>
-          <input type="text" class="form-control" placeholder="Full name" formControlName="name"
+          <label><span class="text-danger">*</span>Full Name:</label>
+          <input type="text" class="form-control" placeholder="Ex: John Smith" formControlName="name"
                  [class.is-invalid]="name.invalid && name.touched"/>
           <small [class.d-none]="name.valid || name.untouched" class="text-danger">
             Full name is required.
@@ -121,8 +121,8 @@
         <div class="col">
           <div *ngIf="imgSrc.image" style="padding-left: 10px;">
             <label>Preview:</label>
-            <br/><img [src]="imgSrc.image" [width]="cropSettings.croppedWidth * 2"
-                      [height]="cropSettings.croppedHeight * 2"/>
+            <br/><img [src]="imgSrc.image" [width]="cropSettings.croppedWidth"
+                      [height]="cropSettings.croppedHeight" />
           </div>
         </div>
       </div>

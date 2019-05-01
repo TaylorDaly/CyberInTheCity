@@ -1,0 +1,7 @@
+.course {
+  text-decoration: none;
+  color: black;
+}
+.course:hover {
+  color: purple;
+}

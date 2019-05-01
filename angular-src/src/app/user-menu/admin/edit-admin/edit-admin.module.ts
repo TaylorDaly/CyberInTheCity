@@ -40,7 +40,7 @@ const editList = [
     MatInputModule,
   ],
   exports: [
-    editList
+    editList,
   ],
   entryComponents: [
     editList

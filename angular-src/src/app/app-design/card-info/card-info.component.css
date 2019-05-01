@@ -1,4 +1,21 @@
 
 .card-header {
-  background-color: #CFB87C;
+  background-color: black;
+  padding: 15px 15px 15px 20px;
+  font-size: 17px;
+}
+.headerLink {
+  text-decoration: none;
+  color: #CFB87C;
+}
+.headerLink:hover {
+  color: white;
+}
+.card-body {
+  padding: 15px 15px 15px 20px;
+  font-size: 15px;
+}
+.card-footer {
+  padding: 7px 7px 7px 20px;
+  font-size: 12px;
 }

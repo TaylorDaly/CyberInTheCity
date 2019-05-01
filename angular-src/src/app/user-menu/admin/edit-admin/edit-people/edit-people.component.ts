@@ -1,10 +1,9 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {PersonService} from "../../../../Services/person.service";
 import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
-import {Image, Link, Person} from "../../../../person/person";
+import {Person} from "../../../../person/person";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CropperSettings} from "ngx-img-cropper";
-import {SignupService} from "../../../../Services/signup.service";
 import {regex} from "../../../../shared/regex";
 
 @Component({
@@ -62,7 +61,6 @@ export class EditPeopleComponent implements OnInit {
   }
 
   constructor(private personService: PersonService,
-              private signupService: SignupService,
               private fb: FormBuilder,
               private resolver: ComponentFactoryResolver) {
   }
@@ -70,6 +68,7 @@ export class EditPeopleComponent implements OnInit {
   ngOnInit() {
     this.resetForm();
     this.getAllPeople();
+    this.setCropSettings();
   }
 
   resetForm() {
@@ -162,7 +161,8 @@ export class EditPeopleComponent implements OnInit {
   }
 
   setCropSettings() {
-    this.cropSettings = new CropperSettings();
+    this.cropSettings.width = 200;
+    this.cropSettings.height = 200;
     this.cropSettings.croppedWidth = 200;
     this.cropSettings.croppedHeight = 200;
     this.cropSettings.canvasWidth = 300;
@@ -215,9 +215,13 @@ export class EditPeopleComponent implements OnInit {
 
       // Set image file type //
       if(img[0].search('jpeg' || 'jpg') != -1) {
-        this.photo.value.content_type = 'image/jpeg';
+        this.photo.patchValue({
+          content_type: 'image/jpeg'
+        })
       } else if (img[0].search('png') != -1) {
-        this.photo.value.content_type = 'image/png';
+        this.photo.patchValue({
+          content_type: 'image/jpeg'
+        })
       } else {
         this.createPerson.patchValue({
           photo: null
@@ -225,7 +229,9 @@ export class EditPeopleComponent implements OnInit {
       }
 
       if(img[1].length > 0) {
-        this.photo.value.buffer = img[1];
+        this.photo.patchValue({
+          buffer: img[1]
+        })
       } else {
         this.createPerson.patchValue({
           photo: null
@@ -238,9 +244,11 @@ export class EditPeopleComponent implements OnInit {
     this.personService.getPersonById(_id)
       .subscribe(
         res => {
-          if(res.photo) {
-            this.imgSrc.image = "data:" + res.photo.content_type +
-              ';base64,' + res.photo.buffer;
+          if(res.hasOwnProperty('photo') && res.photo != null) {
+            if(res.photo.content_type != null && res.photo.buffer != null) {
+              this.imgSrc.image = "data:" + res.photo.content_type +
+                ';base64,' + res.photo.buffer;
+            }
           }
         },
         err => {
@@ -254,24 +262,25 @@ export class EditPeopleComponent implements OnInit {
     if (editObj.option == "update") {
       this.getPersonImage(editObj._id);
       let person = this.personFull.find(x => x._id === editObj._id);
-      this.createPerson.patchValue({
-        _id: editObj._id,
-        name: person.name,
-        photo: person.photo,
-        role: person.role,
-        email: person.email,
-        my_website_link: person.my_website_link,
-        links: person.links,
-        password: person.password,
-        sys_role: person.sys_role,
-        verified: person.verified,
-        phone_number: person.phone_number,
-        office_location: person.office_location
-      });
-      for (let i = 1; i < person.links.length; ++i) {
-        this.addSMLinks(person.links[i]);
+      //console.log(person);
+      if(person != null) {
+        this.createPerson.patchValue({
+          _id: editObj._id,
+          name: person.name,
+          role: person.role,
+          email: person.email,
+          my_website_link: person.my_website_link,
+          links: person.links,
+          sys_role: person.sys_role,
+          verified: person.verified,
+          phone_number: person.phone_number,
+          office_location: person.office_location
+        });
+        for (let i = 1; i < person.links.length; ++i) {
+          this.addSMLinks(person.links[i]);
+        }
+        this.editPerson = true;
       }
-      this.editPerson = true;
     } else  {  // Delete loadComp item //
       if (window.confirm('Are you sure you want to delete this person?')) {
         this.personService.deletePerson(editObj._id)
@@ -293,10 +302,8 @@ export class EditPeopleComponent implements OnInit {
     //console.log(this.createResearch.value);
     this.cleanObject();
     this.setPhotoData();
-
     if (this.edit.option === "add") {
-      //console.log(this.createPerson.value);
-      this.signupService.postNewUser(localStorage.getItem('jwtToken'), this.createPerson.value)
+      this.personService.addPerson(this.createPerson.value)
         .subscribe(
           res => {
             window.alert(res['message']);
@@ -307,7 +314,6 @@ export class EditPeopleComponent implements OnInit {
             this.errMsg = err.message;
           }
         )
-
     } else { // Update research //
       this.personService.updatePerson(this.createPerson.value)
         .subscribe(

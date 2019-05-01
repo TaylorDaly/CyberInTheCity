@@ -3,6 +3,7 @@ import {EducationService} from "../../../../Services/education.service";
 import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Course} from "../../../../education/education";
+import {PersonService} from "../../../../Services/person.service";
 
 @Component({
   selector: 'app-edit-education',
@@ -15,9 +16,10 @@ export class EditEducationComponent implements OnInit {
   componentRef: any;
   factory: any;
 
+  professors= [];
   courseFull: Course[];
   courseList = [];
-  courseFields = ['course', 'name', 'term'];
+  courseFields = ['course', 'section', 'name', 'term'];
   terms = ['Fall', 'Spring', 'Summer', 'TBD'];
 
   errMsg = "";
@@ -45,10 +47,15 @@ export class EditEducationComponent implements OnInit {
   get department() {
     return this.createCourse.get('department');
   }
+  get teacher() {
+    return this.createCourse.get('teacherName');
+  }
 
   constructor(private eduService: EducationService,
+              private personService: PersonService,
               private resolver: ComponentFactoryResolver,
-              private fb: FormBuilder) {
+              private fb: FormBuilder)
+  {
     this.yearList[0] = new Date().getFullYear();
     for(let i = 1; i < 4; ++i) {
       this.yearList[i] = this.yearList[i-1] + 1;
@@ -59,6 +66,7 @@ export class EditEducationComponent implements OnInit {
   ngOnInit() {
     this.resetForm();
     this.getAllCourses();
+    this.getPeople();
     //console.log(this.currentYear);
   }
 
@@ -66,13 +74,15 @@ export class EditEducationComponent implements OnInit {
     this.createCourse = this.fb.group({
       _id: [''],
       courseNumber: ['', Validators.required],
+      courseSection: [''],
       courseName: ['', Validators.required],
+      teacherName: ['', Validators.required],
+      teacherEmail: [''],
       description: [''],
-      category: [''],
       department: ['', Validators.required],
       termSemester: ['', Validators.required],
       termYear: ['', [Validators.required]],
-      content: [''],
+      googleDriveLink: [''],
       syllabus: [''],
     });
   }
@@ -106,8 +116,36 @@ export class EditEducationComponent implements OnInit {
       this.courseList.push({
         _id: data[i]._id,
         course: data[i].courseNumber,
+        section: data[i].courseSection,
         name: data[i].courseName,
         term: `${data[i].termSemester} ${data[i].termYear}`});
+    }
+  }
+
+  getPeople() {
+    this.personService.getVerifiedPeople()
+      .subscribe(
+        res => {
+          //console.log(res);
+          this.getProfessors(res);
+        },
+        err => {
+          this.errMsg = err.message;
+        }
+      )
+  }
+
+  getProfessors(res) {
+    for (let i = 0; i < res.length; ++i) {
+      if (res[i].role === "Professor" ||
+        res[i].role === "Assistant Professor" ||
+        res[i].role === "Teacher's Assistant") {
+        this.professors.push({
+          name: res[i].name,
+          email: res[i].email,
+          _id: res[i]._id
+        })
+      }
     }
   }
 
@@ -151,14 +189,16 @@ export class EditEducationComponent implements OnInit {
       this.createCourse.patchValue({
         _id: editObj._id,
         courseNumber: course.courseNumber,
+        courseSection: course.courseSection,
         courseName: course.courseName,
         description: course.description,
-        category: course.category,
         department: course.department,
         termSemester: course.termSemester,
         termYear: course.termYear,
-        content: course.content,
+        googleDriveLink: course.googleDriveLink,
         syllabus: course.syllabus,
+        teacherName: course.teacherName,
+        teacherEmail: course.teacherEmail
       });
 
       this.editCourse = true;
@@ -181,6 +221,18 @@ export class EditEducationComponent implements OnInit {
 
   saveCourse() {
     //console.log(this.createResearch.value);
+    if(this.createCourse.get('courseSection').value === "") {
+      this.createCourse.patchValue({
+        courseSection: '000'
+      })
+    }
+
+    let professor = this.professors.find(x => x.name === this.teacher.value);
+    //console.log(professor);
+    this.createCourse.patchValue({
+      teacherEmail: professor.email
+    });
+
     if (this.edit.option === "add") {
       this.eduService.addCourse(this.createCourse.value)
         .subscribe(

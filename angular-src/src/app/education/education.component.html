@@ -1,9 +1,22 @@
 <div class="container">
   <div class="row">
-    <div class="col" *ngFor="let c of courses">
-      <app-card-info [header]="c.courseNumber + ': ' + c.courseName"
-                     [body]="c.description"
-                     [footer]="'Term: ' + c.termSemester + ' ' + c.termYear"></app-card-info>
+    <div class="col-md-6" *ngFor="let c of courses">
+      <!--<a class="course" routerLink="/course/{{c.courseNumber}}">-->
+      <div *ngIf="c.courseSection != '000'; else noSection">
+        <app-card-info [header]="c.department + ' ' + c.courseNumber + '-' + c.courseSection + ': ' + c.courseName"
+                       [body]="'Term: ' + c.termSemester + ' ' + c.termYear"
+                       [footer]=null
+                       [headerLink]="'/course/' + c.department + '-' + c.courseNumber + '-' + c.courseSection">
+        </app-card-info>
+      </div>
+        <ng-template #noSection>
+          <app-card-info [header]="c.department + ' ' + c.courseNumber + ': ' + c.courseName"
+                         [body]="'Term: ' + c.termSemester + ' ' + c.termYear"
+                         [footer]=null
+                         [headerLink]="'/course/' + c.department + '-' + c.courseNumber + '-' + c.courseSection">
+          </app-card-info>
+        </ng-template>
+      <!--</a>-->
     </div>
   </div>
 </div>
