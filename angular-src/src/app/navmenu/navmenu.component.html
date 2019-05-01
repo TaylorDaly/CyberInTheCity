@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark">
   <a class="navbar-brand" routerLink="/home">
     <!--<img width="300" height="80" src=""/>-->
     <img width="300" height="75" src="../../assets/images/CU_logo_Banner.png"/>
@@ -11,6 +11,17 @@
     <ul class="navbar-nav">
       <div *ngFor="let navItem of parents">
         <ng-template [ngIf]="navItem.child.length > 0" [ngIfElse]="NoDropdown">
+          <!--<li class="nav-item dropdown">-->
+            <!--<a class="nav-link dropdown-toggle" routerLink="{{navItem.route}}" role="button" data-toggle="dropdown"-->
+               <!--aria-haspopup="true" aria-expanded="false">-->
+              <!--{{navItem.name}}-->
+            <!--</a>-->
+            <!--<div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+              <!--<div *ngFor="let child of navItem.child">-->
+                <!--<a class="dropdown-item" routerLink="{{child.route}}">{{child.title}}</a>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</li>-->
           <li class="nav-item dropdown" data-toggle="collapse" data-target=".navbar-collapse.show">
             <a class="nav-link" routerLink="{{navItem.route}}" role="button" aria-haspopup="true" aria-expanded="false">
               {{navItem.name}}
@@ -29,7 +40,7 @@
         </ng-template>
       </div>
     </ul>
-    <ul class="navbar-nav">
+    <ul class="navbar-nav ml-auto">
       <li class="nav-item" *ngIf="!loggedIn" data-toggle="collapse" data-target=".navbar-collapse.show">
         <a class="nav-link" routerLink="/register">Sign Up</a>
       </li>
@@ -37,7 +48,9 @@
         <a class="nav-link" routerLink="/login">Login</a>
       </li>
       <li class="nav-item" *ngIf="loggedIn" data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" routerLink="/user-menu">User Menu</a>
+        <a class="nav-link" routerLink="/user-menu" >
+          <i class="fa fa-user fa-lg" aria-hidden="true" style="margin-right: 5px;"></i>
+          User Menu</a>
       </li>
       <li class="nav-item" *ngIf="loggedIn" data-toggle="collapse" data-target=".navbar-collapse.show">
         <a class="nav-link" routerLink="/login" (click)="logout()">Logout</a>

@@ -7,7 +7,7 @@
   </div>
 </div>
 <div class="container" [hidden]="!editCourse">
-  {{createCourse.value | json}}
+  <!--{{createCourse.value | json}}-->
   <form [formGroup]="createCourse" (ngSubmit)="saveCourse()">
     <div class="form-group">
       <label><span class="text-danger">*</span>Department:</label>

@@ -5,6 +5,7 @@ import {ListDataComponent} from "../../../../app-design/list-data/list-data.comp
 import {PersonService} from "../../../../Services/person.service";
 import {Person} from "../../../../person/person";
 import {ResearchItem} from "../../../../research/research";
+import {hasOwnProperty} from "tslint/lib/utils";
 
 @Component({
   selector: 'app-edit-research',
@@ -114,12 +115,23 @@ export class EditResearchComponent implements OnInit {
 
   setResearch(data) {
     for(let i = 0; i < data.length; ++i) {
-      this.researchList.push({
-        _id: data[i]._id,
-        title: data[i].title,
-        type: data[i].type,
-        start_date: new Date(data[i].startDate).toISOString().substring(0, 10),
-        end_date: new Date(data[i].endDate).toISOString().substring(0, 10)});
+      if(data[i].hasOwnProperty("endDate")) {
+        this.researchList.push({
+          _id: data[i]._id,
+          title: data[i].title,
+          type: data[i].type,
+          start_date: new Date(data[i].startDate).toISOString().substring(0, 10),
+          end_date: new Date(data[i].endDate).toISOString().substring(0, 10)
+        });
+      } else {
+        this.researchList.push({
+          _id: data[i]._id,
+          title: data[i].title,
+          type: data[i].type,
+          start_date: new Date(data[i].startDate).toISOString().substring(0, 10),
+          end_date: "In Progress"
+        });
+      }
     }
   }
 
