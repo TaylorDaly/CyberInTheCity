@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FooterComponent implements OnInit {
 
+  currentYear = new Date().getUTCFullYear();
   constructor() { }
 
   ngOnInit() {
   }
 
+  scrollTop() {
+    window.scrollTo(0, 0);
+  }
 }

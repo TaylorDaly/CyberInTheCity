@@ -7,7 +7,7 @@
   </div>
 </div>
 <div [hidden]="!editResearch">
-  {{createResearch.value | json}}
+  <!--{{createResearch.value | json}}-->
   <form [formGroup]="createResearch" (ngSubmit)="saveResearch()">
     <div class="form-group">
       <label><span class="text-danger">*</span>Research Title:</label>

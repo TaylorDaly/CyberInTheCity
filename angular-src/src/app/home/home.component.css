@@ -1,13 +1,15 @@
 html {
   height: 100%;
 }
+
 body {
   /*background: white;*/
   font-family: 'Varela', sans-serif;
   height: 100%;
 }
+
 .glitch {
-  color: black;
+  color: white;
   font-size: 100px;
   position: relative;
   width: 800px;
@@ -18,6 +20,7 @@ body {
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
 }
+
 @keyframes noise-anim {
   0% {
     clip: rect(67px, 9999px, 40px, 0);
@@ -83,18 +86,20 @@ body {
     clip: rect(40px, 9999px, 33px, 0);
   }
 }
+
 .glitch:after {
   content: attr(data-text);
   position: absolute;
   left: 2px;
   text-shadow: -1px 0 goldenrod;
   top: 0;
-  color: black;
-  background: white;
+  color: white;
+  background: none;
   overflow: hidden;
   clip: rect(0, 1200px, 0, 0);
   animation: noise-anim 4s infinite linear alternate-reverse;
 }
+
 @keyframes noise-anim-2 {
   0% {
     clip: rect(13px, 9999px, 81px, 0);
@@ -160,28 +165,61 @@ body {
     clip: rect(64px, 9999px, 66px, 0);
   }
 }
+
 .glitch:before {
   content: attr(data-text);
   position: absolute;
   left: -2px;
-  text-shadow: 3px 0 gold;
+  text-shadow: 2px 0 gold;
   top: 0;
-  color: black;
-  background: white;
+  color: white;
+  background: none;
   overflow: hidden;
   clip: rect(0, 1200px, 0, 0);
   animation: noise-anim-2 6s infinite linear alternate-reverse;
 }
 
-.bg {
-  /* The image used */
-  background-image: url("denver_cityscape.jpg");
+.banner {
+  height: 398px;
+  width: 100%;
+}
 
-  /* Full height */
-  height: 100%;
+div.homePageBanner {
+  height: 10em;
+  position: relative
+}
 
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+div.homePageBanner p {
+  font-family: "Times New Roman", Times, serif;
+  color: white;
+  margin: 0;
+  font-size: 100px;
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+
+div.homePageBanner1 {
+  height: 10em;
+  position: relative
+}
+
+div.homePageBanner1 p {
+  font-family: "Times New Roman", Times, serif;
+  color: white;
+  margin: 0;
+  font-size: 35px;
+  position: absolute;
+  top: 35%;
+  left: 32%;
+  transform: translate(-25%, -25%)
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 600px; /* Should be removed. Only for demonstration */
 }

@@ -85,7 +85,7 @@ export class EditPeopleComponent implements OnInit {
       links: this.fb.array([this.smLink(this.emptyLink)]),
       sys_role: ['User', Validators.required],
       verified: ['true'],
-      phone_number: ['', Validators.pattern(regex.phone)],
+      phone_number: ['', [Validators.pattern(regex.phone)]],
       office_location: ['']
     });
   }

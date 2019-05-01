@@ -21,12 +21,7 @@ export class navItems {
     {
       name: 'Research',
       route: '/research',
-      child: [
-        {
-          route: '/research/labs',
-          title: 'Research Labs'
-        }
-      ]
+      child: []
     },
     {
       name: 'Education',
