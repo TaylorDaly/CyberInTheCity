@@ -27,3 +27,9 @@ div.homePageBanner1 p {
   top: 35%;
   left: 32%;
   transform: translate(-25%, -25%) }
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 600px; /* Should be removed. Only for demonstration */
+}
