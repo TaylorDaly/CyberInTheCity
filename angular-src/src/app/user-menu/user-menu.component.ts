@@ -15,7 +15,7 @@ export class UserMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.admin = localStorage.getItem('sys_role') === 'Sys_Admin' || localStorage.getItem('sys_role') === 'Admin';
-    this.sys_admin = localStorage.getItem('sys_role') === 'Sys_Admin';
+    this.admin = sessionStorage.getItem('sys_role') === 'Sys_Admin' || sessionStorage.getItem('sys_role') === 'Admin';
+    this.sys_admin = sessionStorage.getItem('sys_role') === 'Sys_Admin';
   }
 }

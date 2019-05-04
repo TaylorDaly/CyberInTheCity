@@ -25,7 +25,7 @@ export class AdminComponent implements OnInit {
   errMsg = "";
 
   constructor(private resolver: ComponentFactoryResolver) {
-    switch(localStorage.getItem('sys_role')) {
+    switch(sessionStorage.getItem('sys_role')) {
       case 'Sys_Admin':
         this.parents =  new navItems().getParents();
         this.parents[this.parents.length] = {name: 'Static Page'};
@@ -43,15 +43,6 @@ export class AdminComponent implements OnInit {
       default:
         this.parents = [];
     }
-    // if(localStorage.getItem('sys_role'))
-    // this.parents =  new navItems().getParents();
-    // this.parents.splice(this.parents.map((parent) => {
-    //   return parent.name;
-    // }).indexOf("News"), 1);
-    //
-    // if (localStorage.getItem('sys_role') == "Admin") {
-    //   this.parents = ['Education', 'Research', 'Careers'];
-    // }
   }
 
   ngOnInit() {
