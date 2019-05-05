@@ -1,7 +1,7 @@
 <p class="text-danger">{{errMsg}}</p>
 <div>
   <div class="form-group">
-    <label for="keywords">News keywords:</label>
+    <label for="keywords">Keywords used to filter news articles:</label>
     <textarea class="form-control" rows="5" id="keywords" [(ngModel)]="newsKeywords">{{newsKeywords}}</textarea>
   </div>
   <button class="btn btn-color" style="float: right;" (click)="updateKeywords()">Save</button>
