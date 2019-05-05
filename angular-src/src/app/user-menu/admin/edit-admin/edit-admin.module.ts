@@ -11,9 +11,12 @@ import { EditEducationComponent } from './edit-education/edit-education.componen
 import { EditCareersComponent } from './edit-careers/edit-careers.component';
 import { EditEventsComponent } from './edit-events/edit-events.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
+import { EditNewsComponent } from './edit-news/edit-news.component';
+
 import {ImageCropperModule} from "ngx-img-cropper";
 import {MatFormFieldModule} from "@angular/material";
 import {MatInputModule} from "@angular/material";
+
 
 const editList = [
   EditStaticComponent,
@@ -24,6 +27,7 @@ const editList = [
   EditCareersComponent,
   EditEventsComponent,
   EditContactComponent,
+  EditNewsComponent,
 ];
 
 @NgModule({

@@ -15,4 +15,12 @@ export class NewsService {
     console.log(environment.apiUrl + '/news?createdOnBefore=' + date.toString());
     return this.httpClient.get<NewsItem[]>(environment.apiUrl + '/news?createdOnBefore=' + date.toString());
   }
+
+  getNewsKeywords() {
+    return this.httpClient.get(environment.apiUrl + '/news/getKeywords',{responseType: 'text'});
+  }
+
+  updateNewsKeywords(keywords) {
+    return this.httpClient.post(environment.apiUrl + '/news', keywords);
+  }
 }

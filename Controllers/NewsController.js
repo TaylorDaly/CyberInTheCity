@@ -3,6 +3,9 @@ const NewsAPI = new (require('newsapi'))(dbConfig.newsKey);
 const NewsRouter = require('express').Router();
 const News = require('../Models/News');
 const schedule = require('node-schedule');
+const Auth = require('../Config/AuthController');
+const path = require('path');
+const fs = require('fs');
 
 // Gets 10 news sources with created on date less than the passed 'createdOnBefore'. For pagination follow up
 // requests need to get the 10th created on date and pass that as the new 'createdOnBefore' so that articles are
@@ -15,6 +18,24 @@ NewsRouter.get('/', (req, res, next) => {
         .exec((err, items) => {
             err ? next(err) : res.json(items);
         });
+});
+
+// Download file with news key words used to filter in python script //
+NewsRouter.get('/getKeywords', Auth.VerifySysAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, '../Python', 'Test.txt'));
+});
+
+NewsRouter.post('/', Auth.VerifySysAdmin, (req, res, next) => {
+    fs.writeFile(path.join(__dirname, '../Python', 'Test.txt'), req.body.keywords, function(err) {
+        if (err) {
+            res.json({
+                success: false, message: `Failed to update news keywords.\n
+            Error: ${err}`
+            })
+        } else {
+            res.json({success: true, message: "Successfully updated news keywords."})
+        }
+    });
 });
 
 // Scheduled job to find news and add it to our own database every day at midnight.

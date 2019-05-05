@@ -8,6 +8,7 @@ import {EditEducationComponent} from "./edit-admin/edit-education/edit-education
 import {EditCareersComponent} from "./edit-admin/edit-careers/edit-careers.component";
 import {EditEventsComponent} from "./edit-admin/edit-events/edit-events.component";
 import {EditContactComponent} from "./edit-admin/edit-contact/edit-contact.component";
+import {EditNewsComponent} from "./edit-admin/edit-news/edit-news.component";
 
 @Component({
   selector: 'app-admin',
@@ -29,9 +30,9 @@ export class AdminComponent implements OnInit {
       case 'Sys_Admin':
         this.parents =  new navItems().getParents();
         this.parents[this.parents.length] = {name: 'Static Page'};
-        this.parents.splice(this.parents.map((parent) => {
-          return parent.name;
-        }).indexOf("News"), 1);
+        // this.parents.splice(this.parents.map((parent) => {
+        //   return parent.name;
+        // }).indexOf("News"), 1);
         break;
       case 'Admin':
         this.parents = [
@@ -74,6 +75,9 @@ export class AdminComponent implements OnInit {
         break;
       case "Events":
         this.createComponent(EditEventsComponent);
+        break;
+      case "News":
+        this.createComponent(EditNewsComponent);
         break;
       case "Contact Us":
         this.createComponent(EditContactComponent);
