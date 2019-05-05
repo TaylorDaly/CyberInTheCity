@@ -105,5 +105,4 @@ typings/
 environment.ts
 environment.prod.ts
 
-credentials.json
 google_drive_credentials.json
