@@ -210,7 +210,7 @@ div.homePageBanner1 p {
   font-family: sans-serif;
   color: white;
   margin: 0;
-  font-size: 35px;
+  font-size: 25px;
   position: absolute;
   top: 35%;
   left: 32%;
@@ -222,4 +222,34 @@ div.homePageBanner1 p {
   width: 50%;
   padding: 10px;
   height: 600px; /* Should be removed. Only for demonstration */
+}
+
+.container {
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+  .glitch {
+    font-size: 80px;
+  }
+}
+@media screen and (max-width: 850px) {
+  .glitch {
+    font-size: 60px;
+  }
+  div.homePageBanner1 p {
+    font-size: 20px;
+    top: 0;
+  }
+}
+@media screen and (max-width: 480px) {
+  .glitch {
+    font-size: 8vw;
+    top: 20%;
+  }
+  div.homePageBanner1 p {
+    font-size: 5vw;
+    top: 0;
+  }
 }
