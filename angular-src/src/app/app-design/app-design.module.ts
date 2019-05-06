@@ -14,6 +14,7 @@ import { EditorComponent } from './editor/editor.component';
 
 import {CKEditorModule} from "ng2-ckeditor";
 import { ListDataComponent } from './list-data/list-data.component';
+import { ImageLinkComponent } from './image-link/image-link.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ListDataComponent } from './list-data/list-data.component';
     EditorComponent,
     ListDataComponent,
     CardNewsComponent,
-    ProfileComponent
+    ProfileComponent,
+    ImageLinkComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { ListDataComponent } from './list-data/list-data.component';
     EditorComponent,
     ListDataComponent,
     MatTableModule,
-    ProfileComponent
+    ProfileComponent,
+    ImageLinkComponent,
   ],
   entryComponents: [
     ListDataComponent

@@ -22,11 +22,11 @@ NewsRouter.get('/', (req, res, next) => {
 
 // Download file with news key words used to filter in python script //
 NewsRouter.get('/getKeywords', Auth.VerifySysAdmin, (req, res) => {
-    res.sendFile(path.join(__dirname, '../Python', 'Test.txt'));
+    res.sendFile(path.join(__dirname, '../Python', 'NewsLearnReference.txt'));
 });
 
 NewsRouter.post('/', Auth.VerifySysAdmin, (req, res, next) => {
-    fs.writeFile(path.join(__dirname, '../Python', 'Test.txt'), req.body.keywords, function(err) {
+    fs.writeFile(path.join(__dirname, '../Python', 'NewsLearnReference.txt'), req.body.keywords, function(err) {
         if (err) {
             res.json({
                 success: false, message: `Failed to update news keywords.\n
