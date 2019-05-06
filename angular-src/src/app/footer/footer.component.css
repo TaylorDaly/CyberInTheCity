@@ -4,7 +4,7 @@
 }
 .main-container {
   margin-top: 50px;
-  max-height: 250px;
+  max-height: 110%;
   overflow: hidden;
   display: block;
   position: relative;
