@@ -244,6 +244,14 @@ div.homePageBanner1 p {
 .url-link:hover {
   color: white;
 }
+.see-more {
+  text-decoration: none;
+  color: black;
+  float: right;
+}
+.see-more:hover {
+  color: white;
+}
 .home-row {
   width: 98%;
 }

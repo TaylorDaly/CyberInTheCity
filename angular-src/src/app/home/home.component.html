@@ -20,7 +20,7 @@
       <p class="text-danger">{{errMsg}}</p>
     </div>
     <div class="col-md-2 news-events">
-      <h3 align="center" class="news-header" style="margin: 10%;">CYBER NEWS</h3>
+      <h3 align="center" class="news-header" style="margin: 10%;">RECENT NEWS</h3>
       <div *ngIf="!noNews; else noNewsToShow">
         <div *ngFor="let news of newsItem">
           <div class="card shadow" style="max-width: 18rem;">
@@ -31,6 +31,7 @@
             </div>
           </div>
         </div>
+        <a class="see-more" routerLink="/news"><h5 class="card-title">See more news</h5></a>
       </div>
       <ng-template #noNewsToShow>
         <p style="padding: 10%; font-size: 16px;">No news to show at this time.</p>
@@ -49,6 +50,7 @@
             </div>
           </div>
         </div>
+        <a class="see-more" routerLink="/events"><h5 class="card-title">Go to Events</h5></a>
       </div>
       <ng-template #noEventsToShow>
         <p style="padding: 10%; font-size: 16px;">No events to show at this time.</p>

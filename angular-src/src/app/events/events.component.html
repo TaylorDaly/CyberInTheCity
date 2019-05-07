@@ -5,9 +5,9 @@
       <app-card-careers
         [jobtitle]="e.title"
         [url]="e.url"
-        [jobType]= "e.timeFrame"
+        [jobType]= "'Time : ' + e.timeFrom + ' - ' + e.timeTo"
         [location]="e.location"
-        [postedDate]="'Event Date posted: ' + (e.eventDate | date: 'longDate': 'GMT+1')"
+        [postedDate]="'Date: ' + (e.eventDate | date: 'longDate': 'GMT+1')"
         [description]="e.description">
       </app-card-careers>
     </div>
