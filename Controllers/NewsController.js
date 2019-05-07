@@ -20,22 +20,39 @@ NewsRouter.get('/', (req, res, next) => {
         });
 });
 
-// Download file with news key words used to filter in python script //
+// Send file with news key words used to filter in python script //
 NewsRouter.get('/getKeywords', Auth.VerifySysAdmin, (req, res) => {
     res.sendFile(path.join(__dirname, '../Python', 'NewsLearnReference.txt'));
 });
 
-NewsRouter.post('/', Auth.VerifySysAdmin, (req, res, next) => {
-    fs.writeFile(path.join(__dirname, '../Python', 'NewsLearnReference.txt'), req.body.keywords, function(err) {
-        if (err) {
-            res.json({
-                success: false, message: `Failed to update news keywords.\n
+NewsRouter.get('/getBadKeywords', Auth.VerifySysAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, '../Python', 'BadNewsLearnReference.txt'));
+});
+
+NewsRouter.post('/:type', Auth.VerifySysAdmin, (req, res, next) => {
+    if(req.params.type === "newsKeyword") {
+        fs.writeFile(path.join(__dirname, '../Python', 'NewsLearnReference.txt'), req.body.keywords, function(err) {
+            if (err) {
+                res.json({
+                    success: false, message: `Failed to update news keywords.\n
             Error: ${err}`
-            })
-        } else {
-            res.json({success: true, message: "Successfully updated news keywords."})
-        }
-    });
+                })
+            } else {
+                res.json({success: true, message: "Successfully updated news keywords."})
+            }
+        });
+    } else if (req.params.type === "newsBadKeywords") {
+        fs.writeFile(path.join(__dirname, '../Python', 'BadNewsLearnReference.txt'), req.body.keywords, function(err) {
+            if (err) {
+                res.json({
+                    success: false, message: `Failed to update bad news keywords.\n
+            Error: ${err}`
+                })
+            } else {
+                res.json({success: true, message: "Successfully updated bad news keywords."})
+            }
+        });
+    }
 });
 
 // Scheduled job to find news and add it to our own database every day at midnight.

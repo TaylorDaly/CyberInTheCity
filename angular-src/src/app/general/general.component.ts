@@ -12,7 +12,6 @@ import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 export class GeneralComponent implements OnInit {
 
   content: SafeHtml;
-
   errMsg = "";
 
   constructor(private activeRoute: ActivatedRoute,

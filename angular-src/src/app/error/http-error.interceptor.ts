@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             } else {
               // server-side errRes
               if(errRes.status >= 500 || errRes.status == 0) {  // For all server errors //
-                // TODO: create 500 page - Full page with NO Nav shown //
+                // TODO: create 500 page //
                 // err.code = errRes.status;
                 // err.message = errRes.errRes.message;
               }

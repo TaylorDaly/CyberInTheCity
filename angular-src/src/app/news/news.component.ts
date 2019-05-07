@@ -18,11 +18,12 @@ export class NewsComponent implements OnInit {
   throttle = 300;
   scrollDistance = 1;
 
-  constructor(private newsService: NewsService) {
+  constructor(private newsService: NewsService)
+  {
+    this.newsItem=[];
   }
 
   ngOnInit() {
-    this.newsItem=[];
     this.ranOutOfNews = false;
     this.getNews();
   }

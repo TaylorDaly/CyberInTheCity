@@ -25,7 +25,7 @@ export class EventsComponent implements OnInit {
           this.eventItem = res;
         },
         err => {
-          this.error = err['error'].message;
+          this.error = err.message;
         }
       )
   }
