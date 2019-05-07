@@ -227,15 +227,32 @@ div.homePageBanner1 p {
   padding: 10px;
   height: 600px; /* Should be removed. Only for demonstration */
 }
-
+.card {
+  border: transparent;
+  margin-bottom: 2%;
+}
+.card-body {
+  background-color: black;
+  color: #CFB87C;
+  font-size: 15px;
+  border-radius: 5px;
+}
+.url-link {
+  text-decoration: none;
+  color: #CFB87C;
+}
+.url-link:hover {
+  color: white;
+}
 .home-row {
-  width: 105%;
+  width: 98%;
 }
 .news-header {
   padding-top: 5%;
 }
 .news-events {
   background-color: #CFB87C;
+  margin-top: 2%;
 }
 .homepage {
   padding: 0 5.5% 2% 2%;

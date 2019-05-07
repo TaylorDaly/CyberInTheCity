@@ -30,7 +30,7 @@ export class AdminComponent implements OnInit {
     switch(sessionStorage.getItem('sys_role')) {
       case 'Sys_Admin':
         this.parents =  new navItems().getParents();
-        this.parents[this.parents.length] = {name: 'Static Page'};
+        this.parents[this.parents.length] = {name: 'Static Pages'};
         this.parents[this.parents.length] = {name: 'Home'};
         // this.parents.splice(this.parents.map((parent) => {
         //   return parent.name;
@@ -60,7 +60,7 @@ export class AdminComponent implements OnInit {
       case "Home":
         this.createComponent(EditHomeComponent);
         break;
-      case "Static Page":
+      case "Static Pages":
         this.createComponent(EditStaticComponent);
         break;
       case "About Us":

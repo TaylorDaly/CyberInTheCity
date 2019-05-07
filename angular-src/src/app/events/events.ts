@@ -5,6 +5,6 @@ export interface EventItem {
   timeFrom: string,
   url: string,
   location: string,
-  eventDate: string,
+  eventDate: Date,
   description: string,
 }

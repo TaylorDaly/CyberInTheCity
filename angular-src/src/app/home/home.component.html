@@ -15,38 +15,45 @@
     </div>
   </div>
   <div class="row home-row">
-    <div class="col-md-3 news-events">
-      <h3 align="center" class="news-header">CYBER NEWS</h3>
-      <hr>
+    <div class="container col-md-10">
+      <div [innerHTML]="content" class="cke_contents_ltr homepage"></div>
+      <p class="text-danger">{{errMsg}}</p>
+    </div>
+    <div class="col-md-2 news-events">
+      <h3 align="center" class="news-header" style="margin: 10%;">CYBER NEWS</h3>
       <div *ngIf="!noNews; else noNewsToShow">
         <div *ngFor="let news of newsItem">
-          <app-card-info [header]="news.title"
-                         [headerLink]="news.URL">
-          </app-card-info>
+          <div class="card shadow" style="max-width: 18rem;">
+            <div class="card-body">
+              <a href="{{news.URL}}" class="url-link">
+                <h5 class="card-title">{{news.title}}</h5>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
       <ng-template #noNewsToShow>
-        <app-card-info [header]="'No news to show at this time.'">
-        </app-card-info>
+        <p style="padding: 10%; font-size: 16px;">No news to show at this time.</p>
       </ng-template>
 
-      <h3 align="center" style="padding-top: 10%;">SCHOOL EVENTS</h3>
-      <hr>
+      <hr style="margin-top: 15%; border-top: 1px solid black;">
+
+      <h3 align="center" style="margin: 15% 0 10% 0;">SCHOOL EVENTS</h3>
       <div *ngIf="!noEvents; else noEventsToShow">
         <div *ngFor="let event of eventItem">
-            <app-card-info [header]="event.title + '-' + event.location + '-' + event.eventDate + '-' + event.timeFrom">
-          </app-card-info>
+          <div class="card shadow" style="max-width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{event.title}}</h5>
+              <h6>{{event.location}}</h6>
+              <h6>{{(event.eventDate | date: 'longDate': 'GMT+1') + ' | ' + event.timeFrom + ' - ' + event.timeTo}}</h6>
+            </div>
+          </div>
         </div>
       </div>
       <ng-template #noEventsToShow>
-        <app-card-info [header]="'No events to show at this time.'">
-        </app-card-info>
+        <p style="padding: 10%; font-size: 16px;">No events to show at this time.</p>
       </ng-template>
       <br/><br/>
-    </div>
-    <div class="col-md-9 container">
-      <div [innerHTML]="content" class="cke_contents_ltr homepage"></div>
-      <p class="text-danger">{{errMsg}}</p>
     </div>
   </div>
 </div>
