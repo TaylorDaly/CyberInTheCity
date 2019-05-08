@@ -184,6 +184,7 @@ UserRouter.post('/signup', (req, res) => {
         } else {
             // Verify email
             //if email wont send then login into google with the account then use this link below
+            // you have to be logged in to the cyberInTheCity email
             // https://accounts.google.com/b/0/DisplayUnlockCaptcha
             if (regex.email.exec(email)) {
                 let nodemailer = require('nodemailer');
