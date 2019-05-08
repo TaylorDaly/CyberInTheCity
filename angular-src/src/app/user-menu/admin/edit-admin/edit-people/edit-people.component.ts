@@ -86,7 +86,8 @@ export class EditPeopleComponent implements OnInit {
       sys_role: ['User', Validators.required],
       verified: ['true'],
       phone_number: ['', [Validators.pattern(regex.phone)]],
-      office_location: ['']
+      office_location: [''],
+      biography: ['']
     });
   }
 
@@ -274,7 +275,8 @@ export class EditPeopleComponent implements OnInit {
           sys_role: person.sys_role,
           verified: person.verified,
           phone_number: person.phone_number,
-          office_location: person.office_location
+          office_location: person.office_location,
+          biography: person.biography
         });
         for (let i = 1; i < person.links.length; ++i) {
           this.addSMLinks(person.links[i]);

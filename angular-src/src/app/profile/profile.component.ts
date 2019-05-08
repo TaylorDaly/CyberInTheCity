@@ -24,7 +24,8 @@ export class ProfileComponent implements OnInit {
   constructor(private personService: PersonService,
               private activeRoute: ActivatedRoute,
               public sanitizer: DomSanitizer,
-              private educationService: EducationService) { }
+              private educationService: EducationService) {
+  }
 
   ngOnInit() {
     this.getAllCourses();

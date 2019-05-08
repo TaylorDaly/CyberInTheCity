@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute,} from "@angular/router";
 import {Location} from "@angular/common";
 import {PageService} from "../Services/page.service";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
@@ -17,7 +17,7 @@ export class GeneralComponent implements OnInit {
   constructor(private activeRoute: ActivatedRoute,
               private pageService: PageService,
               private location: Location,
-              private sanitizer: DomSanitizer) { }
+              private sanitizer: DomSanitizer,) { }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(

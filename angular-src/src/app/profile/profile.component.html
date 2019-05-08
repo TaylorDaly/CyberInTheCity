@@ -11,8 +11,12 @@
       <td>
         <h1 style="line-height: 100%; margin-top: 0; margin-bottom: 0">{{person.name}}</h1>
         <h3 style="margin-top: 0; margin-bottom: 0"><i> {{person.role}}</i></h3>
-        <p><i><u> Bio: </u><br>
-        </i> {{person.biography}}
+        <a href="mailto: {{person.email}}">{{person.email}}</a><br/>
+        <a *ngIf="person.my_website_link != '' && person.my_website_link != null"
+           href="{{person.my_website_link}}">
+        My Website</a>
+        <p><i> Bio: &nbsp;</i><br>
+         {{person.biography}}
         </p>
       </td>
     </tr>
@@ -23,22 +27,18 @@
     <hr size="2" width="100%" align="center">
   </div>
 
-  <br/><a *ngIf="personResearch != '' && personResearch != null">  <h2>Research</h2><br>
+  <br/><a *ngIf="personResearch != null">  <h2>Research</h2>
   <div *ngFor="let researchList of personResearch" style="display: inline;">
     {{researchList.title}}<br>
   </div>
 </a>
 
+  <!--<br/><a *ngIf="person.my_website_link != '' && person.my_website_link != null">-->
+  <!--<a href="{{person.my_website_link}}">My Website</a></a>-->
 
-
-
-
-
-  <br/><a *ngIf="person.my_website_link != '' && person.my_website_link != null"><h2>Other Links</h2><br>
-  <a href="{{person.my_website_link}}">My Website</a></a>
-
-
+  <br/><br/>
   <h2>Social Media</h2>
+  <p *ngIf="person.links.length == 0">None</p>
   <div *ngFor="let link of person.links" style="display: inline;">
     <a class="fa fa-{{link.description}}" href="{{link.URL}}"></a>
   </div>
@@ -51,16 +51,12 @@
     <tbody>
     <tr>
       <td>
-        <p><i>{{person.name}}<br></i>
-          Department of Computer Science<br>
-          1200 Larimer Street<br>
-          Suite 3034<br>
-          Denver, CO 80204<br>
+        <p>Office Location: &nbsp;<i>{{person.office_location}}<br></i>
         </p>
       </td>
       <td>
-        <a *ngIf="person.phone_number != '' && person.phone_number != null">Phone: {{person.phone_number}}</a><br>
-        <a href="mailto: {{person.email}}">{{person.email}}</a>
+        <p *ngIf="person.phone_number != '' && person.phone_number != null">
+          Phone: <i>{{person.phone_number}}</i></p>
       </td>
     </tr>
     </tbody>

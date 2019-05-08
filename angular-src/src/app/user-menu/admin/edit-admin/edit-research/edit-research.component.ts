@@ -201,15 +201,26 @@ export class EditResearchComponent implements OnInit {
 
     if (editObj.option == "update") {
       let research = this.researchFull.find(x => x._id === editObj._id);
+      //console.log(research);
       this.createResearch.patchValue({
         _id: editObj._id,
         title: research.title,
         ownerID: research.ownerID,  // Only adds the first one from research.ownerID array //
         type: research.type,
         startDate: new Date(research.startDate).toISOString().substring(0, 10),
-        endDate: new Date(research.endDate).toISOString().substring(0, 10),
+        // endDate: new Date(research.endDate).toISOString().substring(0, 10),
         description: research.description,
       });
+
+      if (research['endDate']) {
+        this.createResearch.patchValue({
+          endDate: new Date(research.endDate).toISOString().substring(0, 10),
+        });
+      } else {
+        this.createResearch.patchValue({
+          ongoing: true
+        });
+      }
 
       // Push rest of research.ownerID array //
       for (let i = 1; i < research.ownerID.length; ++i) {
