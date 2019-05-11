@@ -9,10 +9,11 @@ const fs = require('fs');
 
 // Gets 10 news sources with created on date less than the passed 'createdOnBefore'. For pagination follow up
 // requests need to get the 10th created on date and pass that as the new 'createdOnBefore' so that articles are
-// returned sequentially based on date.
+// returned sequentially based on date. This allows for pages or infinite scrolling in a scalable way (each request
+// will not take more time than the last as with iteration through the items.)
 NewsRouter.get('/', (req, res, next) => {
     let queryDate = new Date(req.query.createdOnBefore);
-    News.find({ createdOn: { $lt: queryDate } })
+    News.find({createdOn: {$lt: queryDate}})
         .limit(10)
         .sort('-createdOn')
         .exec((err, items) => {
@@ -29,9 +30,10 @@ NewsRouter.get('/getBadKeywords', Auth.VerifySysAdmin, (req, res) => {
     res.sendFile(path.join(__dirname, '../Python', 'BadNewsLearnReference.txt'));
 });
 
+// Path for updating the good and bad machine learning words for news.
 NewsRouter.post('/:type', Auth.VerifySysAdmin, (req, res, next) => {
-    if(req.params.type === "newsKeyword") {
-        fs.writeFile(path.join(__dirname, '../Python', 'NewsLearnReference.txt'), req.body.keywords, function(err) {
+    if (req.params.type === "newsKeyword") {
+        fs.writeFile(path.join(__dirname, '../Python', 'NewsLearnReference.txt'), req.body.keywords, function (err) {
             if (err) {
                 res.json({
                     success: false, message: `Failed to update news keywords.\n
@@ -42,7 +44,7 @@ NewsRouter.post('/:type', Auth.VerifySysAdmin, (req, res, next) => {
             }
         });
     } else if (req.params.type === "newsBadKeywords") {
-        fs.writeFile(path.join(__dirname, '../Python', 'BadNewsLearnReference.txt'), req.body.keywords, function(err) {
+        fs.writeFile(path.join(__dirname, '../Python', 'BadNewsLearnReference.txt'), req.body.keywords, function (err) {
             if (err) {
                 res.json({
                     success: false, message: `Failed to update bad news keywords.\n
@@ -55,15 +57,15 @@ NewsRouter.post('/:type', Auth.VerifySysAdmin, (req, res, next) => {
     }
 });
 
-// Scheduled job to find news and add it to our own database every day at midnight.
-// Collects the last 24 hours of articles every 24 hours.
-schedule.scheduleJob('0 0 * * *', () => {
+// Scheduled job to find news and add it to our own database every 6 hours.
+// Collects the last 6 hours of articles every 6 hours.
+schedule.scheduleJob('0 */6 * * *', () => {
     // 1. Hit News API
     // https://newsapi.org/docs/client-libraries/node-js
 
-    // Today and 24 hours ago in ISO 8601 format (yyyy-mm-dd). The NewsAPI requires this format.
+    // Today and 6 hours ago in ISO 8601 format (yyyy-mm-dd). The NewsAPI requires this format.
     let today = new Date().toISOString();
-    let yesterday = new Date(new Date().setDate(new Date().getDate() - 1)).toISOString();
+    let yesterday = new Date(new Date().setHours(new Date().getHours() - 6)).toISOString();
     NewsAPI.v2.everything({
         q: 'cybersecurity',
         from: yesterday,
@@ -74,7 +76,7 @@ schedule.scheduleJob('0 0 * * *', () => {
     }).then(response => {
         // 2. Find Relevant News
         if (response.articles.length > 0) {
-            // Null checks
+            // Null checks to clean data. Without this script could break.
             for (let i = 0; i < response.articles.length; i++) {
                 if (!response.articles[i].content || !(response.articles[i].content.length > 250) ||
                     !response.articles[i].urlToImage || !response.articles[i].title || !response.articles[i].url ||
@@ -124,7 +126,7 @@ const addArticleArray = async (learnedNews) => {
             await newNews.save((err) => {
                 if (err) {
                     if (err.code === 11000 && err.name === 'MongoError') {
-                        // Do nothing if news already exists. Duplicate error will be based on
+                        // Do nothing if news already exists.
                     } else {
                         throw new Error(err)
                     }
@@ -136,9 +138,10 @@ const addArticleArray = async (learnedNews) => {
     }
 };
 
+// Function that runs python script in a new thread. Returns data in string format.
 const runPy = async (news) => {
     return new Promise((resolve, reject) => {
-        const { spawn } = require('child_process');
+        const {spawn} = require('child_process');
         const pyprog = spawn('python', ['./Python/LearnNewsScript.py', news]);
 
         pyprog.stdout.on('data', (data) => {
