@@ -11,9 +11,6 @@ import {retry, catchError} from 'rxjs/operators';
 
 export class HttpErrorInterceptor implements HttpInterceptor {
 
-  errorCode: number;
-  errorMessage: string;
-
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
       return next.handle(request)
       .pipe(
@@ -40,7 +37,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               else {
                 err.code = errRes.status;
                 err.message = errRes.error.message;
-                console.log('Server Error');
+                //console.log(errRes.error.message);
                 //window.alert(`Error ${err.code}: ${err.message}`);
               }
             }

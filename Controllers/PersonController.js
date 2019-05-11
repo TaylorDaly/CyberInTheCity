@@ -6,7 +6,7 @@ const Person = require('../Models/Person');
 const Image = require('../Models/Image');
 const request = require('request');
 
-PeopleRouter.get('/Admin'/*, Auth.VerifyAdmin*/, (req, res) => {
+PeopleRouter.get('/Admin', Auth.VerifyAdmin, (req, res) => {
     Person.find(req.query,
         'email _id sys_role name verified role links photo phone_number office_location biography my_website_link',
         (err, people) => {
@@ -98,7 +98,7 @@ PeopleRouter.delete('/:id', Auth.VerifySysAdmin, (req, res) => {
                         message: `Attempt to delete person failed. Error: ${err}`
                     })
                 } else {
-                    res.status(500).json({
+                    res.status(200).json({
                         success: true,
                         message: `Person deleted successfully.`
                     })
@@ -116,7 +116,7 @@ PeopleRouter.delete('/:id', Auth.VerifySysAdmin, (req, res) => {
 // TODO: put in user controller maybe
 // This is a dual purpose route for Admins to update Sys_role and verify users, and for users to update their own
 // information.
-PeopleRouter.put('/'/*, Auth.Verify PUT THIS BACK IN*/, (req, res, next) => {
+PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
     Person.getPerson({_id: req.body._id}, async (err, person) => {
             if (err) {
                 res.json({
@@ -124,7 +124,6 @@ PeopleRouter.put('/'/*, Auth.Verify PUT THIS BACK IN*/, (req, res, next) => {
                     message: `Attempt to get person failed. Error: ${err}`
                 })
             } else if (person) {
-                req.decoded = {sys_role: 'Sys_Admin', _id: '5cd74a079966f4153cdcc260'};
                 delete req.body.__v;
                 // The ID from the token must match the person to update, unless the user is an admin.
                 if (person._id !== req.decoded._id && req.decoded.sys_role !== `Sys_Admin`) {
@@ -157,7 +156,7 @@ PeopleRouter.put('/'/*, Auth.Verify PUT THIS BACK IN*/, (req, res, next) => {
                         else person.office_location = undefined;
                         if (req.body.links) person.links = req.body.links;
                         if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
-                        else person.google_scholar_linkg = undefined;
+                        else person.google_scholar_link = undefined;
                         if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
                         else person.my_website_link = undefined;
                         // Checks the google drive link returns status 200 (OK)

@@ -88,7 +88,7 @@ export class EditPeopleComponent implements OnInit {
   resetForm() {
     this.createPerson = this.fb.group({
       _id: [''],
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       photo: this.fb.group({
         content_type: [''],
         buffer: ['']
@@ -252,7 +252,7 @@ export class EditPeopleComponent implements OnInit {
           photo: null
         })
       }
-    }
+    } else this.photo.disable();
   }
 
   getPersonImage(_id) {
@@ -319,14 +319,6 @@ export class EditPeopleComponent implements OnInit {
       biography: html
     });
 
-    // Check if website entered has http protocol in url //
-    // if (this.myWebsite.value.indexOf('https://') == -1 ||
-    //   this.myWebsite.value.indexOf('http://') == -1 ||
-    //   this.myWebsite.value.indexOf('www.') == -1)
-    //   this.createPerson.patchValue({
-    //     my_website_link: 'www.' + this.myWebsite.value
-    //   });
-
     this.cleanObject();
     this.setPhotoData();
     if (this.edit.option === "add") {
@@ -341,7 +333,8 @@ export class EditPeopleComponent implements OnInit {
             this.errMsg = err.message;
           }
         )
-    } else { // Update research //
+    } else { // Update person //
+      console.log(this.createPerson.value);
       this.personService.updatePerson(this.createPerson.value)
         .subscribe(
           res => {
