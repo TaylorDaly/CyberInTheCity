@@ -167,7 +167,7 @@ export class EditEventsComponent implements OnInit {
   }
 
   saveEvent() {
-    //console.log(this.createResearch.value);
+    //console.log(this.createEvent.value);
     if (this.edit.option === "add") {
       this.eventService.addEvent(this.createEvent.value)
         .subscribe(

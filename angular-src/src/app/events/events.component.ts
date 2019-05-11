@@ -11,8 +11,11 @@ export class EventsComponent implements OnInit {
 
   eventItem: EventItem[];
   error = "";
+  loaded = false;
 
-  constructor(private eventsService: EventsService) { }
+  constructor(private eventsService: EventsService) {
+    this.eventItem = [];
+  }
 
   ngOnInit() {
     this.getAllEvents();
@@ -23,9 +26,10 @@ export class EventsComponent implements OnInit {
       .subscribe(
         res => {
           this.eventItem = res;
+          this.loaded = true;
         },
         err => {
-          this.error = err['error'].message;
+          this.error = err.message;
         }
       )
   }

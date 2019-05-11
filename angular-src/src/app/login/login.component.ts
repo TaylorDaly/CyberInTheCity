@@ -37,8 +37,8 @@ export class LoginComponent implements OnInit {
     this.personService.loginPerson(this.loginForm.value)
       .subscribe(
         res => {
-          localStorage.setItem('jwtToken', res['token']);
-          localStorage.setItem('sys_role', res['sys_role']);
+          sessionStorage.setItem('jwtToken', res['token']);
+          sessionStorage.setItem('sys_role', res['sys_role']);
           this.router.navigateByUrl('/user-menu').catch((err) => this.errMsg = err.message);
         },
         err => {

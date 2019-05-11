@@ -8,6 +8,7 @@ import {navItems, StaticPage} from "../../../../navmenu/navItems";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PageService} from "../../../../Services/page.service";
 import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-edit-static',
@@ -49,7 +50,8 @@ export class EditStaticComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private pageService: PageService,
-              private resolver: ComponentFactoryResolver)
+              private resolver: ComponentFactoryResolver,
+              private router: Router)
   {}
 
   ngOnInit() {
@@ -198,7 +200,8 @@ export class EditStaticComponent implements OnInit {
             window.alert(res['message']);
             //this.resetSettings();
             //this.resetTable();
-            location.reload();
+            //location.reload();
+            this.router.navigateByUrl(`/${this.createPage.get('title')}`);
           },
           err => {
             this.errMsg = err.message;
@@ -212,7 +215,8 @@ export class EditStaticComponent implements OnInit {
             window.alert(res['message']);
             //this.resetSettings();
             //this.resetTable();
-            location.reload();
+            //location.reload();
+            this.router.navigateByUrl(`/general/${this.createPage.get('title').value}`);
           },
           err => {
             this.errMsg = err.message;

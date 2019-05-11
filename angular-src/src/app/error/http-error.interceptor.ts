@@ -29,16 +29,18 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               // client-side errRes
               err.code = errRes.status;
               err.message = errRes.message;
+              console.log('Client Error');
             } else {
               // server-side errRes
               if(errRes.status >= 500 || errRes.status == 0) {  // For all server errors //
-                // TODO: create 500 page - Full page with NO Nav shown //
+                // TODO: create 500 page //
                 // err.code = errRes.status;
                 // err.message = errRes.errRes.message;
               }
               else {
                 err.code = errRes.status;
                 err.message = errRes.error.message;
+                console.log('Server Error');
                 //window.alert(`Error ${err.code}: ${err.message}`);
               }
             }

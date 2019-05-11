@@ -11,6 +11,7 @@ export class EducationComponent implements OnInit {
 
   courses: Course[];
   error = "";
+  loaded = false;
 
   constructor(private educationService: EducationService) { }
 
@@ -23,10 +24,11 @@ export class EducationComponent implements OnInit {
       .subscribe(
         res => {
           this.courses = res;
+          this.loaded = true;
           //console.log(res);
         },
         err => {
-          this.error = err['error'].message;
+          this.error = err.message;
         }
       )
   }

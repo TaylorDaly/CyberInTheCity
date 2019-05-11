@@ -18,8 +18,10 @@ export class CareersComponent implements OnInit {
   arrayString: string;
   error = "";
   JobListing: ({ name: string; ID: number })[];
+  loaded = false;
 
   constructor(private careersService: CareersService) {
+    //this.ourCareers = [];
   }
 
   ngOnInit() {
@@ -65,6 +67,7 @@ export class CareersComponent implements OnInit {
           this.fullTime = res.fullTime;
           this.internship = res.internship;
           this.ourCareers = res.ourCareers;
+          this.loaded = true;
         },
         err => {
           this.error = err.message;

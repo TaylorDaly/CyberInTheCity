@@ -63,7 +63,7 @@ export class SignupComponent implements OnInit {
     this.setCropSettings();
 
     this.signupForm = this.fb.group({
-      email: [localStorage.getItem('signupEmail')],
+      email: [sessionStorage.getItem('signupEmail')],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       role: ['', [Validators.required]],
@@ -169,11 +169,12 @@ export class SignupComponent implements OnInit {
     //console.log(localStorage.getItem('token'));
     //------------------------//
     //this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
-    this.signupService.postNewUser(localStorage.getItem('token'), this.newUser)
+    this.signupService.postNewUser(sessionStorage.getItem('token'), this.newUser)
       .subscribe(
         res => {
           //console.log(res);
           window.alert(res['message']);
+          sessionStorage.clear();
           localStorage.clear();
           this.router.navigateByUrl('/login');
       }, err => {

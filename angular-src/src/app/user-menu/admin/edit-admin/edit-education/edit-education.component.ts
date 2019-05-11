@@ -50,6 +50,9 @@ export class EditEducationComponent implements OnInit {
   get teacher() {
     return this.createCourse.get('teacherName');
   }
+  get description() {
+    return this.createCourse.get('description');
+  }
 
   constructor(private eduService: EducationService,
               private personService: PersonService,
@@ -219,14 +222,18 @@ export class EditEducationComponent implements OnInit {
     }
   }
 
-  saveCourse() {
-    //console.log(this.createResearch.value);
+  saveCourse(html) {
+    this.createCourse.patchValue({
+      description: html
+    });
+
     if(this.createCourse.get('courseSection').value === "") {
       this.createCourse.patchValue({
         courseSection: '000'
       })
     }
 
+    // Get teacher email from selected teacher name //
     let professor = this.professors.find(x => x.name === this.teacher.value);
     //console.log(professor);
     this.createCourse.patchValue({

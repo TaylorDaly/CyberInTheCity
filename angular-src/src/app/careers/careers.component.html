@@ -1,22 +1,33 @@
 <div class="container" xmlns="http://www.w3.org/1999/html">
-  Campus Job Postings
+  <p class="text-danger">{{error}}</p>
+  <strong>Campus Job Postings</strong>&nbsp;
   <img class="logo" src="../../assets/images/CU_logo.PNG"/>
-  <div class="row">
-    <div class="col-md-6" *ngFor="let career of ourCareers">
-      <app-card-careers
-        [jobtitle]="career.jobtitle"
-        [url]="career.url"
-        [company]="career.company"
-        [jobType]="career.jobType"
-        [location]="career.location"
-        [postedDate]="'Date posted: ' + (career.postedDate | date)"
-        [description]="career.description">
-      </app-card-careers>
-    </div>
+  <div *ngIf="loaded && ourCareers.length <= 0; else schoolCareers">
+    <br/><p class="text-danger">There are no job listings from CU Denver at this time.</p>
   </div>
-  <hr style="height:1px;border:none;color:#333;background-color:#333;"/>
-  <span>Powered by <a href="http://www.indeed.com/" rell="nofollow" title="Job Search"><img
-    src="https://www.indeed.com/p/jobsearch.gif" style="border: 0; vertical-align: middle;" alt="Indeed job search"></a></span>
+  <ng-template #schoolCareers>
+    <div class="row">
+      <div class="col-md-6" *ngFor="let career of ourCareers">
+        <app-card-careers
+          [jobtitle]="career.jobtitle"
+          [url]="career.url"
+          [company]="career.company"
+          [jobType]="career.jobType"
+          [location]="career.location"
+          [postedDate]="'Date posted: ' + (career.postedDate | date)"
+          [description]="career.description">
+        </app-card-careers>
+      </div>
+    </div>
+  </ng-template>
+
+  <br/><hr style="height:1px;border:none;color:#333;background-color:#333;"/>
+  <span style="font-size: 12px; color: #A2A4A3">Powered by
+    <a href="http://www.indeed.com/" rell="nofollow" title="Job Search">
+      <img src="https://www.indeed.com/p/jobsearch.gif" style="border: 0; vertical-align: middle; width: 40px;"
+           alt="Indeed job search">
+    </a>
+  </span>
   <br><br>
   <div>Job Type:
     <select [(ngModel)]="listingSelected" (ngModelChange)="onListingSelected($event)">

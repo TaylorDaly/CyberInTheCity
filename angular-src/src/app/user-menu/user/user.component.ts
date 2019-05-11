@@ -70,10 +70,6 @@ export class UserComponent implements OnInit {
     return this.editProfileForm.get('phoneNumber');
   }
 
-  get googleDrive() {
-    return this.editProfileForm.get('googleDrive');
-  }
-
   get bio() {
     return this.editProfileForm.get('bio');
   }
@@ -141,7 +137,6 @@ export class UserComponent implements OnInit {
       smLinks: this.fb.array([this.smLink()]),
       image: [this.imgSrc.image],
       phoneNumber: [this.editUser.phone_number, [Validators.pattern(regex.phone)]],
-      googleDrive: [this.editUser.google_drive_link],
       bio: [this.editUser.biography],
       office: [this.editUser.office_location]
     });
@@ -164,7 +159,6 @@ export class UserComponent implements OnInit {
     this.editUser.links = this.smLinks.value;
     this.editUser.role = this.role.value;
     this.editUser.phone_number = this.phoneNumber.value;
-    this.editUser.google_drive_link = this.googleDrive.value;
     this.editUser.biography = this.bio.value;
     this.editUser.office_location = this.office.value;
 

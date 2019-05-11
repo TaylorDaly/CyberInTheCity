@@ -4,9 +4,9 @@ import {Person} from "../person/person";
 import {ResearchItem} from "../research/research";
 import {ActivatedRoute} from "@angular/router";
 import {DomSanitizer} from "@angular/platform-browser";
-import {ResearchService} from "../Services/research.service";
 import {Course} from "../education/education";
 import {EducationService} from "../Services/education.service";
+import {ResearchService} from "../Services/research.service";
 
 @Component({
   selector: 'app-profile',
@@ -20,14 +20,16 @@ export class ProfileComponent implements OnInit {
   courses: Course[];
   personResearch: ResearchItem[];
 
-
   constructor(private personService: PersonService,
+              private researchService: ResearchService,
               private activeRoute: ActivatedRoute,
               public sanitizer: DomSanitizer,
-              private educationService: EducationService) { }
+              private educationService: EducationService) {
+    this.courses = [];
+  }
 
   ngOnInit() {
-    this.getAllCourses();
+    //this.getAllCourses();
     this.activeRoute.params.subscribe(
       routeParams => {
         this.getPerson(routeParams.name + '@ucdenver.edu');
@@ -39,25 +41,21 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         response => {
           this.person = response;
+          this.getAllCourses();
           this.getResearch(response[0]['_id']);
-          //console.log(response);
-          //console.log(response[0]['_id']);
-          // this.router.navigateByUrl('/profile');
         },
-        error => this.error = error
+        error => this.error = error.message
       );
   }
-  number = this.person;
-
 
   getResearch(_id) {
-    this.personService.getPersonResearch(_id)
+    this.researchService.getPersonResearch(_id)
       .subscribe(
         res => {
           this.personResearch = res;
           //console.log(res);
         },
-        error => this.error = error
+        error => this.error = error.message
       )
   }
 
@@ -66,11 +64,11 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         res => {
           this.courses = res;
-          //console.log(res);
         },
         err => {
-          this.error = err['error'].message;
+          this.error = err.message;
         }
       )
   }
+
 }

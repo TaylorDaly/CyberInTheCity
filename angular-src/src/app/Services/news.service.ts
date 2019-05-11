@@ -12,7 +12,23 @@ export class NewsService {
   constructor(private httpClient: HttpClient) { }
 
   getNews(date): Observable<NewsItem[]> {
-    console.log(environment.apiUrl + '/news?createdOnBefore=' + date.toString());
+    //console.log(environment.apiUrl + '/news?createdOnBefore=' + date.toString());
     return this.httpClient.get<NewsItem[]>(environment.apiUrl + '/news?createdOnBefore=' + date.toString());
+  }
+
+  getNewsKeywords() {
+    return this.httpClient.get(environment.apiUrl + '/news/getKeywords',{responseType: 'text'});
+  }
+
+  getBadNewsKeywords() {
+    return this.httpClient.get(environment.apiUrl + '/news/getBadKeywords',{responseType: 'text'});
+  }
+
+  updateNewsKeywords(keywords) {
+    return this.httpClient.post(environment.apiUrl + '/news/newsKeyword', keywords);
+  }
+
+  updateBadNewsKeywords(keywords) {
+    return this.httpClient.post(environment.apiUrl + '/news/newsBadKeywords', keywords);
   }
 }

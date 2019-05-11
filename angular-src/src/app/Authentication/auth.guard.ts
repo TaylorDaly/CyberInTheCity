@@ -20,9 +20,9 @@ export class SignupGuard implements CanActivate {
     return this.signupService.canSignUp(token)
       .pipe(
         map(res => {
-          localStorage.setItem("token", token);
+          sessionStorage.setItem("token", token);
           //console.log(localStorage.getItem('token'));
-          localStorage.setItem("signupEmail", res['email']);
+          sessionStorage.setItem("signupEmail", res['email']);
           return res['auth'];
         }),
         catchError((err) => {

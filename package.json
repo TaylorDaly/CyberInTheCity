@@ -13,12 +13,16 @@
   "author": "Serin Yu, Taylor Daly, Chris Corona",
   "license": "ISC",
   "dependencies": {
+    "@angular/cli": "^7.3.5",
+    "@angular/compiler": "^7.2.8",
+    "@angular/compiler-cli": "^7.2.8",
     "@sendgrid/mail": "^6.3.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "googleapis": "^39.2.0",
     "helmet": "^3.15.1",
     "jsonwebtoken": "^8.5.0",
     "mongodb": "latest",
@@ -28,10 +32,7 @@
     "nodemailer": "^2.7.2",
     "nodemon": "^1.18.10",
     "pluralize": "^7.0.0",
-    "request": "^2.88.0",
-    "@angular/cli": "^7.3.5",
-    "@angular/compiler-cli": "^7.2.8",
-    "@angular/compiler": "^7.2.8"
+    "request": "^2.88.0"
   },
   "devDependencies": {
     "@types/express": "^4.16.1",

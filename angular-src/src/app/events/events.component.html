@@ -1,13 +1,14 @@
 <div class="container">
+  <p class="text-danger">{{error}}</p>
+  <p *ngIf="loaded && eventItem.length <= 0">There are no events at this time.</p>
   <div class="row">
     <div class="col-md-6" *ngFor="let e of eventItem">
-
       <app-card-careers
         [jobtitle]="e.title"
         [url]="e.url"
-        [jobType]= "e.timeFrame"
+        [jobType]= "'Time : ' + e.timeFrom + ' - ' + e.timeTo"
         [location]="e.location"
-        [postedDate]="'Event Date posted: ' + (e.eventDate | date)"
+        [postedDate]="'Date: ' + (e.eventDate | date: 'longDate': 'GMT+1')"
         [description]="e.description">
       </app-card-careers>
     </div>

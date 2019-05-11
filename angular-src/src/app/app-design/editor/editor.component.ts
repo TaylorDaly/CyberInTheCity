@@ -23,6 +23,7 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.htmlContent == "") this.htmlContent = "Enter text here...";
   }
 
   // Remove security so can preview HTML page with inline styles //

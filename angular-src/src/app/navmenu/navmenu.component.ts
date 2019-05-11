@@ -24,7 +24,7 @@ export class NavmenuComponent implements OnInit {
 
   ngOnInit() {
     this.getStaticPages();
-    this.loggedIn = localStorage.getItem('jwtToken') !== null;
+    this.loggedIn = sessionStorage.getItem('jwtToken') !== null;
     this.detectLogin();
   }
 
@@ -40,6 +40,7 @@ export class NavmenuComponent implements OnInit {
   sortNavItems(staticNavItems) {
     for (let i = 0; i < staticNavItems.length; ++i) {
       staticNavItems[i].route = '/general/' + staticNavItems[i].title;
+      if(staticNavItems[i]['parent'])
       this.parents.find(x => x.name == staticNavItems[i].parent).child.push(staticNavItems[i]);
     }
   }
@@ -47,6 +48,7 @@ export class NavmenuComponent implements OnInit {
   // Delete token to log out
   logout() {
     localStorage.clear();
+    sessionStorage.clear();
     this.loggedIn = false;
     //this.router.navigateByUrl('/Home');
   }
@@ -63,6 +65,7 @@ export class NavmenuComponent implements OnInit {
             err => {
               alert("Session Expired. Please login again.");
               localStorage.clear();
+              sessionStorage.clear();
               this.loggedIn = false;
               this.router.navigateByUrl('/login');
             }

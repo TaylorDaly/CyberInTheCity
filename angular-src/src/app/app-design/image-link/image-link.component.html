@@ -1,0 +1,27 @@
+<p>To upload an image and generate an image URL:</p>
+<a class="link" href="https://drive.google.com/open?id=17qD_ZnLTWi2oIgWylICqPW2KJKP_D7Aq" target="_blank">
+  <i class="fa fa-folder-open fa-2x"></i>
+  Click here and upload image
+</a>
+<p><span class="text-danger">**</span>Then right click on image and select "Get shareable link"</p>
+<hr>
+<div class="form-group">
+  <label>Paste shareable link of an image here:</label>
+  <div class="form-row">
+    <div class="col-md-8">
+      <input type="text" class="form-control" [(ngModel)]="share_link"
+             placeholder="Enter shareable link">
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-color" (click)="generateURL()">Generate Image URL</button>
+    </div>
+  </div>
+  <p class="text-danger">{{errMsg}}</p>
+</div>
+<div class="form-group">
+  <input type="text" readonly class="form-control-plaintext" value="{{image_url}}" #imgURL>
+  <button [class.d-none]="image_url.length <= 0" class="btn btn-color" (click)="copyURL(imgURL)">Copy Image URL</button>
+</div>
+
+
+

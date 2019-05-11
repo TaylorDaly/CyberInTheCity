@@ -18,7 +18,7 @@ const page = module.exports = mongoose.model('Page', PageSchema);
 
 // Skip about us and contact us static pages.
 module.exports.getAllPages = (callback) => {
-    page.find({title: {$nin: ['About Us', 'Contact Us']}}, callback).sort({'parent': 'asc'});
+    page.find({title: {$nin: ['About Us', 'Contact Us', 'Home']}}, callback).sort({'parent': 'asc'});
 };
 
 module.exports.getOne = (query, callback) => {

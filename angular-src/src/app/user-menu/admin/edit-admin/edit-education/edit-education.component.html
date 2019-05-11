@@ -7,8 +7,8 @@
   </div>
 </div>
 <div class="container" [hidden]="!editCourse">
-  {{createCourse.value | json}}
-  <form [formGroup]="createCourse" (ngSubmit)="saveCourse()">
+  <!--{{createCourse.value | json}}-->
+  <form [formGroup]="createCourse">
     <div class="form-group">
       <label><span class="text-danger">*</span>Department:</label>
       <input type="text" [class.is-invalid]="department.invalid && department.touched"
@@ -92,10 +92,12 @@
     </div>
     <div class="form-group">
       <label>Description:</label>
-      <textarea class="form-control" rows="5" placeholder="Enter course description"
-                formControlName="description"></textarea>
+      <app-editor [disabled]="createCourse.invalid" (htmlString)="saveCourse($event)"
+                  [htmlContent]="description.value"></app-editor>
+      <!--<textarea class="form-control" rows="5" placeholder="Enter course description"-->
+                <!--formControlName="description"></textarea>-->
     </div>
-    <button class="btn btn-color" style="float: right;" [disabled]="createCourse.invalid">Save</button>
+    <!--<button class="btn btn-color" style="float: right;" [disabled]="createCourse.invalid">Save</button>-->
   </form>
   <p class="text-danger">* Required Fields</p>
 </div>

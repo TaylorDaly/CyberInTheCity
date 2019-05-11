@@ -31,7 +31,9 @@ export class PersonComponent implements OnInit {
           this.personList = response;
           //console.log(response)
         },
-        error => this.error = error
+        error => {
+          this.error = error.message;
+        }
       );
   }
 

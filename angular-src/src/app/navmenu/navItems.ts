@@ -16,32 +16,57 @@ export class navItems {
     {
       name: 'People',
       route: '/person',
-      child: []
+      child: [
+        {
+          title: 'Faculty & Staff',
+          route: '/person',
+          parent: 'People'
+        }
+      ]
     },
     {
       name: 'Research',
       route: '/research',
       child: [
         {
-          route: '/research/labs',
-          title: 'Research Labs'
+          title: 'All Research',
+          route: '/research',
+          parent: 'Research'
         }
       ]
     },
     {
       name: 'Education',
       route: '/education',
-      child: []
+      child: [
+        {
+          title: 'All Courses',
+          route: '/education',
+          parent: 'Education'
+        }
+      ]
     },
     {
       name: 'Careers',
       route: '/careers',
-      child: []
+      child: [
+        {
+          title: 'Employment Opportunities',
+          route: '/careers',
+          parent: 'Careers'
+        }
+      ]
     },
     {
       name: 'Events',
       route: '/events',
-      child: []
+      child: [
+        {
+          title: 'School Events',
+          route: '/events',
+          parent: 'Events'
+        }
+      ]
     },
     {
       name: 'News',

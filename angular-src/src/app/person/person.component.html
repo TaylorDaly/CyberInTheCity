@@ -1,10 +1,9 @@
 
 <div class="container" style="padding: 0;">
-  <p>{{error}}</p>
-
+  <p class="text-danger">{{error}}</p>
   <div >
     <div class="row">
-      <div class="col" *ngFor="let person of personList">
+      <div class="col-md-6" *ngFor="let person of personList">
         <div class="card-horiz shadow">
           <a routerLink="/profile/{{person.email.split('@ucdenver.edu')[0]}}">
             <ng-template [ngIf]="person.photo != null" [ngIfElse]="defaultImage">
@@ -28,41 +27,9 @@
             </div>
           </div>
         </div>
-        <!--<div *ngIf="displayAll">-->
-            <!--<app-card-business [image]="person.photo"-->
-                               <!--[_id] = "person._id"-->
-                               <!--[name]="person.name"-->
-                               <!--[role]="person.role"-->
-                               <!--[email]="person.email"-->
-                               <!--[myWebsite]="person.my_website_link"-->
-                               <!--[socialLinks]="person.links"-->
-                               <!--(personId)="getPerson($event)">-->
-            <!--</app-card-business>-->
-        <!--</div>-->
       </div>
     </div>
   </div>
-  <!--<div >-->
-    <!--<div class="row">-->
-      <!--<div class="col" >-->
-        <!--<div *ngIf="displayPerson">-->
-          <!--<app-profile [image]="person.photo"-->
-                       <!--[_id] = "person._id"-->
-                       <!--[name]="person.name"-->
-                       <!--[role]="person.role"-->
-                       <!--[email]="person.email"-->
-                       <!--[biography] = "person.biography"-->
-                       <!--[myWebsite]="person.my_website_link"-->
-                       <!--[google_drive_link]="person.google_drive_link"-->
-                       <!--[socialLinks]="person.links"-->
-                       <!--[phone_number]="person.phone_number">-->
-                       <!--&lt;!&ndash;[research]="personResearch.title"&ndash;&gt;-->
-          <!--&gt;-->
-          <!--</app-profile>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
 </div>
 
 

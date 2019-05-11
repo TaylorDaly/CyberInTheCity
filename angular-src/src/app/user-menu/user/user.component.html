@@ -83,12 +83,6 @@
     </div>
 
     <div class="form-group">
-      <label>Google Drive Folder</label>
-      <input class="form-control" placeholder="Enter a public folder URL from Google Drive"
-             formControlName="googleDrive">
-    </div>
-
-    <div class="form-group">
       <label>Social Media:</label>
       <div formArrayName="smLinks" *ngFor="let smLink of smLinks.controls; let i=index">
         <div [formGroupName]="i">

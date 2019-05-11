@@ -7,7 +7,7 @@
 </div>
 
 <div class="container" [hidden]="!editPerson">
-  <form [formGroup]="createPerson" (ngSubmit)="savePerson()">
+  <form [formGroup]="createPerson">
     {{createPerson.value | json}}
     <div class="form-group">
       <label><span class="text-danger">*</span>School Email:</label>
@@ -63,8 +63,8 @@
 
     <div class="form-group">
       <label>Phone Number:</label>
-      <input type="tel" class="form-control" placeholder="Enter 10-digit phone number"
-             formControlName="phone_number">
+      <input type="tel" class="form-control" placeholder="Enter 10-digit phone number with dashes (e.g. 123-456-7890)"
+             formControlName="phone_number" maxlength="12">
     </div>
 
     <div class="form-group">
@@ -128,8 +128,15 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label>Biography:</label>
+      <app-editor [disabled]="createPerson.invalid" (htmlString)="savePerson($event)"
+                  [htmlContent]="biography.value"></app-editor>
+    </div>
+
+
     <p class="text-danger">* Required fields</p>
-    <button class="btn btn-color" [disabled]="createPerson.invalid">Save</button>
+    <!--<button class="btn btn-color" [disabled]="createPerson.invalid">Save</button>-->
   </form>
   <p class="text-danger">{{errMsg}}</p>
 </div>

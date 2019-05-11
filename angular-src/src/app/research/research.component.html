@@ -1,12 +1,29 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6" *ngFor="let re of research">
+
       <app-card-info [header]="re.title"
-                     [body]="re.description"
-                     [footer]="re.type + ' | Time Period: ' +
-                     (re.startDate | date: 'shortDate': 'GMT+1') + ' - ' +
-                     (re.endDate | date: 'shortDate': 'GMT+1')">
+                     [body]="'Researcher(s): ' + re.researchers"
+                     [footer]="'Research Type: ' + re.type"
+                     [headerLink]="'/research/' + re.title">
       </app-card-info>
+
+      <!--<div *ngIf="re.hasOwnProperty('endDate'); else isOngoing">-->
+        <!--<app-card-info [header]="re.title"-->
+                       <!--[body]="re.description"-->
+                       <!--[footer]="re.type + ' | Time Period: ' +-->
+                     <!--(re.startDate | date: 'shortDate': 'GMT+1') + ' - ' +-->
+                     <!--(re.endDate | date: 'shortDate': 'GMT+1')">-->
+        <!--</app-card-info>-->
+      <!--</div>-->
+      <!--<ng-template #isOngoing>-->
+        <!--<app-card-info [header]="re.title"-->
+                       <!--[body]="re.description"-->
+                       <!--[footer]="re.type + ' | Time Period: ' +-->
+                     <!--(re.startDate | date: 'shortDate': 'GMT+1') + ' - In Progress'">-->
+        <!--</app-card-info>-->
+      <!--</ng-template>-->
+
     </div>
   </div>
 </div>

@@ -22,7 +22,7 @@ export class EditResearchComponent implements OnInit {
   researchFields = ['title', 'type', 'start_date', 'end_date'];
 
   personList: Person[];
-  researchTypeList = ['Faculty Project', 'Faculty Funding', 'Student Project'];
+  //researchTypeList = ['Faculty Project', 'Faculty Funding', 'Student Project'];
 
   // Settings to reset //
   errMsg = "";
@@ -53,6 +53,9 @@ export class EditResearchComponent implements OnInit {
   get ongoing() {
     return this.createResearch.get('ongoing');
   }
+  get description() {
+    return this.createResearch.get('description');
+  }
 
   constructor(private researchService: ResearchService,
               private personService: PersonService,
@@ -70,9 +73,9 @@ export class EditResearchComponent implements OnInit {
       _id: [''],
       title: ['', Validators.required],
       ownerID: this.fb.array([this.fb.control('', Validators.required)]),
-      type: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: [{value: '', disabled: false}, Validators.required],
+      type: [''],
+      startDate: [''],
+      endDate: [{value: '', disabled: false}],
       ongoing: [false],
       description: [''],
     });
@@ -80,10 +83,10 @@ export class EditResearchComponent implements OnInit {
 
   ongoingDate() {
     if(this.ongoing.value == false) {  // When previously set to false //
-      this.endDate.clearValidators();
+      //this.endDate.clearValidators();
       this.endDate.disable();
     } else {
-      this.endDate.setValidators(Validators.required);
+      //this.endDate.setValidators(Validators.required);
       this.endDate.enable();
     }
   }
@@ -114,17 +117,28 @@ export class EditResearchComponent implements OnInit {
 
   setResearch(data) {
     for(let i = 0; i < data.length; ++i) {
-      this.researchList.push({
-        _id: data[i]._id,
-        title: data[i].title,
-        type: data[i].type,
-        start_date: new Date(data[i].startDate).toISOString().substring(0, 10),
-        end_date: new Date(data[i].endDate).toISOString().substring(0, 10)});
+      if(data[i].hasOwnProperty("endDate")) {
+        this.researchList.push({
+          _id: data[i]._id,
+          title: data[i].title,
+          type: data[i].type,
+          start_date: new Date(data[i].startDate).toISOString().substring(0, 10),
+          end_date: new Date(data[i].endDate).toISOString().substring(0, 10)
+        });
+      } else {
+        this.researchList.push({
+          _id: data[i]._id,
+          title: data[i].title,
+          type: data[i].type,
+          start_date: new Date(data[i].startDate).toISOString().substring(0, 10),
+          end_date: "In Progress"
+        });
+      }
     }
   }
 
   getAllPeople() {
-    this.personService.getAllPeople()
+    this.personService.getVerifiedPeople()
       .subscribe(
         res => {
           this.personList = res;
@@ -189,15 +203,27 @@ export class EditResearchComponent implements OnInit {
 
     if (editObj.option == "update") {
       let research = this.researchFull.find(x => x._id === editObj._id);
+      //console.log(research);
       this.createResearch.patchValue({
         _id: editObj._id,
         title: research.title,
         ownerID: research.ownerID,  // Only adds the first one from research.ownerID array //
         type: research.type,
         startDate: new Date(research.startDate).toISOString().substring(0, 10),
-        endDate: new Date(research.endDate).toISOString().substring(0, 10),
+        // endDate: new Date(research.endDate).toISOString().substring(0, 10),
         description: research.description,
       });
+
+      if (research['endDate']) {
+        this.createResearch.patchValue({
+          endDate: new Date(research.endDate).toISOString().substring(0, 10),
+        });
+      } else {
+        this.endDate.disable();
+        this.createResearch.patchValue({
+          ongoing: true
+        });
+      }
 
       // Push rest of research.ownerID array //
       for (let i = 1; i < research.ownerID.length; ++i) {
@@ -221,7 +247,10 @@ export class EditResearchComponent implements OnInit {
     }
   }
 
-  saveResearch() {
+  saveResearch(html) {
+    this.createResearch.patchValue({
+      description: html
+    });
     //console.log(this.createResearch.value);
     if (this.edit.option === "add") {
       this.researchService.addResearch(this.createResearch.value)

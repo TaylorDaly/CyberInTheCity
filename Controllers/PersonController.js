@@ -8,7 +8,7 @@ const request = require('request');
 
 PeopleRouter.get('/Admin', Auth.VerifyAdmin, (req, res) => {
     Person.find(req.query,
-        'email _id sys_role name verified role links photo phone_number office_location',
+        'email _id sys_role name verified role links photo phone_number office_location biography my_website_link',
         (err, people) => {
             if (err) {
                 res.json({
@@ -39,7 +39,7 @@ PeopleRouter.get('/', (req, res) => {
         } else {
             res.status(404).send({
                 success: false,
-                message: `Unable to find people. Please try again.`
+                message: `Unable to find people or no people to show.`
             })
         }
     })
