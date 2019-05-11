@@ -19,7 +19,7 @@ export class EditResearchComponent implements OnInit {
 
   researchFull: ResearchItem[];
   researchList = [];
-  researchFields = ['title', 'type', 'start_date', 'end_date'];
+  researchFields = ['title', 'type'];
 
   personList: Person[];
   //researchTypeList = ['Faculty Project', 'Faculty Funding', 'Student Project'];
@@ -117,23 +117,11 @@ export class EditResearchComponent implements OnInit {
 
   setResearch(data) {
     for(let i = 0; i < data.length; ++i) {
-      if(data[i].hasOwnProperty("endDate")) {
-        this.researchList.push({
-          _id: data[i]._id,
-          title: data[i].title,
-          type: data[i].type,
-          start_date: new Date(data[i].startDate).toISOString().substring(0, 10),
-          end_date: new Date(data[i].endDate).toISOString().substring(0, 10)
-        });
-      } else {
-        this.researchList.push({
-          _id: data[i]._id,
-          title: data[i].title,
-          type: data[i].type,
-          start_date: new Date(data[i].startDate).toISOString().substring(0, 10),
-          end_date: "In Progress"
-        });
-      }
+      this.researchList.push({
+        _id: data[i]._id,
+        title: data[i].title,
+        type: data[i].type,
+      });
     }
   }
 

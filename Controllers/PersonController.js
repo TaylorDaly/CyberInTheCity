@@ -157,7 +157,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                         else person.office_location = undefined;
                         if (req.body.links) person.links = req.body.links;
                         if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
-                        else person.google_scholar_linkg = undefined;
+                        else person.google_scholar_link = undefined;
                         if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
                         else person.my_website_link = undefined;
                         // Checks the google drive link returns status 200 (OK)
@@ -167,6 +167,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                             if (req.body.photo && req.body.photo.buffer) {
                                 person.photo = await updateImage(req);
                             } else {
+                                if(person.photo._id)
                                 await deleteImage(person.photo._id);
                                 person.photo = undefined;
                             }
