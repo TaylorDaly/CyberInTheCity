@@ -41,23 +41,37 @@ export class EditPeopleComponent implements OnInit {
   get name() {
     return this.createPerson.get('name');
   }
+
   get role() {
     return this.createPerson.get('role');
   }
+
   get email() {
     return this.createPerson.get('email');
   }
+
   get password() {
     return this.createPerson.get('password');
   }
+
   get sys_role() {
     return this.createPerson.get('sys_role');
   }
+
   get links() {
     return this.createPerson.get('links') as FormArray;
   }
+
   get photo() {
     return this.createPerson.get('photo');
+  }
+
+  get biography() {
+    return this.createPerson.get('biography');
+  }
+
+  get myWebsite() {
+    return this.createPerson.get('my_website_link');
   }
 
   constructor(private personService: PersonService,
@@ -91,21 +105,21 @@ export class EditPeopleComponent implements OnInit {
     });
   }
 
-  smLink(value):FormGroup {
+  smLink(value): FormGroup {
     return this.fb.group({
-      URL:[value.URL],
-      description:[value.description]
+      URL: [value.URL],
+      description: [value.description]
     });
   }
 
-  descRequired(i){
+  descRequired(i) {
     const desc = this.links.at(i).get('description');
 
     this.links.at(i).get('URL').valueChanges
       .subscribe(changed => {
-        if(changed && desc.value === "") {
+        if (changed && desc.value === "") {
           desc.setValidators(Validators.required);
-        }else {
+        } else {
           desc.clearValidators();
         }
         desc.updateValueAndValidity();
@@ -114,14 +128,14 @@ export class EditPeopleComponent implements OnInit {
 
   addSMLinks(value) {
     this.linkLength = 'col-md-8';
-    if(this.links.length < 5) {
+    if (this.links.length < 5) {
       this.links.push(this.smLink(value));
     }
   }
 
   deleteSMLinks(index: number) {
     this.links.removeAt(index);
-    if(this.links.length <= 1)
+    if (this.links.length <= 1)
       this.linkLength = 'col-md-9';
   }
 
@@ -201,8 +215,8 @@ export class EditPeopleComponent implements OnInit {
   }
 
   cleanObject() {
-    for(let i = 0; i < this.links.value.length; ++i) {
-      if(this.links.value[i].description == '' || this.links.value[i].URL == '') {
+    for (let i = 0; i < this.links.value.length; ++i) {
+      if (this.links.value[i].description == '' || this.links.value[i].URL == '') {
         //console.log(this.links.value[i]);
         this.links.value.splice(i, 1);
         i -= 1;
@@ -211,11 +225,11 @@ export class EditPeopleComponent implements OnInit {
   }
 
   setPhotoData() {
-    if(this.imgSrc.image != "") {
+    if (this.imgSrc.image != "") {
       let img = this.imgSrc.image.split(',');
 
       // Set image file type //
-      if(img[0].search('jpeg' || 'jpg') != -1) {
+      if (img[0].search('jpeg' || 'jpg') != -1) {
         this.photo.patchValue({
           content_type: 'image/jpeg'
         })
@@ -229,7 +243,7 @@ export class EditPeopleComponent implements OnInit {
         })
       }
 
-      if(img[1].length > 0) {
+      if (img[1].length > 0) {
         this.photo.patchValue({
           buffer: img[1]
         })
@@ -245,8 +259,8 @@ export class EditPeopleComponent implements OnInit {
     this.personService.getPersonById(_id)
       .subscribe(
         res => {
-          if(res.hasOwnProperty('photo') && res.photo != null) {
-            if(res.photo.content_type != null && res.photo.buffer != null) {
+          if (res.hasOwnProperty('photo') && res.photo != null) {
+            if (res.photo.content_type != null && res.photo.buffer != null) {
               this.imgSrc.image = "data:" + res.photo.content_type +
                 ';base64,' + res.photo.buffer;
             }
@@ -264,7 +278,7 @@ export class EditPeopleComponent implements OnInit {
       this.getPersonImage(editObj._id);
       let person = this.personFull.find(x => x._id === editObj._id);
       //console.log(person);
-      if(person != null) {
+      if (person != null) {
         this.createPerson.patchValue({
           _id: editObj._id,
           name: person.name,
@@ -283,7 +297,7 @@ export class EditPeopleComponent implements OnInit {
         }
         this.editPerson = true;
       }
-    } else  {  // Delete loadComp item //
+    } else {  // Delete loadComp item //
       if (window.confirm('Are you sure you want to delete this person?')) {
         this.personService.deletePerson(editObj._id)
           .subscribe(
@@ -300,8 +314,19 @@ export class EditPeopleComponent implements OnInit {
     }
   }
 
-  savePerson() {
-    //console.log(this.createResearch.value);
+  savePerson(html) {
+    this.createPerson.patchValue({
+      biography: html
+    });
+
+    // Check if website entered has http protocol in url //
+    // if (this.myWebsite.value.indexOf('https://') == -1 ||
+    //   this.myWebsite.value.indexOf('http://') == -1 ||
+    //   this.myWebsite.value.indexOf('www.') == -1)
+    //   this.createPerson.patchValue({
+    //     my_website_link: 'www.' + this.myWebsite.value
+    //   });
+
     this.cleanObject();
     this.setPhotoData();
     if (this.edit.option === "add") {

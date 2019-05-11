@@ -1,18 +1,20 @@
 <div class="container">
+  <p class="text-danger">{{error}}</p>
+  <p *ngIf="loaded && courses.length <= 0">No courses to show.</p>
   <div class="row">
     <div class="col-md-6" *ngFor="let c of courses">
       <!--<a class="course" routerLink="/course/{{c.courseNumber}}">-->
       <div *ngIf="c.courseSection != '000'; else noSection">
         <app-card-info [header]="c.department + ' ' + c.courseNumber + '-' + c.courseSection + ': ' + c.courseName"
-                       [body]="'Term: ' + c.termSemester + ' ' + c.termYear"
-                       [footer]=null
+                       [body]="'Professor: ' + c.teacherName"
+                       [footer]="'Term: ' + c.termSemester + ' ' + c.termYear"
                        [headerLink]="'/course/' + c.department + '-' + c.courseNumber + '-' + c.courseSection">
         </app-card-info>
       </div>
         <ng-template #noSection>
           <app-card-info [header]="c.department + ' ' + c.courseNumber + ': ' + c.courseName"
                          [body]="'Term: ' + c.termSemester + ' ' + c.termYear"
-                         [footer]=null
+                         [footer]="'Term: ' + c.termSemester + ' ' + c.termYear"
                          [headerLink]="'/course/' + c.department + '-' + c.courseNumber + '-' + c.courseSection">
           </app-card-info>
         </ng-template>

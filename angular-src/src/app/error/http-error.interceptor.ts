@@ -29,6 +29,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               // client-side errRes
               err.code = errRes.status;
               err.message = errRes.message;
+              console.log('Client Error');
             } else {
               // server-side errRes
               if(errRes.status >= 500 || errRes.status == 0) {  // For all server errors //
@@ -39,6 +40,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               else {
                 err.code = errRes.status;
                 err.message = errRes.error.message;
+                console.log('Server Error');
                 //window.alert(`Error ${err.code}: ${err.message}`);
               }
             }

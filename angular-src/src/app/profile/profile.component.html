@@ -1,12 +1,15 @@
 <div class="container" *ngFor="let person of person">
+  <p class="text-danger">{{error}}</p>
   <table border="0" cellspacing="0" cellpadding="4">
     <tbody>
     <tr>
       <ng-template [ngIf]="person.photo != null" [ngIfElse]="defaultImage">
-        <img class="card-horiz-img" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}" style="padding-right: 50px">
+        <img class="card-horiz-img" src="data:{{person.photo.content_type}};base64,{{person.photo.buffer}}"
+             style="padding-right: 50px">
       </ng-template>
       <ng-template #defaultImage>
-        <img class="card-horiz-img" src="assets/images/defaultPhoto.png" alt="No image available" style="padding-right: 50px">
+        <img class="card-horiz-img" src="assets/images/defaultPhoto.png" alt="No image available"
+             style="padding-right: 50px">
       </ng-template>
       <td>
         <h1 style="line-height: 100%; margin-top: 0; margin-bottom: 0">{{person.name}}</h1>
@@ -14,9 +17,9 @@
         <a href="mailto: {{person.email}}">{{person.email}}</a><br/>
         <a *ngIf="person.my_website_link != '' && person.my_website_link != null"
            href="{{person.my_website_link}}">
-        My Website</a>
-        <p><i> Bio: &nbsp;</i><br>
-         {{person.biography}}
+          My Website</a>
+        <p>Office Location: &nbsp;<i>{{person.office_location}}</i><br/>
+          Phone: &nbsp;<i>{{person.phone_number}}</i>
         </p>
       </td>
     </tr>
@@ -24,87 +27,47 @@
   </table>
 
   <div>
+    <br/>
     <hr size="2" width="100%" align="center">
-  </div>
-
-  <br/><a *ngIf="personResearch != null">  <h2>Research</h2>
-  <div *ngFor="let researchList of personResearch" style="display: inline;">
-    {{researchList.title}}<br>
-  </div>
-</a>
-
-  <!--<br/><a *ngIf="person.my_website_link != '' && person.my_website_link != null">-->
-  <!--<a href="{{person.my_website_link}}">My Website</a></a>-->
-
-  <br/><br/>
-  <h2>Social Media</h2>
-  <p *ngIf="person.links.length == 0">None</p>
-  <div *ngFor="let link of person.links" style="display: inline;">
-    <a class="fa fa-{{link.description}}" href="{{link.URL}}"></a>
+    <h2>Social Media</h2><br/>
+    <!--<p *ngIf="person.links.length <= 0">None listed</p>-->
+    <div *ngFor="let link of person.links" style="display: inline;">
+      <a class="fa fa-{{link.description}}" href="{{link.URL}}"></a>
+    </div>
   </div>
 
   <div>
+    <br/>
     <hr size="2" width="100%" align="center">
+    <a *ngIf="personResearch != null">
+    <h2>Research</h2><br/>
+    <!--<p *ngIf="personResearch.length <= 0">None listed</p>-->
+    <div *ngFor="let research of personResearch" style="display: inline;">
+      <a routerLink="/research/{{research.title}}">
+        {{research.title}}</a><i *ngIf="research.type != ''">&nbsp;-&nbsp;{{research.type}}</i><br>
+    </div>
+  </a>
   </div>
-
-  <table border="0" cellspacing="0" cellpadding="0" width="590">
-    <tbody>
-    <tr>
-      <td>
-        <p>Office Location: &nbsp;<i>{{person.office_location}}<br></i>
-        </p>
-      </td>
-      <td>
-        <p *ngIf="person.phone_number != '' && person.phone_number != null">
-          Phone: <i>{{person.phone_number}}</i></p>
-      </td>
-    </tr>
-    </tbody>
-  </table>
 
   <div>
+    <br/>
     <hr size="2" width="100%" align="center">
+    <h2>Courses</h2><br/>
+    <div *ngFor="let c of courses">
+      <div *ngIf="c.teacherEmail == person.email">
+        <a routerLink="/course/{{c.department}}-{{c.courseNumber}}-{{c.courseSection}}">
+          {{c.courseName}}</a><i>&nbsp;-&nbsp;{{c.termSemester}} {{c.termYear}}</i><br>
+      </div>
+    </div>
   </div>
-  <!--<br/><a *ngIf="person.google_drive_link != '' && person.google_drive_link != null"><h2>My Files</h2>-->
-  <!--&lt;!&ndash;For the google link &ndash;&gt;-->
-  <!--<iframe [src]=sanitizer.bypassSecurityTrustResourceUrl(person.google_drive_link)-->
-          <!--style="width:100%; height:300px; border:0;"></iframe>-->
-<!--</a>-->
 
-
-  <!--<div class="container">-->
-    <!--<div class="row">-->
-      <!--<div *ngFor="let c of courses">-->
-        <!--<br/><a *ngIf="c.teacherEmail == person.email">-->
-        <!--<app-card-info [header]="c.courseNumber + ': ' + c.courseName"-->
-                       <!--[body]="c.description"-->
-                       <!--[footer]="'Term: ' + c.termSemester + ' ' + c.termYear"></app-card-info></a>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-
+  <div>
+    <br/>
+    <hr size="2" width="100%" align="center">
+    <h2>Biography</h2>
+  </div>
   <div class="container">
-    <div class="row">
-  <div *ngFor="let c of courses">
-    <br/><a *ngIf="c.teacherEmail == person.email">
-    <!--<a class="course" routerLink="/course/{{c.courseNumber}}">-->
-    <div *ngIf="c.courseSection != '000'; else noSection">
-      <app-card-info [header]="c.department + ' ' + c.courseNumber + '-' + c.courseSection + ': ' + c.courseName"
-                     [body]="'Term: ' + c.termSemester + ' ' + c.termYear"
-                     [footer]=null
-                     [headerLink]="'/course/' + c.department + '-' + c.courseNumber + '-' + c.courseSection">
-      </app-card-info>
-    </div>
-    <ng-template #noSection>
-      <app-card-info [header]="c.department + ' ' + c.courseNumber + ': ' + c.courseName"
-                     [body]="'Term: ' + c.termSemester + ' ' + c.termYear"
-                     [footer]=null
-                     [headerLink]="'/course/' + c.department + '-' + c.courseNumber + '-' + c.courseSection">
-      </app-card-info>
-    </ng-template></a>
-    <!--</a>-->
-  </div>
-    </div>
+    <div [innerHTML]="person.biography" class="cke_contents_ltr"></div>
   </div>
 
 </div>

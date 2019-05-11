@@ -16,9 +16,12 @@ export class CardCareersComponent implements OnInit {
   @Input() postedDate: string;
   @Input() description: string;
 
+  linkClass = "";
+
   constructor() { }
 
   ngOnInit() {
+    if(this.url.length <= 0) this.linkClass = "disabled";
   }
 
 }

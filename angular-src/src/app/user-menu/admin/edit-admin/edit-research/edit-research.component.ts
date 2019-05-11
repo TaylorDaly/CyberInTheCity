@@ -5,7 +5,6 @@ import {ListDataComponent} from "../../../../app-design/list-data/list-data.comp
 import {PersonService} from "../../../../Services/person.service";
 import {Person} from "../../../../person/person";
 import {ResearchItem} from "../../../../research/research";
-import {hasOwnProperty} from "tslint/lib/utils";
 
 @Component({
   selector: 'app-edit-research',
@@ -23,7 +22,7 @@ export class EditResearchComponent implements OnInit {
   researchFields = ['title', 'type', 'start_date', 'end_date'];
 
   personList: Person[];
-  researchTypeList = ['Faculty Project', 'Faculty Funding', 'Student Project'];
+  //researchTypeList = ['Faculty Project', 'Faculty Funding', 'Student Project'];
 
   // Settings to reset //
   errMsg = "";
@@ -54,6 +53,9 @@ export class EditResearchComponent implements OnInit {
   get ongoing() {
     return this.createResearch.get('ongoing');
   }
+  get description() {
+    return this.createResearch.get('description');
+  }
 
   constructor(private researchService: ResearchService,
               private personService: PersonService,
@@ -71,9 +73,9 @@ export class EditResearchComponent implements OnInit {
       _id: [''],
       title: ['', Validators.required],
       ownerID: this.fb.array([this.fb.control('', Validators.required)]),
-      type: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: [{value: '', disabled: false}, Validators.required],
+      type: [''],
+      startDate: [''],
+      endDate: [{value: '', disabled: false}],
       ongoing: [false],
       description: [''],
     });
@@ -81,10 +83,10 @@ export class EditResearchComponent implements OnInit {
 
   ongoingDate() {
     if(this.ongoing.value == false) {  // When previously set to false //
-      this.endDate.clearValidators();
+      //this.endDate.clearValidators();
       this.endDate.disable();
     } else {
-      this.endDate.setValidators(Validators.required);
+      //this.endDate.setValidators(Validators.required);
       this.endDate.enable();
     }
   }
@@ -136,7 +138,7 @@ export class EditResearchComponent implements OnInit {
   }
 
   getAllPeople() {
-    this.personService.getAllPeople()
+    this.personService.getVerifiedPeople()
       .subscribe(
         res => {
           this.personList = res;
@@ -217,6 +219,7 @@ export class EditResearchComponent implements OnInit {
           endDate: new Date(research.endDate).toISOString().substring(0, 10),
         });
       } else {
+        this.endDate.disable();
         this.createResearch.patchValue({
           ongoing: true
         });
@@ -244,7 +247,10 @@ export class EditResearchComponent implements OnInit {
     }
   }
 
-  saveResearch() {
+  saveResearch(html) {
+    this.createResearch.patchValue({
+      description: html
+    });
     //console.log(this.createResearch.value);
     if (this.edit.option === "add") {
       this.researchService.addResearch(this.createResearch.value)

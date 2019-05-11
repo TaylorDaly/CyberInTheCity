@@ -15,6 +15,10 @@ export class ResearchService {
     return this.httpClient.get<ResearchItem[]>(environment.apiUrl + '/research');
   }
 
+  getPersonResearch(_id): Observable<any> {
+    return this.httpClient.get<any>(environment.apiUrl + `/research/${_id}`);
+  }
+
   addResearch(research): Observable<any> {
     return this.httpClient.post<any>(environment.apiUrl + '/research', research);
   }

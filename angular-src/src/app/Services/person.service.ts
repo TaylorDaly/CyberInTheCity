@@ -47,8 +47,4 @@ export class PersonService {
   getCurrentUser(): Observable<any> {
     return this.httpClient.get<any>(environment.apiUrl + '/person/self')
   }
-
-  getPersonResearch(_id): Observable<any> {
-    return this.httpClient.get<any>(environment.apiUrl + `/research/${_id}`);
-  }
 }

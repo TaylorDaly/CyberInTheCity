@@ -7,8 +7,8 @@
 </div>
 
 <div class="container" [hidden]="!editPerson">
-  <form [formGroup]="createPerson" (ngSubmit)="savePerson()">
-    <!--{{createPerson.value | json}}-->
+  <form [formGroup]="createPerson">
+    {{createPerson.value | json}}
     <div class="form-group">
       <label><span class="text-danger">*</span>School Email:</label>
       <input type="email" [class.is-invalid]="email.invalid && email.touched"
@@ -113,12 +113,6 @@
     </div>
 
     <div class="form-group">
-      <label>Biography:</label>
-      <textarea class="form-control" rows="5" placeholder="Enter your biography"
-                formControlName="biography"></textarea>
-    </div>
-
-    <div class="form-group">
       <label>Profile Picture:</label>
       <div class="form-row">
         <div class="col">
@@ -134,8 +128,15 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label>Biography:</label>
+      <app-editor [disabled]="createPerson.invalid" (htmlString)="savePerson($event)"
+                  [htmlContent]="biography.value"></app-editor>
+    </div>
+
+
     <p class="text-danger">* Required fields</p>
-    <button class="btn btn-color" [disabled]="createPerson.invalid">Save</button>
+    <!--<button class="btn btn-color" [disabled]="createPerson.invalid">Save</button>-->
   </form>
   <p class="text-danger">{{errMsg}}</p>
 </div>

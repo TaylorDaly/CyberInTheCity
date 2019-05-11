@@ -52,7 +52,7 @@ export class NewsComponent implements OnInit {
           }
         },
         err => {
-          this.error = err['error'].message;
+          this.error = err.message;
         }
       )
   }
