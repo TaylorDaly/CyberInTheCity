@@ -181,7 +181,7 @@ export class EditEventsComponent implements OnInit {
           }
         )
 
-    } else { // Update research //
+    } else { // Update Events //
       this.eventService.updateEvent(this.createEvent.value)
         .subscribe(
           res => {

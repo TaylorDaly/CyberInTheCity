@@ -74,9 +74,9 @@ export class EditResearchComponent implements OnInit {
       title: ['', Validators.required],
       ownerID: this.fb.array([this.fb.control('', Validators.required)]),
       type: [''],
-      startDate: [''],
-      endDate: [{value: '', disabled: false}],
-      ongoing: [false],
+      startDate: [{value: '', disabled: false}],
+      endDate: [{value: '', disabled: true}],
+      ongoing: [true],
       description: [''],
     });
   }
@@ -122,6 +122,7 @@ export class EditResearchComponent implements OnInit {
         title: data[i].title,
         type: data[i].type,
       });
+      if(this.researchList[i].type == '') this.researchList[i].type = "Not declared";
     }
   }
 
@@ -142,6 +143,7 @@ export class EditResearchComponent implements OnInit {
   addNewResearch() {
     this.resetForm();
     this.editResearch = true;
+    this.startDate.enable();
   }
 
   addResearcher(value) {
@@ -197,10 +199,14 @@ export class EditResearchComponent implements OnInit {
         title: research.title,
         ownerID: research.ownerID,  // Only adds the first one from research.ownerID array //
         type: research.type,
-        startDate: new Date(research.startDate).toISOString().substring(0, 10),
-        // endDate: new Date(research.endDate).toISOString().substring(0, 10),
         description: research.description,
+        startDate: [{value: '', disabled: false}]
       });
+
+      if(research['startDate'])
+        this.createResearch.patchValue({
+          startDate: new Date(research.startDate).toISOString().substring(0, 10),
+        });
 
       if (research['endDate']) {
         this.createResearch.patchValue({
@@ -239,6 +245,7 @@ export class EditResearchComponent implements OnInit {
     this.createResearch.patchValue({
       description: html
     });
+
     //console.log(this.createResearch.value);
     if (this.edit.option === "add") {
       this.researchService.addResearch(this.createResearch.value)

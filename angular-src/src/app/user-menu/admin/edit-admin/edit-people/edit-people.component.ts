@@ -88,7 +88,7 @@ export class EditPeopleComponent implements OnInit {
   resetForm() {
     this.createPerson = this.fb.group({
       _id: [''],
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.minLength(3)]],
       photo: this.fb.group({
         content_type: [''],
         buffer: ['']
@@ -299,7 +299,6 @@ export class EditPeopleComponent implements OnInit {
       }
     } else {  // Delete loadComp item //
       if (window.confirm('Are you sure you want to delete this person?')) {
-        console.log(editObj._id);
         this.personService.deletePerson(editObj._id)
           .subscribe(
             res => {
@@ -335,6 +334,7 @@ export class EditPeopleComponent implements OnInit {
           }
         )
     } else { // Update person //
+      console.log(this.createPerson.value);
       this.personService.updatePerson(this.createPerson.value)
         .subscribe(
           res => {

@@ -98,7 +98,7 @@ PeopleRouter.delete('/:id', Auth.VerifySysAdmin, (req, res) => {
                         message: `Attempt to delete person failed. Error: ${err}`
                     })
                 } else {
-                    res.status(500).json({
+                    res.status(200).json({
                         success: true,
                         message: `Person deleted successfully.`
                     })
