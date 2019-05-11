@@ -84,7 +84,6 @@ PeopleRouter.get('/:id', (req, res) => {
 
 // Delete Person by _id. Only Sys_Admins may delete users.
 PeopleRouter.delete('/:id', Auth.VerifySysAdmin, (req, res) => {
-
     Person.getPerson({_id: req.params.id}, (err, person) => {
         if (err) {
             res.json({
@@ -165,7 +164,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                         try {
                             // Photo is in separate database so have to delete it separately.
                             if (req.body.photo && req.body.photo.buffer) {
-                                person.photo = await updateImage(req);
+                                person.photo = await updateImage(person.photo);
                             } else {
                                 await deleteImage(person.photo._id);
                                 person.photo = undefined;
@@ -268,35 +267,38 @@ PeopleRouter.post('/', (req, res) => {
     }
 });
 
-const updateImage = async (req) => {
+const updateImage = async (photo) => {
     return new Promise((resolve, reject) => {
-        Image.findImage(req.body.photo._id, (img, err) => {
-            if (err) reject(err);
-            else if (img) {
-                // Either make a new image or update the old one.
-                img.buffer = req.body.photo.buffer;
-                img.content_type = req.body.photo.content_type;
+        let img;
+        if (photo) {
+            Image.findImage(photo._id, (img, err) => {
+                if (err) reject(err);
+                else if (img) {
+                    // Either make a new image or update the old one.
+                    img.buffer = photo.buffer;
+                    img.content_type = photo.content_type;
 
-                img.save(img, async (err, img) => {
-                    if (err) {
-                        return reject(err)
-                    } else {
-                        return resolve(img._id)
-                    }
-                });
-            } else {
-                img = new Image();
-                img.buffer = req.body.photo.buffer;
-                img.content_type = req.body.photo.content_type;
-                img.save(img, async (err, img) => {
-                    if (err) {
-                        return reject(err)
-                    } else {
-                        return resolve(img._id)
-                    }
-                })
-            }
-        });
+                    img.save(img, async (err, img) => {
+                        if (err) {
+                            return reject(err)
+                        } else {
+                            return resolve(img._id)
+                        }
+                    });
+                }
+            })
+        } else {
+            img = new Image();
+            img.buffer = photo.buffer;
+            img.content_type = photo.content_type;
+            img.save(img, async (err, img) => {
+                if (err) {
+                    return reject(err)
+                } else {
+                    return resolve(img._id)
+                }
+            })
+        }
     });
 };
 
