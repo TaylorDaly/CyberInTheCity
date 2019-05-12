@@ -164,7 +164,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                         try {
                             // Photo is in separate database so have to delete it separately.
                             if (req.body.photo && req.body.photo.buffer) {
-                                person.photo = await updateImage(person.photo);
+                                person.photo = await updateImage(req.body.photo);
                             } else if (person.photo) {
                                 await deleteImage(person.photo._id);
                                 person.photo = undefined;
@@ -269,8 +269,7 @@ PeopleRouter.post('/', (req, res) => {
 
 const updateImage = async (photo) => {
     return new Promise((resolve, reject) => {
-        let img;
-        if (photo) {
+        if (photo._id) {
             Image.findImage(photo._id, (img, err) => {
                 if (err) reject(err);
                 else if (img) {
@@ -288,10 +287,10 @@ const updateImage = async (photo) => {
                 }
             })
         } else {
-            img = new Image();
-            img.buffer = photo.buffer;
-            img.content_type = photo.content_type;
-            img.save(img, async (err, img) => {
+            let newImg = new Image();
+            newImg.buffer = photo.buffer;
+            newImg.content_type = photo.content_type;
+            newImg.save(newImg, async (err, img) => {
                 if (err) {
                     return reject(err)
                 } else {
