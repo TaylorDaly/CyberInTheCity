@@ -10,7 +10,7 @@
   <form [formGroup]="createPerson">
     <!--{{createPerson.value | json}}-->
     <div class="form-group">
-      <label><span class="text-danger">*</span>School Email:</label>
+      <label><span class="text-danger">*</span>School Email</label>
       <input type="email" [class.is-invalid]="email.invalid && email.touched"
              class="form-control" placeholder="Must be a @ucdenver.edu email" formControlName="email" />
       <small class="text-danger" [class.d-none]="email.valid || email.untouched">
@@ -21,7 +21,7 @@
     <div class="form-group">
       <div class="form-row">
         <div class="col-md-8">
-          <label><span class="text-danger">*</span>Full Name:</label>
+          <label><span class="text-danger">*</span>Name</label>
           <input type="text" class="form-control" placeholder="Ex: John Smith" formControlName="name"
                  [class.is-invalid]="name.invalid && name.touched"/>
           <small [class.d-none]="name.valid || name.untouched" class="text-danger">
@@ -29,7 +29,7 @@
           </small>
         </div>
         <div class="col-md-4">
-          <label><span class="text-danger">*</span>Role:</label>
+          <label><span class="text-danger">*</span>Role</label>
           <select class="form-control" formControlName="role" [class.is-invalid]="role.invalid && role.touched">
             <option value="" disabled>Select your role</option>
             <option *ngFor="let r of roles">
@@ -46,13 +46,13 @@
     <div class="form-group">
       <div class="form-row">
         <div class="col">
-          <label><span class="text-danger">*</span>System Role:</label>
+          <label><span class="text-danger">*</span>System Role</label>
           <select class="form-control no-min-width" formControlName="sys_role">
             <option *ngFor="let role of sysRoles">{{role}}</option>
           </select>
         </div>
         <div class="col">
-          <label><span class="text-danger">*</span>Verified:</label>
+          <label><span class="text-danger">*</span>Verified</label>
           <select class="form-control no-min-width" formControlName="verified">
             <option value="true">True</option>
             <option value="false">False</option>
@@ -62,23 +62,26 @@
     </div>
 
     <div class="form-group">
-      <label>Phone Number:</label>
-      <input type="tel" class="form-control" placeholder="Enter 10-digit phone number with dashes (e.g. 123-456-7890)"
+      <label>Phone Number</label>
+      <button type="button" class="btn btn-md btn-icon" matTooltip={{phoneFormat}} matTooltipPosition="right">
+        <span class="fa fa-info-circle"></span>
+      </button>
+      <input type="tel" class="form-control" placeholder="Ex: 123-456-7890"
              formControlName="phone_number" maxlength="12">
     </div>
 
     <div class="form-group">
-      <label>Office Location:</label>
+      <label>Office Location</label>
       <input type="text" class="form-control" placeholder="Enter office location" formControlName="office_location">
     </div>
 
     <div class="form-group">
-      <label>My Website:</label>
+      <label>My Website</label>
       <input type="url" class="form-control" placeholder="Enter your website URL" formControlName="my_website_link"/>
     </div>
 
     <div class="form-group">
-      <label>Social Media:</label>
+      <label>Social Media</label>
       <div formArrayName="links" *ngFor="let smLink of links.controls; let i=index">
         <div [formGroupName]="i">
           <div class="form-row">
@@ -113,14 +116,14 @@
     </div>
 
     <div class="form-group">
-      <label>Profile Picture:</label>
+      <label>Profile Picture</label>
       <div class="form-row">
         <div class="col">
           <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
         </div>
         <div class="col">
           <div *ngIf="imgSrc.image" style="padding-left: 10px;">
-            <label>Preview:</label>
+            <label>Preview</label>
             <br/><img [src]="imgSrc.image" [width]="cropSettings.croppedWidth"
                       [height]="cropSettings.croppedHeight" />
           </div>
@@ -129,7 +132,7 @@
     </div>
 
     <div class="form-group">
-      <label>Biography:</label>
+      <label>Biography</label>
       <app-editor [disabled]="createPerson.invalid" (htmlString)="savePerson($event)"
                   [htmlContent]="biography.value"></app-editor>
     </div>

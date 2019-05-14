@@ -1,23 +1,24 @@
 <div class="container">
 
-  <form *ngIf="editUser && editProfileForm" [formGroup]="editProfileForm" (ngSubmit)="submitUserEdits()">
+  <form *ngIf="editUser && editProfileForm" [formGroup]="editProfileForm">
     <p class="text-danger">{{errMsg}}</p>
-
+    <!--{{editProfileForm.value | json}}-->
     <h2 style="padding-bottom: 10px;">Edit Profile</h2>
     <div class="form-group">
+      <label>School Email</label>
       <input type="email" class="form-control" aria-describedby="emailHelp" readonly formControlName="email"/>
       <small id="emailHelp" class="form-text text-muted">School email cannot be changed.</small>
     </div>
 
     <div class="form-group">
-      <label>Profile Picture:</label>
+      <label>Profile Picture</label>
       <div class="form-row">
         <div class="col">
           <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
         </div>
         <div class="col">
           <div *ngIf="imgSrc.image" style="padding-left: 10px;">
-            <label>Preview:</label>
+            <label>Preview</label>
             <br/><img [src]="imgSrc.image" [width]="cropSettings.croppedWidth"
                       [height]="cropSettings.croppedHeight"/>
           </div>
@@ -26,7 +27,7 @@
     </div>
 
     <div class="form-group">
-      <label><span class="text-danger">*</span>Name/Role:</label>
+      <label><span class="text-danger">*</span>Name/Role</label>
       <div class="form-row">
         <div class="col">
           <input type="text" class="form-control" placeholder="First name" formControlName="firstName"
@@ -64,17 +65,11 @@
 
     <div class="form-group">
       <label>Phone Number</label>
-      <input class="form-control" placeholder="Enter your phone number ex. (303) 333-3333"
-             formControlName="phoneNumber" [class.is-invalid]="phoneNumber.invalid"/>
-      <small [class.d-none]="phoneNumber.valid" class="text-danger">
-        Phone number must be 10 digits with an optional country code at the beginning. You can separate with space,
-        period, or dash.
-      </small>
-    </div>
-
-    <div class="form-group">
-      <label>Bio</label>
-      <textarea rows="4" class="form-control" placeholder="Tell us about yourself" formControlName="bio"></textarea>
+      <button type="button" class="btn btn-md btn-icon" matTooltip={{phoneFormat}} matTooltipPosition="right">
+        <span class="fa fa-info-circle"></span>
+      </button>
+      <input type="tel" class="form-control" placeholder="Ex: 123-456-7890"
+             formControlName="phoneNumber" maxlength="12">
     </div>
 
     <div class="form-group">
@@ -83,7 +78,7 @@
     </div>
 
     <div class="form-group">
-      <label>Social Media:</label>
+      <label>Social Media</label>
       <div formArrayName="smLinks" *ngFor="let smLink of smLinks.controls; let i=index">
         <div [formGroupName]="i">
           <div class="form-row">
@@ -111,15 +106,20 @@
           </div>
         </div>
       </div>
-      <button [disabled]="smLinks.length >= 5" type="button" class="btn btn-default btn-md" (click)="addSMLinks()">
+      &nbsp;<button [disabled]="smLinks.length >= 5" type="button" class="btn btn-default btn-md" (click)="addSMLinks()">
         <span class="fa fa-plus"></span> Add
       </button>
     </div>
 
+    <div class="form-group">
+      <label>Biography</label>
+      <app-editor [disabled]="editProfileForm.invalid" (htmlString)="submitUserEdits($event)"
+                  [htmlContent]="biography.value"></app-editor>
+    </div>
 
-    <button [disabled]="editProfileForm.invalid" class="btn btn-color" type="submit">
-      Submit
-    </button>
+    <!--<button [disabled]="editProfileForm.invalid" class="btn btn-color" type="submit">-->
+      <!--Submit-->
+    <!--</button>-->
     <p class="text-danger">{{errMsg}}</p>
   </form>
   <p class="text-danger">* Required Fields</p>

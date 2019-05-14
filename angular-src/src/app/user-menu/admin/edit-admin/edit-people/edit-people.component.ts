@@ -37,6 +37,7 @@ export class EditPeopleComponent implements OnInit {
 
   imgSrc = {image: ''};  // Cropped image source //
   emptyLink = {URL: '', description: ''};
+  phoneFormat = "10-digit phone number must be entered with dashes (e.g. 123-456-7890)";
 
   get name() {
     return this.createPerson.get('name');
@@ -145,6 +146,7 @@ export class EditPeopleComponent implements OnInit {
     this.editPerson = false;
     this.resetForm();
     this.imgSrc = {image: ""};
+    window.scroll(0,0);
   }
 
   getAllPeople() {
@@ -334,7 +336,7 @@ export class EditPeopleComponent implements OnInit {
           }
         )
     } else { // Update person //
-      console.log(this.createPerson.value);
+      //console.log(this.createPerson.value);
       this.personService.updatePerson(this.createPerson.value)
         .subscribe(
           res => {

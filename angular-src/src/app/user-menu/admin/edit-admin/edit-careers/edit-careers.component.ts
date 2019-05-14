@@ -73,6 +73,7 @@ export class EditCareersComponent implements OnInit {
     this.edit.option = "add";
     this.editCareers = false;
     this.resetForm();
+    window.scroll(0,0);
   }
 
   getAllCareers() {

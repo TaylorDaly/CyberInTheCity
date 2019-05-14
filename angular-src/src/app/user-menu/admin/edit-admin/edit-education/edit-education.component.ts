@@ -95,6 +95,7 @@ export class EditEducationComponent implements OnInit {
     this.edit.option = "add";
     this.editCourse = false;
     this.resetForm();
+    window.scroll(0,0);
   }
 
   getAllCourses(){

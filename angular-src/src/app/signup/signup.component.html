@@ -12,7 +12,7 @@
     </div>
 
     <div class="form-group">
-      <label><span class="text-danger">*</span>Name/Role:</label>
+      <label><span class="text-danger">*</span>Name/Role</label>
       <div class="form-row">
         <div class="col">
           <input type="text" class="form-control" placeholder="First name" formControlName="firstName"
@@ -44,7 +44,7 @@
     </div>
 
     <div class="form-group">
-      <label><span class="text-danger">*</span>Password:</label>
+      <label><span class="text-danger">*</span>Password</label>
       <button type="button" class="btn btn-md btn-icon" matTooltip={{pwdRequirements}} matTooltipPosition="right">
         <span class="fa fa-info-circle"></span>
       </button>
@@ -70,12 +70,12 @@
     </div>
 
     <div class="form-group">
-      <label>My Website:</label>
+      <label>My Website</label>
       <input type="url" class="form-control" placeholder="Enter your website URL" formControlName="myWebsite"/>
     </div>
 
     <div class="form-group">
-      <label>Social Media:</label>
+      <label>Social Media</label>
       <div formArrayName="smLinks" *ngFor="let smLink of smLinks.controls; let i=index">
         <div [formGroupName]="i">
           <div class="form-row">
@@ -109,14 +109,14 @@
     </div>
 
     <div class="form-group">
-      <label>Upload a profile image:</label>
+      <label>Upload a profile image</label>
       <div class="form-row">
         <div class="col">
           <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
         </div>
         <div class="col">
           <div *ngIf="imgSrc.image" style="padding-left: 10px;">
-            <label>Preview:</label>
+            <label>Preview</label>
             <br/><img [src]="imgSrc.image" [width]="cropSettings.croppedWidth"
                       [height]="cropSettings.croppedHeight"/>
           </div>

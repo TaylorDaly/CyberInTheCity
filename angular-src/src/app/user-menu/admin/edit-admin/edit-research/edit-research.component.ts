@@ -96,6 +96,7 @@ export class EditResearchComponent implements OnInit {
     this.edit.option = "add";
     this.editResearch = false;
     this.resetForm();
+    window.scroll(0,0);
   }
 
   getAllResearch(){

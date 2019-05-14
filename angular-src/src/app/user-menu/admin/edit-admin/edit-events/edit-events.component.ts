@@ -72,6 +72,7 @@ export class EditEventsComponent implements OnInit {
     this.edit.option = "add";
     this.editEvent = false;
     this.resetForm();
+    window.scroll(0,0);
   }
 
   getAllEvents() {

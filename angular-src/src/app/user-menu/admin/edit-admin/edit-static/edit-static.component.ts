@@ -73,6 +73,7 @@ export class EditStaticComponent implements OnInit {
     this.edit.option = "add";
     this.editPage = false;
     this.resetForm();
+    window.scroll(0,0);
   }
 
   // removePages() {

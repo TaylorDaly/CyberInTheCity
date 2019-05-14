@@ -29,8 +29,9 @@ export class UserComponent implements OnInit {
   imgSrc = {image: ""};  // Cropped image source //
   cropSettings = new CropperSettings();
 
-  editUser = new Person();  // Object to post to DB //
+  editUser: Person;  // Object to post to DB //
   errMsg = "";
+  phoneFormat = "10-digit phone number must be entered with dashes (e.g. 123-456-7890)";
 
   editProfileForm: FormGroup;
 
@@ -70,8 +71,8 @@ export class UserComponent implements OnInit {
     return this.editProfileForm.get('phoneNumber');
   }
 
-  get bio() {
-    return this.editProfileForm.get('bio');
+  get biography() {
+    return this.editProfileForm.get('biography');
   }
 
   get office() {
@@ -137,7 +138,7 @@ export class UserComponent implements OnInit {
       smLinks: this.fb.array([this.smLink()]),
       image: [this.imgSrc.image],
       phoneNumber: [this.editUser.phone_number, [Validators.pattern(regex.phone)]],
-      bio: [this.editUser.biography],
+      biography: [this.editUser.biography],
       office: [this.editUser.office_location]
     });
 
@@ -153,13 +154,13 @@ export class UserComponent implements OnInit {
     }
   }
 
-  submitUserEdits() {
+  submitUserEdits(html) {
     this.editUser.name = this.firstName.value + " " + this.lastName.value;
     this.editUser.my_website_link = this.editProfileForm.get('myWebsite').value;
     this.editUser.links = this.smLinks.value;
     this.editUser.role = this.role.value;
     this.editUser.phone_number = this.phoneNumber.value;
-    this.editUser.biography = this.bio.value;
+    this.editUser.biography = html;
     this.editUser.office_location = this.office.value;
 
     // Prepare photo data: //
@@ -188,11 +189,13 @@ export class UserComponent implements OnInit {
 
     // do not send email in the request, it can't be edited anyway.
     delete this.editUser.email;
+
     this.personService.updatePerson(this.editUser)
       .subscribe(
         res => {
           window.alert(res['message']);
-          location.reload();
+          window.scroll(0,0);
+          //location.reload();
         }, err => {
           this.errMsg = err.message;
         }

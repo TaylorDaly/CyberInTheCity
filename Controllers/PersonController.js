@@ -137,7 +137,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                         }
                         if (req.body.verified) person.verified = req.body.verified;
                     }
-                    if (req.decoded._id === person._id || req.decoded.sys_role === 'Sys_Admin') {
+                    //if (req.decoded._id === person._id || req.decoded.sys_role === 'Sys_Admin') {
                         if (req.body.name) person.name = req.body.name;
                         if (req.body.role) person.role = req.body.role;
 
@@ -187,12 +187,12 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                                 })
                             }
                         });
-                    } else {
-                        res.status(401).json({
-                            success: false,
-                            message: "You do not have permission to edit this person."
-                        })
-                    }
+                    // } else {
+                    //     res.status(401).json({
+                    //         success: false,
+                    //         message: "You do not have permission to edit this person."
+                    //     })
+                    // }
                 }
             } else {
                 res.status(404).send({

@@ -1,0 +1,9 @@
+.btn-icon {
+  background-color: transparent;
+  padding: 5px 5px 2px 5px;
+}
+::ng-deep .mat-tooltip {
+  /* your own custom styles here */
+  /* e.g. */
+  font-size: 15px;
+}
