@@ -52,7 +52,8 @@ EducationRouter.post('/', Auth.VerifyAdmin, async (req, res, next) => {
         termYear: req.body.termYear,
         syllabus: req.body.syllabus,
         teacherName: req.body.teacherName,
-        teacherEmail: req.body.teacherEmail
+        teacherEmail: req.body.teacherEmail,
+        summary: req.body.summary
     });
 
     await checkDriveLink(req.body.googleDriveLink).then(link => {
@@ -97,6 +98,7 @@ EducationRouter.put('/', Auth.VerifyAdmin, (req, res, next) => {
             if (req.body.syllabus) education.syllabus = req.body.syllabus;
             if (req.body.teacherName) education.teacherName = req.body.teacherName;
             if (req.body.teacherEmail) education.teacherEmail = req.body.teacherEmail;
+            if (req.body.summary) education.summary = req.body.summary;
 
             Education.updateEducation(req.body._id, education, (err) => {
                 if (err) {

@@ -12,7 +12,7 @@
       <hr>
       <h5 class="card-title">Description:</h5>
       <div class="container">
-      <div [innerHTML]="course.description" class="cke_contents_ltr"></div>
+      <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(course.description)" class="cke_contents_ltr"></div>
       </div>
 
       <a *ngIf="course.googleDriveLink != '' && course.googleDriveLink != null">

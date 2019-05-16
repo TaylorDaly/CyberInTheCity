@@ -13,7 +13,7 @@ body {
 }
 
 .glitch {
-  font-size: 100px;
+  font-size: 90px;
   position: relative;
   width: 70%;
   margin: 0 auto;
@@ -185,6 +185,7 @@ body {
 .banner {
   /*height: 398px;*/
   width: 100%;
+  height: 200px;
 }
 
 div.homePageBanner {
@@ -206,17 +207,15 @@ div.homePageBanner p {
 }
 
 div.homePageBanner1 {
-  height: 10em;
   position: relative
 }
 
 div.homePageBanner1 p {
+  margin: 10px 0 0 0;
   font-family: sans-serif;
   color: white;
-  margin: 0;
-  font-size: 25px;
+  font-size: 20px;
   position: absolute;
-  top: 35%;
   left: 32%;
   transform: translate(-25%, -25%)
 }
@@ -230,6 +229,9 @@ div.homePageBanner1 p {
 .card {
   border: transparent;
   margin: 2%;
+}
+.card-title {
+  font-size: 15px;
 }
 .card-body {
   background-color: black;
@@ -279,16 +281,14 @@ div.homePageBanner1 p {
   }
   div.homePageBanner1 p {
     font-size: 20px;
-    top: 0;
   }
 }
 @media screen and (max-width: 480px) {
   .glitch {
     font-size: 8vw;
-    top: 20%;
   }
   div.homePageBanner1 p {
-    font-size: 5vw;
-    top: 0;
+    font-size: 4vw;
+    margin-top: 10%;
   }
 }

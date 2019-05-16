@@ -11,7 +11,7 @@
     <!--{{createPerson.value | json}}-->
     <div class="form-group">
       <label><span class="text-danger">*</span>School Email</label>
-      <input type="email" [class.is-invalid]="email.invalid && email.touched"
+      <input type="email" [class.is-invalid]="email.invalid && email.touched" [readOnly]="!updateEmail"
              class="form-control" placeholder="Must be a @ucdenver.edu email" formControlName="email" />
       <small class="text-danger" [class.d-none]="email.valid || email.untouched">
         Email is required.
@@ -119,7 +119,8 @@
       <label>Profile Picture</label>
       <div class="form-row">
         <div class="col">
-          <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
+          <!--<input id="custom-input" type="file" (change)="fileChangeListener($event)" />-->
+          <img-cropper #cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
         </div>
         <div class="col">
           <div *ngIf="imgSrc.image" style="padding-left: 10px;">
@@ -143,3 +144,4 @@
   </form>
   <p class="text-danger">{{errMsg}}</p>
 </div>
+

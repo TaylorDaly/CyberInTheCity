@@ -10,7 +10,7 @@
       <h5 class="card-title">Researcher(s):
         <a *ngFor="let researcher of research.ownerID; let i = index"
            routerLink="/profile/{{research.researcherEmails[i].split('@ucdenver.edu')[0]}}">
-        <i style="padding-left: 5px;">{{researcher}}&nbsp;</i></a></h5>
+        <i style="padding-left: 5px;">{{researcher}}&nbsp;&nbsp;</i></a></h5>
 
       <h5 *ngIf="research['startDate']" class="card-title">Start Date:
         <i style="padding-left: 5px;">{{research.startDate | date: 'longDate': 'GMT+1'}}</i></h5>
@@ -21,7 +21,7 @@
       <hr>
       <h5 class="card-title">Description:</h5>
       <div class="container">
-        <div [innerHTML]="research.description" class="cke_contents_ltr"></div>
+        <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(research.description)" class="cke_contents_ltr"></div>
       </div>
     </div>
   </div>

@@ -3,7 +3,7 @@ import {PersonService} from "../../../../Services/person.service";
 import {ListDataComponent} from "../../../../app-design/list-data/list-data.component";
 import {Person} from "../../../../person/person";
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CropperSettings} from "ngx-img-cropper";
+import {CropperSettings, ImageCropperComponent} from "ngx-img-cropper";
 import {regex} from "../../../../shared/regex";
 
 @Component({
@@ -14,6 +14,9 @@ import {regex} from "../../../../shared/regex";
 export class EditPeopleComponent implements OnInit {
 
   @ViewChild('loadComp', {read: ViewContainerRef}) loadComp: ViewContainerRef;
+  //@ViewChild('peopleComp', {read: ViewContainerRef}) peopleComp: ViewContainerRef;
+  @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
+
   componentRef: any;
   factory: any;
 
@@ -38,6 +41,7 @@ export class EditPeopleComponent implements OnInit {
   imgSrc = {image: ''};  // Cropped image source //
   emptyLink = {URL: '', description: ''};
   phoneFormat = "10-digit phone number must be entered with dashes (e.g. 123-456-7890)";
+  updateEmail = true;
 
   get name() {
     return this.createPerson.get('name');
@@ -144,6 +148,7 @@ export class EditPeopleComponent implements OnInit {
     this.errMsg = "";
     this.edit.option = "add";
     this.editPerson = false;
+    this.updateEmail = true;
     this.resetForm();
     this.imgSrc = {image: ""};
     window.scroll(0,0);
@@ -274,8 +279,23 @@ export class EditPeopleComponent implements OnInit {
       );
   }
 
+  // fileChangeListener($event) {
+  //   let image:any = new Image();
+  //   let file:File = $event.target.files[0];
+  //   let myReader:FileReader = new FileReader();
+  //   let that = this;
+  //   myReader.onloadend = function (loadEvent:any) {
+  //     image.src = loadEvent.target.result;
+  //     that.cropper.setImage(image);
+  //
+  //   };
+  //
+  //   myReader.readAsDataURL(file);
+  // }
+
   editTable(editObj) {  // Returns id and option in object //
     this.edit = editObj;
+    this.imgSrc = {image: ''};
     if (editObj.option == "update") {
       this.getPersonImage(editObj._id);
       let person = this.personFull.find(x => x._id === editObj._id);
@@ -297,6 +317,7 @@ export class EditPeopleComponent implements OnInit {
         for (let i = 1; i < person.links.length; ++i) {
           this.addSMLinks(person.links[i]);
         }
+        this.updateEmail = false;
         this.editPerson = true;
       }
     } else {  // Delete loadComp item //
@@ -350,4 +371,16 @@ export class EditPeopleComponent implements OnInit {
         )
     }
   }
+
+  // createComponent(editComponent) {
+  //   this.loadComp.clear();
+  //   this.factory = this.resolver.resolveComponentFactory(editComponent);
+  //   this.componentRef = this.loadComp.createComponent(this.factory);
+  // }
+  //
+  // destroyComponent() {
+  //   if (this.componentRef != null) {
+  //     this.componentRef.destroy();
+  //   }
+  // }
 }

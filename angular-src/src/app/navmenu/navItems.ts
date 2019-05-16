@@ -47,13 +47,13 @@ export class navItems {
       ]
     },
     {
-      name: 'Careers',
-      route: '/careers',
+      name: 'Resources',
+      route: '/resources',
       child: [
         {
           title: 'Employment Opportunities',
-          route: '/careers',
-          parent: 'Careers'
+          route: '/resources',
+          parent: 'Resources'
         }
       ]
     },
@@ -71,7 +71,13 @@ export class navItems {
     {
       name: 'News',
       route: '/news',
-      child: []
+      child: [
+        {
+          title: 'Cyber Security News',
+          route: '/news',
+          parent: 'News'
+        }
+      ]
     },
     {
       name: 'Contact Us',

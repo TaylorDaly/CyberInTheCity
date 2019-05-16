@@ -3,7 +3,7 @@
     <div class="col-md-6" *ngFor="let re of research">
 
       <app-card-info [header]="re.title"
-                     [body]="'Researcher(s): ' + re.researchers"
+                     [body]="re.summary"
                      [footer]="'Research Type: ' + re.type"
                      [headerLink]="'/research/' + re.title">
       </app-card-info>
