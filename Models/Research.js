@@ -18,6 +18,7 @@ const ResearchSchema = new mongoose.Schema({
         type: Date,
     },
     endDate: Date,
+    summary: String,
     description: String,
     // TODO: Photo
     // Internal collaborators (personIds)

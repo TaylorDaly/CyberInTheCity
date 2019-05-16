@@ -39,7 +39,7 @@ export class NavmenuComponent implements OnInit {
 
   sortNavItems(staticNavItems) {
     for (let i = 0; i < staticNavItems.length; ++i) {
-      staticNavItems[i].route = '/general/' + staticNavItems[i].title;
+      staticNavItems[i].route = '/page/' + staticNavItems[i].title;
       if(staticNavItems[i]['parent'])
       this.parents.find(x => x.name == staticNavItems[i].parent).child.push(staticNavItems[i]);
     }

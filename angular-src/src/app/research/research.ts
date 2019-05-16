@@ -8,4 +8,5 @@ export interface ResearchItem {
   startDate: Date,
   endDate: Date,
   description: string,
+  summary: string
 }

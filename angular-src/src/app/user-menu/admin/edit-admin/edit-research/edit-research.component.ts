@@ -78,6 +78,7 @@ export class EditResearchComponent implements OnInit {
       endDate: [{value: '', disabled: true}],
       ongoing: [true],
       description: [''],
+      summary: ['']
     });
   }
 
@@ -201,7 +202,8 @@ export class EditResearchComponent implements OnInit {
         ownerID: research.ownerID,  // Only adds the first one from research.ownerID array //
         type: research.type,
         description: research.description,
-        startDate: [{value: '', disabled: false}]
+        startDate: [{value: '', disabled: false}],
+        summary: research.summary
       });
 
       if(research['startDate'])

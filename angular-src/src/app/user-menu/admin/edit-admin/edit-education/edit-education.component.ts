@@ -87,6 +87,7 @@ export class EditEducationComponent implements OnInit {
       termYear: ['', [Validators.required]],
       googleDriveLink: [''],
       syllabus: [''],
+      summary: ['']
     });
   }
 
@@ -202,7 +203,8 @@ export class EditEducationComponent implements OnInit {
         googleDriveLink: course.googleDriveLink,
         syllabus: course.syllabus,
         teacherName: course.teacherName,
-        teacherEmail: course.teacherEmail
+        teacherEmail: course.teacherEmail,
+        summary: course.summary
       });
 
       this.editCourse = true;

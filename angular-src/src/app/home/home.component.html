@@ -6,12 +6,11 @@
     <div class=homePageBanner>
       <!--    <p>Cyber Security-->
       <div class="glitch" data-text="CYBER IN THE CITY">CYBER IN THE CITY</div>
-    </div>
-    <div class=homePageBanner1>
-      <p>
-        Cyber security professionals help protect data and provide network security
-        in a variety of settings and industries.
-      </p>
+      <div class=homePageBanner1>
+        <p>
+          Virtual Center for Cyber and Infrastructure Security for University of Colorado Denver CSE Department
+        </p>
+      </div>
     </div>
   </div>
   <div class="row home-row">
@@ -44,9 +43,11 @@
         <div *ngFor="let event of eventItem">
           <div class="card shadow" style="max-width: 18rem;">
             <div class="card-body">
-              <h5 class="card-title">{{event.title}}</h5>
-              <h6>{{event.location}}</h6>
-              <h6>{{(event.eventDate | date: 'longDate': 'GMT+1') + ' | ' + event.timeFrom + ' - ' + event.timeTo}}</h6>
+              <a *ngIf="event['url'] && event.url.length != 0" class="url-link" href="{{event.url}}">
+                <h5 class="card-title">{{event.title}}</h5>
+              </a>
+              <h5 class="card-title">{{event.location}}</h5>
+              <h5 class="card-title">{{(event.eventDate | date: 'longDate': 'GMT+1') + ' | ' + event.timeFrom + ' - ' + event.timeTo}}</h5>
             </div>
           </div>
         </div>

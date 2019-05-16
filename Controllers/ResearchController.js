@@ -45,7 +45,8 @@ ResearchRouter.post('/', Auth.Verify, (req, res, next) => {
         type: req.body.type,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
-        description: req.body.description
+        description: req.body.description,
+        summary: req.body.summary
     });
 
     Research.addResearch(newResearch, (err, callback) => {
@@ -76,6 +77,7 @@ ResearchRouter.put('/', Auth.Verify, (req, res, next) => {
             if (req.body.startDate) research.startDate = req.body.startDate;
             if (req.body.endDate) research.endDate = req.body.endDate;
             if (req.body.description) research.description = req.body.description;
+            if (req.body.summary) research.summary = req.body.summary;
 
             Research.updateResearch(req.body._id, research, (err) => {
                 if (err) {

@@ -10,5 +10,6 @@ export interface Course {
   googleDriveLink: string,
   syllabus: string,
   teacherName: string,
-  teacherEmail: string
+  teacherEmail: string,
+  summary: string
 }

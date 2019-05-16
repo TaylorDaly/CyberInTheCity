@@ -67,7 +67,8 @@
     <h2>Biography</h2>
   </div>
   <div class="container">
-    <div [innerHTML]="person.biography" class="cke_contents_ltr"></div>
+    <div *ngIf="person['biography']" [innerHTML]="sanitizer.bypassSecurityTrustHtml(person.biography)"
+         class="cke_contents_ltr"></div>
   </div>
 
 </div>

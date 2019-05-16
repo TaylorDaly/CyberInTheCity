@@ -90,6 +90,13 @@
       <input type="url" class="form-control" formControlName="googleDriveLink"
              placeholder="Enter a Google Drive link to the course content directory" />
     </div>
+
+    <div class="form-group">
+      <label>Summary: (300 characters max)</label>
+      <textarea class="form-control" rows="5" placeholder="Enter research summary" formControlName="summary" maxlength="300">
+      </textarea>
+    </div>
+
     <div class="form-group">
       <label>Description:</label>
       <app-editor [disabled]="createCourse.invalid" (htmlString)="saveCourse($event)"

@@ -16,6 +16,7 @@ const EducationSchema = new mongoose.Schema({
         type: String,
         maxLength: 4
     },
+    summary: String,
     department: String,
     termSemester: String,
     termYear: String,
