@@ -76,15 +76,16 @@ export class SignupComponent implements OnInit {
     this.personService.getPersonByEmail(sessionStorage.getItem('signupEmail'))
       .subscribe(
         res => {
+          //console.log(res);
           this.signupForm.patchValue({
-            email: res['email'],
-            firstName: res['name'].split(' ')[0],
-            lastName: res['name'].split(' ')[1],
-            role: res['role'],
-            myWebsite: res['my_website_link'],
-            smLinks: res['links']
+            email: res[0]['email'],
+            firstName: res[0]['name'].split(' ')[0],
+            lastName: res[0]['name'].split(' ')[1],
+            role: res[0]['role'],
+            myWebsite: res[0]['my_website_link'],
+            smLinks: res[0]['links']
           });
-          this.getPersonImage(res['_id']);
+          this.getPersonImage(res[0]['_id']);
         },
         err => {
           // Do nothing //

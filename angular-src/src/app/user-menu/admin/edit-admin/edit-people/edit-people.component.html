@@ -11,7 +11,7 @@
     <!--{{createPerson.value | json}}-->
     <div class="form-group">
       <label><span class="text-danger">*</span>School Email</label>
-      <input type="email" [class.is-invalid]="email.invalid && email.touched"
+      <input type="email" [class.is-invalid]="email.invalid && email.touched" [readOnly]="!updateEmail"
              class="form-control" placeholder="Must be a @ucdenver.edu email" formControlName="email" />
       <small class="text-danger" [class.d-none]="email.valid || email.untouched">
         Email is required.
