@@ -12,7 +12,7 @@
            routerLink="/profile/{{research.researcherEmails[i].split('@ucdenver.edu')[0]}}">
         <i style="padding-left: 5px;">{{researcher}}&nbsp;</i></a></h5>
 
-      <h5 *ngIf="research.startDate.toString() != ''" class="card-title">Start Date:
+      <h5 *ngIf="research['startDate']" class="card-title">Start Date:
         <i style="padding-left: 5px;">{{research.startDate | date: 'longDate': 'GMT+1'}}</i></h5>
 
       <h5 *ngIf="research['endDate']" class="card-title">End Date:

@@ -6,6 +6,7 @@ import {CropperSettings} from "ngx-img-cropper";
 import {Person} from "../person/person";
 import {Router} from "@angular/router";
 import {regex} from "../shared/regex";
+import {PersonService} from "../Services/person.service";
 
 @Component({
   selector: 'app-signup',
@@ -38,74 +39,121 @@ export class SignupComponent implements OnInit {
   get firstName() {
     return this.signupForm.get('firstName');
   }
+
   get lastName() {
     return this.signupForm.get('lastName');
   }
+
   get role() {
     return this.signupForm.get('role');
   }
+
   get password() {
     return this.signupForm.get('password');
   }
+
   get confirmPassword() {
     return this.signupForm.get('confirmPassword');
   }
-  get smLinks(){
+
+  get smLinks() {
     return this.signupForm.get('smLinks') as FormArray;
   }
 
   constructor(private signupService: SignupService,
+              private personService: PersonService,
               private fb: FormBuilder,
               private router: Router,) {
   }
 
   ngOnInit() {
     this.setCropSettings();
+    this.checkPersonExist();
+  }
 
+  checkPersonExist() {
+    this.populateForm();
+    this.personService.getPersonByEmail(sessionStorage.getItem('signupEmail'))
+      .subscribe(
+        res => {
+          this.signupForm.patchValue({
+            email: res['email'],
+            firstName: res['name'].split(' ')[0],
+            lastName: res['name'].split(' ')[1],
+            role: res['role'],
+            myWebsite: res['my_website_link'],
+            smLinks: res['links']
+          });
+          this.getPersonImage(res['_id']);
+        },
+        err => {
+          // Do nothing //
+        }
+      )
+  }
+
+  populateForm() {
     this.signupForm = this.fb.group({
       email: [sessionStorage.getItem('signupEmail')],
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       role: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(this.passwordLength), Validators.pattern(regex.password)]],
-      confirmPassword: ['',[Validators.required]],
+      confirmPassword: ['', [Validators.required]],
       myWebsite: [''],
 
       smLinks: this.fb.array([this.smLink()])
     }, {validators: PasswordValidator});
   }
 
-  descRequired(i){
+  getPersonImage(_id) {
+    this.personService.getPersonById(_id)
+      .subscribe(
+        res => {
+          if (res.hasOwnProperty('photo') && res.photo != null) {
+            if (res.photo.content_type != null && res.photo.buffer != null) {
+              this.imgSrc.image = "data:" + res.photo.content_type +
+                ';base64,' + res.photo.buffer;
+            }
+          }
+        },
+        err => {
+          this.errMsg = err.message;
+        }
+      );
+  }
+
+  descRequired(i) {
     const desc = this.smLinks.at(i).get('description');
 
     this.smLinks.at(i).get('URL').valueChanges
       .subscribe(changed => {
-        if(changed && desc.value === "") {
+        if (changed && desc.value === "") {
           desc.setValidators(Validators.required);
-        }else {
+        } else {
           desc.clearValidators();
         }
         desc.updateValueAndValidity();
       });
   }
 
-  smLink():FormGroup {
+  smLink(): FormGroup {
     return this.fb.group({
-      URL:[''],
-      description:['']
+      URL: [''],
+      description: ['']
     });
   }
 
   addSMLinks() {
     this.linkLength = 'col-md-8';
-    if(this.smLinks.length < 5) {
+    if (this.smLinks.length < 5) {
       this.smLinks.push(this.smLink());
     }
   }
 
   deleteSMLinks(index: number) {
     this.smLinks.removeAt(index);
-    if(this.smLinks.length <= 1)
+    if (this.smLinks.length <= 1)
       this.linkLength = 'col-md-9';
   }
 
@@ -123,8 +171,8 @@ export class SignupComponent implements OnInit {
   }
 
   cleanObject() {
-    for(let i = 0; i < this.smLinks.value.length; ++i) {
-      if(this.smLinks.value[i].description == '' || this.smLinks.value[i].URL == '') {
+    for (let i = 0; i < this.smLinks.value.length; ++i) {
+      if (this.smLinks.value[i].description == '' || this.smLinks.value[i].URL == '') {
         console.log(this.smLinks.value[i]);
         this.smLinks.value.splice(i, 1);
         i -= 1;
@@ -146,11 +194,11 @@ export class SignupComponent implements OnInit {
     // Prepare photo data: //
     //------------------------//
     // Separate image buffer from content type in image string //
-    if(this.imgSrc.image != "") {
+    if (this.imgSrc.image != "") {
       let img = this.imgSrc.image.split(',');
 
       // Set image file type //
-      if(img[0].search('jpeg' || 'jpg') != -1) {
+      if (img[0].search('jpeg' || 'jpg') != -1) {
         this.newUser.photo.content_type = 'image/jpeg';
       } else if (img[0].search('png') != -1) {
         this.newUser.photo.content_type = 'image/png';
@@ -158,7 +206,7 @@ export class SignupComponent implements OnInit {
         this.newUser.photo = null;
       }
 
-      if(img[1].length > 0) {
+      if (img[1].length > 0) {
         this.newUser.photo.buffer = img[1];
       } else {
         this.newUser.photo = null;
@@ -177,8 +225,8 @@ export class SignupComponent implements OnInit {
           sessionStorage.clear();
           localStorage.clear();
           this.router.navigateByUrl('/login');
-      }, err => {
+        }, err => {
           this.errMsg = err.message;
-      });
+        });
   }
 }

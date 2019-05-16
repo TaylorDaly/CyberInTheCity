@@ -23,7 +23,7 @@ UserRouter.post('/verify', (req, res) => {
                     return res.status(500).json({
                         auth: false, message: `Something broke when attempting to find user. Error: ${err}`
                     })
-                } else if (person) {
+                } else if (person && person.password) {
                     return res.status(409).json({auth: false, message: `Email already exists.`})
                 } else {
                     return res.json({
@@ -46,17 +46,29 @@ UserRouter.post('/signup/:token', (req, res) => {
         if (err) {
             return res.status(401).json({auth: false, message: 'Failed to authenticate token.'})
         } else {
-            let newPerson = new Person({
-                name: req.body.name,
-                role: req.body.role,
-                email: decoded.email,
-                phone_number: req.body.phone_number,
-                biography: req.body.biography,
-                office_location: req.body.office_location,
-                links: req.body.links,
-                my_website_link: req.body.my_website_link,
-                google_scholar_link: req.body.google_scholar_link,
+            let newPerson = new Person({});
+
+            Person.findOne({email: decoded.email}, 'email', (err, person) => {
+                if (err) {
+                    return res.status(500).json({
+                        auth: false, message: `Something broke when attempting to find user. Error: ${err}`
+                    })
+                } else if (person && person.password) {
+                    return res.status(409).json({auth: false, message: `Email already exists.`})
+                } else {
+                    newPerson = person
+                }
             });
+
+            newPerson.name = req.body.name;
+            newPerson.role = req.body.role;
+            newPerson.email = decoded.email;
+            newPerson.phone_number = req.body.phone_number;
+            newPerson.office_location = req.body.office_location;
+            newPerson.links = req.body.links;
+            newPerson.my_website_link = req.body.my_website_link;
+            newPerson.google_scholar_link = req.body.google_scholar_link;
+
 
             // Verify password requirements and does not contain other characters
             if (regex.password.exec(req.body.password) && !regex.disallowedCharacters.exec(req.body.password)) {
@@ -145,7 +157,7 @@ UserRouter.post('/login', (req, res) => {
                         },
                         dbConfig.secret,
                         {
-                            expiresIn: '1h'
+                            expiresIn: '24h'
                         });
 
                     return res.status(200).json({
@@ -176,14 +188,14 @@ UserRouter.post('/signup', (req, res) => {
                 success: false,
                 message: `Attempt to get email failed. Error: ${err}`
             });
-        } else if (person) {
+        } else if (person && person.password) {
             res.status(409).json({
                 success: false,
                 message: 'Email already registered. Please use a different email.'
             });
         } else {
             // Verify email
-            //if email wont send then login into google with the account then use this link below
+            // if email wont send then login into google with the account then use this link below
             // you have to be logged in to the cyberInTheCity email
             // https://accounts.google.com/b/0/DisplayUnlockCaptcha
             if (regex.email.exec(email)) {
