@@ -137,62 +137,56 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
                         }
                         if (req.body.verified) person.verified = req.body.verified;
                     }
-                    //if (req.decoded._id === person._id || req.decoded.sys_role === 'Sys_Admin') {
-                        if (req.body.name) person.name = req.body.name;
-                        if (req.body.role) person.role = req.body.role;
+                    if (req.body.name) person.name = req.body.name;
+                    if (req.body.role) person.role = req.body.role;
 
-                        // TODO: update password possibly. Need to verify old password before updating.
-                        // if (req.body.password) person.password = req.body.password;
+                    // TODO: Allow update password possibly. Need to verify old password before updating, would probably
+                    //  need a separate route and email verification again.
+                    // if (req.body.password) person.password = req.body.password;
 
-                        // not allowing email updates
-                        // if (req.body.email) person.email = req.body.email;
+                    // Not allowing email updates currently.
+                    // if (req.body.email) person.email = req.body.email;
 
-                        // else undefined will remove the key, without this one cannot remove a field.
-                        if (req.body.phone_number) person.phone_number = req.body.phone_number;
-                        else person.phone_number = undefined;
-                        if (req.body.biography) person.biography = req.body.biography;
-                        else person.biography = undefined;
-                        if (req.body.office_location) person.office_location = req.body.office_location;
-                        else person.office_location = undefined;
-                        if (req.body.links) person.links = req.body.links;
-                        if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
-                        else person.google_scholar_link = undefined;
-                        if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
-                        else person.my_website_link = undefined;
-                        // Checks the google drive link returns status 200 (OK)
+                    // else undefined will remove the key, without this one cannot remove a field.
+                    if (req.body.phone_number) person.phone_number = req.body.phone_number;
+                    else person.phone_number = undefined;
+                    if (req.body.biography) person.biography = req.body.biography;
+                    else person.biography = undefined;
+                    if (req.body.office_location) person.office_location = req.body.office_location;
+                    else person.office_location = undefined;
+                    if (req.body.links) person.links = req.body.links;
+                    if (req.body.google_scholar_link) person.google_scholar_link = req.body.google_scholar_link;
+                    else person.google_scholar_link = undefined;
+                    if (req.body.my_website_link) person.my_website_link = req.body.my_website_link;
+                    else person.my_website_link = undefined;
+                    // Checks the google drive link returns status 200 (OK)
 
-                        try {
-                            // Photo is in separate database so have to delete it separately.
-                            if (req.body.photo && req.body.photo.buffer) {
-                                person.photo = await updateImage(req.body.photo);
-                            } else if (person.photo) {
-                                await deleteImage(person.photo._id);
-                                person.photo = undefined;
-                            }
-                        } catch (err) {
-                            next(err)
+                    try {
+                        // Photo is in separate database so have to delete it separately.
+                        if (req.body.photo && req.body.photo.buffer) {
+                            person.photo = await updateImage(req.body.photo);
+                        } else if (person.photo) {
+                            await deleteImage(person.photo._id);
+                            person.photo = undefined;
                         }
+                    } catch (err) {
+                        next(err)
+                    }
 
-                        Person.updatePerson(person, (err) => {
-                            if (err) {
-                                res.json({
-                                    success: false,
-                                    message: `Attempt to update person failed. Error: ${err}`
-                                })
-                            } else {
-                                res.json({
-                                    success: true,
-                                    message: `Update Successful.`,
-                                    person: person
-                                })
-                            }
-                        });
-                    // } else {
-                    //     res.status(401).json({
-                    //         success: false,
-                    //         message: "You do not have permission to edit this person."
-                    //     })
-                    // }
+                    Person.updatePerson(person, (err) => {
+                        if (err) {
+                            res.json({
+                                success: false,
+                                message: `Attempt to update person failed. Error: ${err}`
+                            })
+                        } else {
+                            res.json({
+                                success: true,
+                                message: `Update Successful.`,
+                                person: person
+                            })
+                        }
+                    });
                 }
             } else {
                 res.status(404).send({
@@ -205,19 +199,8 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
 });
 
 // Sys Admins can add new people
-PeopleRouter.post('/', (req, res) => {
-    let newPerson = new Person({
-        // name: req.body.name,
-        // role: req.body.role,
-        // email: req.body.email,
-        // phone_number: req.body.phone_number,
-        // biography: req.body.biography,
-        // office_location: req.body.office_location,
-        // links: req.body.links,
-        // my_website_link: req.body.my_website_link,
-        // google_scholar_link: req.body.google_scholar_link,
-        // google_drive_link: req.body.google_drive_link
-    });
+PeopleRouter.post('/', Auth.VerifySysAdmin, (req, res) => {
+    let newPerson = new Person({});
 
     if (req.body.name) newPerson.name = req.body.name;
     if (req.body.role) newPerson.role = req.body.role;
@@ -228,6 +211,7 @@ PeopleRouter.post('/', (req, res) => {
     if (req.body.links) newPerson.links = req.body.links;
     if (req.body.my_website_link) newPerson.my_website_link = req.body.my_website_link;
     if (req.body.google_scholar_link) newPerson.google_scholar_link = req.body.google_scholar_link;
+    if (req.body.verified) newPerson.verified = req.body.verified;
 
     if (req.body.photo && req.body.photo.buffer) {
         let newPic = new Image({
@@ -373,6 +357,4 @@ const checkDriveLink = async (link) => {
     })
 };
 
-// https://github.com/Automattic/mongoose/issues/1596
-// https://stackoverflow.com/questions/12096262/how-to-protect-the-password-field-in-mongoose-mongodb-so-it-wont-return-in-a-qu
 module.exports = PeopleRouter;
