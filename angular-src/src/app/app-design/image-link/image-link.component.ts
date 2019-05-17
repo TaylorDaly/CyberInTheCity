@@ -9,7 +9,7 @@ export class ImageLinkComponent implements OnInit {
 
   share_link = "";
   image_url = "";
-  google_img_url = "http://drive.google.com/uc?export=view&id=";
+  google_img_url = "https://drive.google.com/uc?export=view&id=";
   errMsg = "";
 
   constructor() { }
