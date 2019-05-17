@@ -55,7 +55,7 @@ UserRouter.post('/signup/:token', (req, res) => {
                     })
                 } else if (person && person.password) {
                     return res.status(409).json({auth: false, message: `Email already exists.`})
-                } else {
+                } else if (person) {
                     newPerson = person
                 }
             });
