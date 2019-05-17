@@ -28,7 +28,12 @@ export class PersonComponent implements OnInit {
     this.personService.getVerifiedPeople()
       .subscribe(
         response => {
-          this.personList = response;
+          for(let i = 0; i < response.length; ++i) {
+            if(response[i]['role'] != 'Undergraduate Student' &&
+              response[i]['role'] != 'Graduate Student')
+              this.personList.push(response[i]);
+          }
+          //this.personList = response;
           //console.log(response)
         },
         error => {

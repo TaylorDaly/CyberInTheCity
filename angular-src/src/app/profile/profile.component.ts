@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         response => {
           this.person = response;
-          this.getAllCourses();
+          this.getAllCourses(response[0]);
           this.getResearch(response[0]['_id']);
         },
         error => this.error = error.message
@@ -59,11 +59,15 @@ export class ProfileComponent implements OnInit {
       )
   }
 
-  getAllCourses() {
+  getAllCourses(person) {
     this.educationService.getAllCourses()
       .subscribe(
         res => {
-          this.courses = res;
+          for (let i = 0; i < res.length; ++i) {
+            if(res[i]['teacherEmail'] == person['email'])
+              this.courses.push(res[i]);
+          }
+          //this.courses = res;
         },
         err => {
           this.error = err.message;

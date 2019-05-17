@@ -15,18 +15,19 @@
         <h1 style="line-height: 100%; margin-top: 0; margin-bottom: 0">{{person.name}}</h1>
         <h3 style="margin-top: 0; margin-bottom: 0"><i> {{person.role}}</i></h3>
         <a href="mailto: {{person.email}}">{{person.email}}</a><br/>
-        <a *ngIf="person.my_website_link != '' && person.my_website_link != null"
+        <a *ngIf="person['my_website_link'] && person.my_website_link.length > 0"
            href="{{person.my_website_link}}">
           My Website</a>
-        <p>Office Location: &nbsp;<i>{{person.office_location}}</i><br/>
-          Phone: &nbsp;<i>{{person.phone_number}}</i>
-        </p>
+        <p><span *ngIf="person['office_location'] && person.office_location.length > 0">
+          Office Location: &nbsp;<i>{{person.office_location}}</i></span><br/>
+          <span *ngIf="person['phone_number'] && person.phone_number.length > 0">
+            Phone: &nbsp;<i>{{person.phone_number}}</i></span></p>
       </td>
     </tr>
     </tbody>
   </table>
 
-  <div>
+  <div *ngIf="person['links'] && person.links.length > 0">
     <br/>
     <hr size="2" width="100%" align="center">
     <h2>Social Media</h2><br/>
@@ -36,20 +37,20 @@
     </div>
   </div>
 
-  <div>
+  <div *ngIf="personResearch != null && personResearch.length > 0">
     <br/>
     <hr size="2" width="100%" align="center">
-    <a *ngIf="personResearch != null">
+    <!--<a *ngIf="personResearch != null">-->
     <h2>Research</h2><br/>
     <!--<p *ngIf="personResearch.length <= 0">None listed</p>-->
     <div *ngFor="let research of personResearch" style="display: inline;">
       <a routerLink="/research/{{research.title}}">
         {{research.title}}</a><i *ngIf="research.type != ''">&nbsp;-&nbsp;{{research.type}}</i><br>
     </div>
-  </a>
+  <!--</a>-->
   </div>
 
-  <div>
+  <div *ngIf="courses != null && courses.length > 0">
     <br/>
     <hr size="2" width="100%" align="center">
     <h2>Courses</h2><br/>
@@ -61,7 +62,7 @@
     </div>
   </div>
 
-  <div>
+  <div *ngIf="person['biography'] && person.biography.length > 0">
     <br/>
     <hr size="2" width="100%" align="center">
     <h2>Biography</h2>
