@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppDesignModule} from "../../../app-design/app-design.module";
 
-import {ImageCropperModule} from "ngx-img-cropper";
+import {ImageCropper, ImageCropperComponent, ImageCropperModule} from "ngx-img-cropper";
 import {MatFormFieldModule, MatInputModule, MatButtonModule, MatTooltipModule, MatTabsModule} from "@angular/material";
 
 import {EditStaticComponent} from "./edit-static/edit-static.component";
@@ -50,6 +50,7 @@ const editList = [
     editList,
   ],
   entryComponents: [
+    ImageCropperComponent,
     editList
   ]
 })

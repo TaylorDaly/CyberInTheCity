@@ -119,8 +119,10 @@
       <label>Profile Picture</label>
       <div class="form-row">
         <div class="col">
-          <!--<input id="custom-input" type="file" (change)="fileChangeListener($event)" />-->
-          <img-cropper #cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
+          <ng-container *ngIf="editPerson">
+            <img-cropper [image]="imgSrc" [settings]="cropSettings"></img-cropper>
+          </ng-container>
+
         </div>
         <div class="col">
           <div *ngIf="imgSrc.image" style="padding-left: 10px;">

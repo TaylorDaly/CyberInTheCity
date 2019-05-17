@@ -142,6 +142,8 @@ export class UserComponent implements OnInit {
       office: [this.editUser.office_location]
     });
 
+    console.log(this.role.value);
+
     // Add user links if they already exist
     if (this.editUser.links) {
       this.deleteSMLinks(0);

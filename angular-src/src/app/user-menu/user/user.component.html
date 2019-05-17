@@ -2,7 +2,7 @@
 
   <form *ngIf="editUser && editProfileForm" [formGroup]="editProfileForm">
     <p class="text-danger">{{errMsg}}</p>
-    <!--{{editProfileForm.value | json}}-->
+    {{editProfileForm.value | json}}
     <h2 style="padding-bottom: 10px;">Edit Profile</h2>
     <div class="form-group">
       <label>School Email</label>
@@ -44,8 +44,7 @@
           </small>
         </div>
         <div class="col">
-          <select class="form-control no-min-width" formControlName="role"
-                  [class.is-invalid]="role.invalid">
+          <select class="form-control" formControlName="role" [class.is-invalid]="role.invalid">
             <option value="" disabled>Select your role</option>
             <option *ngFor="let r of roles">
               {{r}}
