@@ -75,7 +75,7 @@ export class AdminComponent implements OnInit {
       case "Education":
         this.createComponent(EditEducationComponent);
         break;
-      case "Careers":
+      case "Resources":
         this.createComponent(EditCareersComponent);
         break;
       case "Events":
