@@ -126,7 +126,7 @@ PeopleRouter.put('/', Auth.Verify, (req, res, next) => {
             } else if (person) {
                 delete req.body.__v;
                 // The ID from the token must match the person to update, unless the user is an admin.
-                if (person._id !== req.decoded._id && req.decoded.sys_role !== `Sys_Admin`) {
+                if (person._id.toString() !== req.decoded._id && req.decoded.sys_role !== `Sys_Admin`) {
                     res.status(401).json({success: false, message: 'You do not have access to update this person.'})
                 } else {
                     // Admin may use this route to update a sys_role. Sys_Admin is the only one that can change roles
