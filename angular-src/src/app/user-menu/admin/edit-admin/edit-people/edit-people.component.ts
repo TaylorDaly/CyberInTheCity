@@ -217,7 +217,7 @@ export class EditPeopleComponent implements OnInit {
     this.destroyTable();
     this.personList = [];
     this.getAllPeople();
-    this.createTable();
+    //this.createTable();
   }
 
   cleanObject() {
