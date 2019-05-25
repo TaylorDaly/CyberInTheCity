@@ -33,7 +33,8 @@ export class EditHomeComponent implements OnInit {
   }
 
   savePage(html) {
-    this.homePage.content = html;
+    this.homePage.content = html.content;
+    this.homePage.htmlString = html.htmlString;
     this.pageService.updatePage(this.homePage)
       .subscribe(
         res => {

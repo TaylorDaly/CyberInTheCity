@@ -40,8 +40,8 @@
       </div>
     </div>
 
-    <app-editor [disabled]="!createPage.valid" (htmlString)="savePage($event)"
-    [htmlContent]="content.value"></app-editor>
+    <app-editor [disabled]="!createPage.valid" (passHtml)="savePage($event)"
+                [htmlContent]="content.value" [htmlString]="htmlString.value" [allowHtmlString]="true"></app-editor>
   </form>
   <p class="text-danger">* Required Fields</p>
   <div style="margin-top: 80px;"><hr>

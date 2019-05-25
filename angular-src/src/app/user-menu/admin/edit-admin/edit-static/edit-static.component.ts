@@ -47,6 +47,9 @@ export class EditStaticComponent implements OnInit {
   get content() {
     return this.createPage.get('content');
   }
+  get htmlString() {
+    return this.createPage.get('htmlString');
+  }
 
   constructor(private fb: FormBuilder,
               private pageService: PageService,
@@ -62,7 +65,8 @@ export class EditStaticComponent implements OnInit {
   resetForm() {
     this.createPage = this.fb.group({
       _id: [''],
-      content: ['<p>Enter text here...</p>'],
+      content: [''],
+      htmlString: [''],
       title: ['', Validators.required],
       parent: ['', Validators.required]
     });
@@ -162,6 +166,7 @@ export class EditStaticComponent implements OnInit {
             this.createPage.patchValue({
               _id: editObj._id,
               content: res['content'],
+              htmlString: res['htmlString'],
               title: page.title,
               parent: page.parent
             });
@@ -191,7 +196,8 @@ export class EditStaticComponent implements OnInit {
   savePage(html) {
     //console.log(this.createResearch.value);
     this.createPage.patchValue({
-      content: html
+      content: html.content,
+      htmlString: html.htmlString
     });
 
     if (this.edit.option === "add") {
@@ -202,7 +208,7 @@ export class EditStaticComponent implements OnInit {
             //this.resetSettings();
             //this.resetTable();
             //location.reload();
-            this.router.navigateByUrl(`/${this.createPage.get('title')}`);
+            this.router.navigateByUrl(`/page/${this.createPage.get('title').value}`);
           },
           err => {
             this.errMsg = err.message;
@@ -217,7 +223,7 @@ export class EditStaticComponent implements OnInit {
             //this.resetSettings();
             //this.resetTable();
             //location.reload();
-            this.router.navigateByUrl(`/general/${this.createPage.get('title').value}`);
+            this.router.navigateByUrl(`/page/${this.createPage.get('title').value}`);
           },
           err => {
             this.errMsg = err.message;

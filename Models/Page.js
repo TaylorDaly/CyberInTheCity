@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 // Allow admin to edit pages and create pages using a powerful text editor
 const PageSchema = new mongoose.Schema({
     title: {type: String, required: true, unique: true},
-    content: {type: String, required: true, select: false},
+    content: {type: String, select: false},
+    htmlString: {type: String},
     parent: {
         type: String,
         required: true,

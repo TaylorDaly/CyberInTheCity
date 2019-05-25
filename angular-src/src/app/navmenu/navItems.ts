@@ -2,6 +2,7 @@ export interface StaticPage {
   _id: string,
   title: string,
   content: string,
+  htmlString: string,
   route: string,
   parent: string,
 }

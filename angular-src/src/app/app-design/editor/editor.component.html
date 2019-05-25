@@ -8,8 +8,18 @@
     required>
     <!--(change)="getDirtyHTML()" -->
   </ckeditor>
-  <button [disabled]="disabled" type="button" class="btn btn-color mt-3 float-right" (click)="passHtmlString()">Save</button>
+  <div *ngIf="allowHtmlString">
+    <hr/>
+    <div class="form-group">
+      <label for="htmlString">Paste HTML string here if preferred over using Editor (above):</label>
+      <textarea class="form-control" id="htmlString" rows="5" aria-describedby="htmlHelp" [(ngModel)]="htmlString">
+      </textarea>
+      <small id="htmlHelp" class="form-text text-danger">
+        Must be careful when pasting HTML string because it can overlap or change existing CSS styles.</small>
+    </div>
+  </div>
 
+  <button [disabled]="disabled" type="button" class="btn btn-color mt-3 float-right" (click)="passHtmlString()">Save</button>
   <!--<div>-->
     <!--<div [innerHTML]="html" class="body cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">-->
     <!--</div>-->

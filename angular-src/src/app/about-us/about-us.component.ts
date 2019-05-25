@@ -25,7 +25,9 @@ export class AboutUsComponent implements OnInit {
       .subscribe(
         response => {
           //console.log(response);
-          this.content = this.sanitizer.bypassSecurityTrustHtml(response['content']);
+          if(response['htmlString'] && response['htmlString'].length > 0)
+            this.content = this.sanitizer.bypassSecurityTrustHtml(response['htmlString']);
+          else this.content = this.sanitizer.bypassSecurityTrustHtml(response['content']);
         },
         error => {this.errMsg = error.message}
       );

@@ -33,7 +33,8 @@ export class EditAboutComponent implements OnInit {
   }
 
   savePage(html) {
-    this.aboutUs.content = html;
+    this.aboutUs.content = html.content;
+    this.aboutUs.htmlString = html.htmlString;
     this.pageService.updatePage(this.aboutUs)
       .subscribe(
         res => {

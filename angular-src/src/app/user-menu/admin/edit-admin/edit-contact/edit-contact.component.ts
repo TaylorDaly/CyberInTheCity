@@ -33,7 +33,8 @@ export class EditContactComponent implements OnInit {
   }
 
   savePage(html) {
-    this.contactUs.content = html;
+    this.contactUs.content = html.contnet;
+    this.contactUs.htmlString = html.htmlString;
     this.pageService.updatePage(this.contactUs)
       .subscribe(
         res => {

@@ -9,7 +9,7 @@ PageRouter.get('/', (req, res) => {
     if (req.query.title) query['title'] = req.query.title;
 
     if (JSON.stringify(query) !== '{}') {
-        Page.findOne(query, 'title content parent', (err, page) => {
+        Page.findOne(query, 'title content parent htmlString', (err, page) => {
             if (err) {
                 res.status(500).json({
                     success: false,
@@ -41,6 +41,7 @@ PageRouter.post('/', Auth.VerifySysAdmin, (req, res, next) => {
     let newPage = new Page({
         title: req.body.title,
         content: req.body.content,
+        htmlString: req.body.htmlString,
         parent: req.body.parent
     });
 
@@ -64,6 +65,7 @@ PageRouter.put('/', Auth.VerifySysAdmin, (req, res, next) => {
             if (req.body.title) page.title = req.body.title;
             if (req.body.content) page.content = req.body.content;
             if (req.body.parent) page.parent = req.body.parent;
+            if(req.body.htmlString) page.htmlString = req.body.htmlString;
             Page.updatePage(page._id, page, (err) => {
                 if (err) {
                     res.status(500).json({ success: false, message: `Failed to update page. Error: ${err}` })
