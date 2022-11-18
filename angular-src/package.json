@@ -27,7 +27,7 @@
     "@auth0/angular-jwt": "^2.1.0",
     "@angular/cli": "^7.3.5",
     "@angular/compiler-cli": "^7.2.8",
-    "@angular-devkit/build-angular": "^0.13.5",
+    "@angular-devkit/build-angular": "^15.0.0",
     "braces": "^2.3.2",
     "core-js": "^2.6.3",
     "jquery": "^3.3.1",
