@@ -24,7 +24,7 @@
     "express": "^4.16.4",
     "googleapis": "^39.2.0",
     "helmet": "^3.15.1",
-    "jsonwebtoken": "^8.5.0",
+    "jsonwebtoken": "^9.0.0",
     "mongodb": "latest",
     "mongoose": "^5.4.15",
     "newsapi": "^2.4.0",
